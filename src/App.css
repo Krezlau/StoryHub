@@ -1,0 +1,14 @@
+.main {
+    display: flex;
+}
+
+.page {
+    max-width: 80rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
