@@ -10,7 +10,13 @@ const NavigationPanel: React.FC = () => {
           <NavLink to={"stories"}>Stories</NavLink>
         </li>
         <li>
+          <NavLink to={"new-story"}>Add new story</NavLink>
+        </li>
+        <li>
           <NavLink to={"profile"}>Profile</NavLink>
+        </li>
+        <li>
+          <NavLink to={"about"}>About</NavLink>
         </li>
       </ul>
     </div>

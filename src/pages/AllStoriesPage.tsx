@@ -1,7 +1,8 @@
 import React from "react";
+import StoryList from "../components/stories/StoryList";
 
 const AllStoriesPage: React.FC = () => {
-  return <div></div>;
+  return <StoryList />;
 };
 
 export default AllStoriesPage;
