@@ -3,11 +3,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/UI/Header";
 import HomePage from "./pages/HomePage";
 import NavigationPanel from "./components/UI/NavigationPanel";
-import './App.css'
-import {useSelector} from "react-redux";
-import {IRootState} from "./store";
+import "./App.css";
+import { useSelector } from "react-redux";
+import { IRootState } from "./store";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import AllStoriesPage from "./pages/AllStoriesPage";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -15,21 +16,20 @@ function App() {
   return (
     <Fragment>
       <Header />
-      <main className='main'>
-        {isLoggedIn && <NavigationPanel />}
-        <div className='page'>
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path='/login' element={<LoginPage />} />
-          {/*<Route path='/signup' element={<SignUpPage />} />*/}
-          {/*<Route path='/stories/:storyId' element={<StoryPage />} />*/}
-          {/*<Route path='/stories' element={<AllStoriesPage />} />*/}
-          {/*<Route path='/profile/:userId' element={<ProfilePage />} />*/}
-          {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
-        </div>
+      {isLoggedIn && <NavigationPanel />}
+      <main className="main">
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            {/*<Route path='/signup' element={<SignUpPage />} />*/}
+            {/*<Route path='/stories/:storyId' element={<StoryPage />} />*/}
+            <Route path='/stories' element={<AllStoriesPage />} />
+            {/*<Route path='/profile/:userId' element={<ProfilePage />} />*/}
+            {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
+            {/*<Route path='/about' element={<AboutPage />} />*/}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
       </main>
     </Fragment>
   );

@@ -1,6 +1,24 @@
 .main {
-    display: flex;
-    align-items: center;
+    margin-top: 6rem;
+    width: 70%;
+    max-width: 80rem;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
+
+.main a {
+    text-decoration: none;
+    color: #51f1f1;
+}
+
+.main a:hover,
+.main a:active,
+.main a.active {
+    color: #51f1f1;
+}
+
+.main h1 {
 }
 
 body {
@@ -8,12 +26,3 @@ body {
     color: #e6fcfc;
     margin: 0;
 }
-
-.page {
-    margin-top: 6rem;
-    width: 70%;
-    max-width: 80rem;
-    margin-right: auto;
-    margin-left: auto;
-}
-

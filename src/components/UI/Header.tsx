@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { authActions } from "../../store/auth-slice";
 import classes from "./Header.module.css";
+import Button from "./Button";
 
 const Header: React.FC = () => {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -13,7 +14,7 @@ const Header: React.FC = () => {
   const logoutHandler = () => {
     dispatch(authActions.logout());
 
-    navigate("/home");
+    navigate("/login");
   };
 
   const loginHandler = () => {
@@ -26,8 +27,8 @@ const Header: React.FC = () => {
         <NavLink to="home">
           <h1>StoriesHub</h1>
         </NavLink>
-        {!isLoggedIn && <button onClick={loginHandler}>Login</button>}
-        {isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
+        {!isLoggedIn && <Button onClick={loginHandler}>Login</Button>}
+        {isLoggedIn && <Button onClick={logoutHandler}>Logout</Button>}
       </div>
     </div>
   );
