@@ -1,0 +1,37 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    height: 5rem;
+    background: aqua;
+    margin: 0;
+}
+
+.header-content {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header a {
+    text-decoration: none;
+    color: #0b4545;
+}
+
+.header button {
+    font-size: 1.1rem;
+    margin: 1rem;
+    width: 10rem;
+    border-radius: 20px;
+    border-style: none;
+    background: #0b4545;
+    color: #e6fcfc;
+}
+
+.header button:active,
+.header button:hover{
+    background: #126e6e;
+}

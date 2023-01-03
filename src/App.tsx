@@ -7,6 +7,7 @@ import './App.css'
 import {useSelector} from "react-redux";
 import {IRootState} from "./store";
 import LoginPage from "./pages/LoginPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -26,6 +27,7 @@ function App() {
           {/*<Route path='/stories' element={<AllStoriesPage />} />*/}
           {/*<Route path='/profile/:userId' element={<ProfilePage />} />*/}
           {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
         </div>
       </main>

@@ -1,14 +1,19 @@
 .main {
     display: flex;
+    align-items: center;
+}
+
+body {
+    background-color: #3f3f3f;
+    color: #e6fcfc;
+    margin: 0;
 }
 
 .page {
+    margin-top: 6rem;
+    width: 70%;
     max-width: 80rem;
     margin-right: auto;
     margin-left: auto;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-}

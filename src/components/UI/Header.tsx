@@ -1,21 +1,34 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
+import { authActions } from "../../store/auth-slice";
+import classes from "./Header.module.css";
 
 const Header: React.FC = () => {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    dispatch(authActions.logout());
+
+    navigate("/home");
+  };
+
+  const loginHandler = () => {
+    navigate("/login");
+  };
+
   return (
-    <div className='header'>
-      <NavLink to="home">
-        <h1>StoriesHub</h1>
-      </NavLink>
-      {!isLoggedIn && (
-        <Link to="/login">
-          <h3>Login</h3>
-        </Link>
-      )}
+    <div className={classes.header}>
+      <div className={classes["header-content"]}>
+        <NavLink to="home">
+          <h1>StoriesHub</h1>
+        </NavLink>
+        {!isLoggedIn && <button onClick={loginHandler}>Login</button>}
+        {isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,34 @@
+.nav {
+    position: absolute;
+    left: 0;
+    top: 5rem;
+    width: 5rem;
+    z-index: 10;
+    background: aqua;
+    padding: 1rem;
+    margin: 0;
+    border-bottom-right-radius: 14px;
+}
+
+.nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav li {
+    margin-left: .5rem;
+    font-size: 1.25rem;
+    padding: 10%;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #0b4545;
+}
+
+.nav a:hover,
+.nav a:active,
+.nav a.active {
+    color: #e6fcfc;
+}
