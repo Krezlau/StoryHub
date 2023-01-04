@@ -1,0 +1,9 @@
+.page-header {
+    height: 3.5rem;
+    border-bottom-style: solid;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    margin-bottom: 0;
+}

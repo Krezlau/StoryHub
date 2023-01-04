@@ -1,11 +1,12 @@
-import React from "react";
+import React, { Fragment } from "react";
+import PageHeader from "../components/UI/PageHeader";
 
 const NotFoundPage: React.FC = () => {
   return (
-    <div>
-      <h1>404</h1>
+    <Fragment>
+      <PageHeader title={"404"} />
       <h1>Page not found.</h1>
-    </div>
+    </Fragment>
   );
 };
 

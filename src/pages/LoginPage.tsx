@@ -1,12 +1,13 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "../components/login/LoginForm";
+import PageHeader from "../components/UI/PageHeader";
 
 const LoginPage: React.FC = () => {
   return (
     <Fragment>
-      <h1>Login</h1>
-      <LoginForm />
+      <PageHeader title={'Login'} />
+        <LoginForm />
       <p>
         or <Link to="/signup">sign up</Link>
       </p>

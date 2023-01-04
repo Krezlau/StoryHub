@@ -1,9 +1,9 @@
 .main {
-    margin-top: 6rem;
+    margin-top: 7rem;
+    margin-left: auto;
     width: 70%;
     max-width: 80rem;
     margin-right: auto;
-    margin-left: auto;
     text-align: center;
 }
 
@@ -26,3 +26,4 @@ body {
     color: #e6fcfc;
     margin: 0;
 }
+
