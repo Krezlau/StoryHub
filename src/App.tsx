@@ -6,8 +6,13 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AllStoriesPage from "./pages/AllStoriesPage";
+import {useSelector} from "react-redux";
+import {IRootState} from "./store";
+import NotLoggedInPage from "./pages/NotLoggedInPage";
 
 function App() {
+  const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
+
   return (
     <Fragment>
       <NavigationPanel />
@@ -18,7 +23,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           {/*<Route path='/signup' element={<SignUpPage />} />*/}
           {/*<Route path='/stories/:storyId' element={<StoryPage />} />*/}
-          <Route path="/stories" element={<AllStoriesPage />} />
+          <Route path="/stories" element={isLoggedIn ? <AllStoriesPage /> : <NotLoggedInPage />} />
           {/*<Route path='/profile/:userId' element={<ProfilePage />} />*/}
           {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
           {/*<Route path='/about' element={<AboutPage />} />*/}
