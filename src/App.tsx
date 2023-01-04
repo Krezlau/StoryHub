@@ -10,6 +10,8 @@ import {useSelector} from "react-redux";
 import {IRootState} from "./store";
 import NotLoggedInPage from "./pages/NotLoggedInPage";
 import StoryPage from "./pages/StoryPage";
+import AboutPage from "./pages/AboutPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -22,12 +24,12 @@ function App() {
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          {/*<Route path='/signup' element={<SignUpPage />} />*/}
+          <Route path='/signup' element={<SignUpPage />} />
           <Route path='/stories/:storyId' element={isLoggedIn ? <StoryPage /> : <NotLoggedInPage />} />
           <Route path="/stories" element={isLoggedIn ? <AllStoriesPage /> : <NotLoggedInPage />} />
           {/*<Route path='/profile/:userId' element={<ProfilePage />} />*/}
           {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
-          {/*<Route path='/about' element={<AboutPage />} />*/}
+          <Route path='/about' element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
