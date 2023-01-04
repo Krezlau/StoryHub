@@ -11,7 +11,7 @@ const StoryList: React.FC = () => {
     <div className={classes.list}>
       <ul>
         {stories.map((story) => (
-          <Story title={story.title} author={story.author} key={story.id} />
+          <Story title={story.title} author={story.author} id={story.id} key={story.id} />
         ))}
       </ul>
     </div>

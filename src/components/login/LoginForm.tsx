@@ -1,11 +1,13 @@
 import React, { FormEvent, useRef } from "react";
 import classes from "./LoginForm.module.css";
 import Button from "../UI/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import { useNavigate } from "react-router-dom";
+import { IRootState } from "../../store";
 
-const LoginForm: React.FC = (props) => {
+const LoginForm: React.FC = () => {
+  const goBack = useSelector((state: IRootState) => state.redirect.goBack);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
@@ -20,6 +22,11 @@ const LoginForm: React.FC = (props) => {
     const password = emailRef.current!.value;
 
     dispatch(authActions.login({ email, password }));
+
+    if (goBack) {
+      navigate(-1);
+      return;
+    }
     navigate("/home");
   };
 

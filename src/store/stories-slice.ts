@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface IStory {
+export interface IStory {
   id: number;
   title: string;
   author: string;
@@ -12,10 +12,29 @@ interface IStoriesState {
   stories: IStory[];
 }
 
-const initialState: IStoriesState = { stories: [
-    {id: 0, title: 'My Story', author: 'Krezlau', text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", userId: "jsakflja"},
-    {id: 0, title: 'My Story vol 2', author: 'Krezlau', text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", userId: "jsakflja"}
-  ] };
+const initialState: IStoriesState = {
+  stories: [
+    {
+      id: 0,
+      title: "My Story",
+      author: "Krezlau",
+      text:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      userId: "jsakflja",
+    },
+    {
+      id: 1,
+      title: "My Story vol 2",
+      author: "Krezlau",
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      userId: "jsakflja",
+    },
+  ],
+};
 
 const storiesSlice = createSlice({
   name: "stories",

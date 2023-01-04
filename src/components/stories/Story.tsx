@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Story.module.css";
 import { Link } from "react-router-dom";
 
-const Story: React.FC<{ title: string; author: string }> = (props) => {
+const Story: React.FC<{ title: string; author: string, id: number }> = (props) => {
   return (
     <li>
       <div className={classes.story}>
@@ -11,7 +11,7 @@ const Story: React.FC<{ title: string; author: string }> = (props) => {
           <p>by {props.author}</p>
         </div>
         <div className={classes['story-actions']}>
-          <Link to="">Read...</Link>
+          <Link to={`${props.id}`}>Read...</Link>
         </div>
       </div>
     </li>
