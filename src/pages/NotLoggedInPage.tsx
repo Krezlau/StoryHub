@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { redirectActions } from "../store/redirect-slice";
 
-const NotLoggedInPage: React.FC = () => {
+const NotLoggedInPage: React.FC<{ doNotGoBack?: boolean }> = (props) => {
   const dispatch = useDispatch();
 
-  dispatch(redirectActions.enable());
+  if (!props.doNotGoBack) {
+    dispatch(redirectActions.enable());
+  }
 
   return (
     <Fragment>

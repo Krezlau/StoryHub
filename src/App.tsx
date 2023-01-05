@@ -29,7 +29,8 @@ function App() {
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/stories/:storyId' element={isLoggedIn ? <StoryPage /> : <NotLoggedInPage />} />
           <Route path="/stories" element={isLoggedIn ? <AllStoriesPage /> : <NotLoggedInPage />} />
-          <Route path='/profile/:userId' element={<ProfilePage />} />
+          <Route path='/profile/:userId' element={isLoggedIn ? <ProfilePage /> : <NotLoggedInPage />} />
+          <Route path='/profile' element={isLoggedIn ? <NotFoundPage /> : <NotLoggedInPage doNotGoBack={true} /> }/>
           {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
           <Route path='/new-story' element={isLoggedIn ? <NewStoryPage /> : <NotLoggedInPage />} />
           <Route path='/about' element={<AboutPage />} />
