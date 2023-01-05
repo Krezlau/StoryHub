@@ -12,6 +12,7 @@ import NotLoggedInPage from "./pages/NotLoggedInPage";
 import StoryPage from "./pages/StoryPage";
 import AboutPage from "./pages/AboutPage";
 import SignUpPage from "./pages/SignUpPage";
+import NewStoryPage from "./pages/NewStoryPage";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -29,6 +30,7 @@ function App() {
           <Route path="/stories" element={isLoggedIn ? <AllStoriesPage /> : <NotLoggedInPage />} />
           {/*<Route path='/profile/:userId' element={<ProfilePage />} />*/}
           {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
+          <Route path='/new-story' element={isLoggedIn ? <NewStoryPage /> : <NotLoggedInPage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

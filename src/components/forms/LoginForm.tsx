@@ -1,29 +1,27 @@
 import React, { FormEvent, useRef } from "react";
-import classes from "./LoginForm.module.css";
+import classes from "./Form.module.css";
 import Button from "../UI/Button";
-import { authActions } from "../../store/auth-slice";
 import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/auth-slice";
 import { useNavigate } from "react-router-dom";
 import { IRootState } from "../../store";
 
-const SignUpForm: React.FC = () => {
+const LoginForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const nicknameRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const nickname = nicknameRef.current!.value;
+    // validation TODO
+
     const email = emailRef.current!.value;
-    const password = passwordRef.current!.value;
+    const password = emailRef.current!.value;
 
-    // validate
-
-    dispatch(authActions.register({ nickname, email, password }));
+    dispatch(authActions.login({ email, password }));
 
     if (goBack) {
       navigate(-1);
@@ -35,18 +33,16 @@ const SignUpForm: React.FC = () => {
   return (
     <div className={classes.content}>
       <form onSubmit={submitHandler}>
-        <label htmlFor="nickname">Nickname</label>
-        <input type="text" id="nickname" ref={nicknameRef} />
         <label htmlFor="email">Email</label>
         <input type="email" id="email" ref={emailRef} />
         <label htmlFor="password">Password</label>
         <input type="password" id="password" ref={passwordRef} />
         <div className={classes.actions}>
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit">Login</Button>
         </div>
       </form>
     </div>
   );
 };
 
-export default SignUpForm;
+export default LoginForm;

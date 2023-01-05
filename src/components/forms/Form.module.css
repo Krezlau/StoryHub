@@ -18,6 +18,12 @@
     width: 50%;
 }
 
+.content textarea {
+    resize: none;
+    width: 50%;
+    height: 20rem;
+}
+
 .actions {
     margin-top: 1rem;
     text-align: center;

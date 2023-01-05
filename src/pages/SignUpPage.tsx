@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import PageHeader from "../components/UI/PageHeader";
-import SignUpForm from "../components/login/SignUpForm";
+import SignUpForm from "../components/forms/SignUpForm";
 
 const SignUpPage: React.FC = () => {
   return (
