@@ -22,16 +22,18 @@ const authSlice = createSlice({
   reducers: {
     login: (
       state,
-      action: PayloadAction<{ email: string; password: string }>
+      action: PayloadAction<{
+        email: string;
+        username: string;
+        userToken: string;
+        created: string;
+      }>
     ) => {
-      // call the api
-      // for now imma do this
-      state.userToken = action.payload.email;
+      state.userToken = action.payload.userToken;
       state.isLoggedIn = true;
-      // fetch user data from api
-      state.userName = "Krezlau";
-      state.email = "test@test.com";
-      state.created = new Date().toISOString();
+      state.userName = action.payload.username;
+      state.email = action.payload.email;
+      state.created = action.payload.created;
     },
     logout: (state) => {
       state.userToken = initialState.userToken;
@@ -43,17 +45,17 @@ const authSlice = createSlice({
     register: (
       state,
       action: PayloadAction<{
-        nickname: string;
+        idToken: string;
+        username: string;
         email: string;
-        password: string;
+        created: string;
       }>
     ) => {
       state.isLoggedIn = true;
-      state.userName = action.payload.nickname;
+      state.userName = action.payload.username;
       state.email = action.payload.email;
-      state.created = new Date().toISOString();
-      // temp
-      state.userToken = action.payload.nickname;
+      state.created = action.payload.created;
+      state.userToken = action.payload.idToken;
     },
   },
 });

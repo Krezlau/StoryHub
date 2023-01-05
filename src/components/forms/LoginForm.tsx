@@ -1,14 +1,14 @@
 import React, { FormEvent, useRef } from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { authActions } from "../../store/auth-slice";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IRootState } from "../../store";
+import { loginUser, useAuthDispatch } from "../../store/auth-actions";
 
 const LoginForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
-  const dispatch = useDispatch();
+  const dispatch = useAuthDispatch();
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -19,9 +19,9 @@ const LoginForm: React.FC = () => {
     // validation TODO
 
     const email = emailRef.current!.value;
-    const password = emailRef.current!.value;
+    const password = passwordRef.current!.value;
 
-    dispatch(authActions.login({ email, password }));
+    dispatch(loginUser(email, password));
 
     if (goBack) {
       navigate(-1);
