@@ -7,6 +7,7 @@ import { IRootState } from "../../store";
 import { authActions } from "../../store/auth-slice";
 
 const NavigationPanel: React.FC = () => {
+  const userId = useSelector((state: IRootState) => state.auth.userName);
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,16 +32,36 @@ const NavigationPanel: React.FC = () => {
       <div className={classes.content}>
         <ul>
           <li>
-            <NavLink className={(navData) => (navData.isActive ? classes.active : '')} to={"stories"}>Stories</NavLink>
+            <NavLink
+              className={(navData) => (navData.isActive ? classes.active : "")}
+              to={"stories"}
+            >
+              Stories
+            </NavLink>
           </li>
           <li>
-            <NavLink className={(navData) => (navData.isActive ? classes.active : '')} to={"new-story"}>Add new story</NavLink>
+            <NavLink
+              className={(navData) => (navData.isActive ? classes.active : "")}
+              to={"new-story"}
+            >
+              Add new story
+            </NavLink>
           </li>
           <li>
-            <NavLink className={(navData) => (navData.isActive ? classes.active : '')} to={"profile"}>Profile</NavLink>
+            <NavLink
+              className={(navData) => (navData.isActive ? classes.active : "")}
+              to={`profile/${userId}`}
+            >
+              Profile
+            </NavLink>
           </li>
           <li>
-            <NavLink className={(navData) => (navData.isActive ? classes.active : '')} to={"about"}>About</NavLink>
+            <NavLink
+              className={(navData) => (navData.isActive ? classes.active : "")}
+              to={"about"}
+            >
+              About
+            </NavLink>
           </li>
         </ul>
       </div>

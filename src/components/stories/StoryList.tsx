@@ -1,17 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
 import Story from "./Story";
 import classes from "./StoryList.module.css";
+import { IStory } from "../../store/stories-slice";
 
-const StoryList: React.FC = () => {
-  const stories = useSelector((state: IRootState) => state.stories.stories);
-
+const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
   return (
     <div className={classes.list}>
       <ul>
-        {stories.map((story) => (
-          <Story title={story.title} author={story.author} id={story.id} key={story.id} />
+        {props.stories.map((story) => (
+          <Story
+            title={story.title}
+            author={story.author}
+            id={story.id}
+            key={story.id}
+          />
         ))}
       </ul>
     </div>
