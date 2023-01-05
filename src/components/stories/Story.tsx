@@ -8,7 +8,9 @@ const Story: React.FC<{ title: string; author: string, id: number }> = (props) =
       <div className={classes.story}>
         <div className={classes['story-info']}>
           <h2>{props.title}</h2>
-          <p>by {props.author}</p>
+          <div className={classes.author}>
+              by <Link to={`/profile/${props.author}`}>{props.author}</Link>
+          </div>
         </div>
         <div className={classes['story-actions']}>
           <Link to={`${props.id}`}>Read...</Link>
