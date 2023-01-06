@@ -1,7 +1,7 @@
 ### task01:
 - [ ] storing stories in database
 - [ ] fetching stories from api 
-- [ ] sending new story to api
+- [x] sending new story to api
 
 ### Unallocated:
 * validation in all the forms
@@ -12,6 +12,7 @@
 * adding stories to favorites
 * liking comments
 * sorting stories
+* delete my own story form profile page or story details
 * filtering stories by title and tags
 * changing user password
 * migrate styling to styled components

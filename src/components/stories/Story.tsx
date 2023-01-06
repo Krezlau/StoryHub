@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Story.module.css";
 import { Link } from "react-router-dom";
 
-const Story: React.FC<{ title: string; author: string, id: number }> = (props) => {
+const Story: React.FC<{ title: string; author: string, id: string }> = (props) => {
   return (
     <li>
       <div className={classes.story}>

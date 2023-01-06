@@ -48,6 +48,7 @@ export const loginUser = (email: string, password: string) => {
           userToken: loginData.idToken,
           username: userData.users[0].displayName,
           created: userData.users[0].createdAt,
+          userId: userData.users[0].localId,
         })
       );
     } catch (e) {
@@ -111,6 +112,7 @@ export const singUpUser = (
           username: username,
           email: email,
           created: postData.email,
+          userId: postData.localId,
         })
       );
     } catch (e) {

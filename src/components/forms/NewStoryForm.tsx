@@ -1,14 +1,15 @@
 import React, { FormEvent, useRef } from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { IStory, storiesActions } from "../../store/stories-slice";
+import { useSelector } from "react-redux";
+import { IStory } from "../../store/stories-slice";
 import { IRootState } from "../../store";
 import { useNavigate } from "react-router-dom";
+import {addStory, useStoriesDispatch} from "../../store/stories-actions";
 
 const NewStoryForm: React.FC = () => {
   const userData = useSelector((state: IRootState) => state.auth);
-  const dispatch = useDispatch();
+  const dispatch = useStoriesDispatch();
   const navigate = useNavigate();
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -21,15 +22,14 @@ const NewStoryForm: React.FC = () => {
 
     // validate
 
-    // temporary
     const story: IStory = {
       title: title,
       text: text,
-      author: userData.userToken,
-      userId: userData.userToken,
-      id: Math.random(),
+      author: userData.userName,
+      userId: userData.userId,
+      id: "",
     };
-    dispatch(storiesActions.addNewStory({ story }));
+    dispatch(addStory(story));
     navigate("/stories");
   };
 
