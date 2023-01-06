@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IAuthState {
   userToken: string;
   isLoggedIn: boolean;
+  userId: string;
   userName: string;
   email: string;
   created: string;
@@ -11,6 +12,7 @@ interface IAuthState {
 const initialState: IAuthState = {
   userToken: "",
   isLoggedIn: false,
+  userId: "",
   userName: "",
   email: "",
   created: "",
@@ -27,6 +29,7 @@ const authSlice = createSlice({
         username: string;
         userToken: string;
         created: string;
+        userId: string;
       }>
     ) => {
       state.userToken = action.payload.userToken;
@@ -34,6 +37,7 @@ const authSlice = createSlice({
       state.userName = action.payload.username;
       state.email = action.payload.email;
       state.created = action.payload.created;
+      state.userId = action.payload.userId;
     },
     logout: (state) => {
       state.userToken = initialState.userToken;
@@ -41,6 +45,7 @@ const authSlice = createSlice({
       state.email = initialState.email;
       state.created = initialState.created;
       state.userName = initialState.userName;
+      state.userId = initialState.userId;
     },
     register: (
       state,
@@ -49,6 +54,7 @@ const authSlice = createSlice({
         username: string;
         email: string;
         created: string;
+        userId: string;
       }>
     ) => {
       state.isLoggedIn = true;
@@ -56,6 +62,7 @@ const authSlice = createSlice({
       state.email = action.payload.email;
       state.created = action.payload.created;
       state.userToken = action.payload.idToken;
+      state.userId = action.payload.userId;
     },
   },
 });

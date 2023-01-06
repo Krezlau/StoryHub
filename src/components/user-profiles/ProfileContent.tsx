@@ -1,15 +1,23 @@
-import React, { Fragment } from "react";
+import React, {Fragment, useEffect} from "react";
 import { IUser } from "../../pages/ProfilePage";
 import classes from "./ProfileContent.module.css";
 import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
+import {fetchAllStories, useStoriesDispatch} from "../../store/stories-actions";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
+  // maybe make hook out of this?
+  const dispatch = useStoriesDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAllStories());
+  }, [dispatch])
+
   const userStories = useSelector((state: IRootState) =>
     state.stories.stories.filter((story) => story.author === props.user.name)
   );

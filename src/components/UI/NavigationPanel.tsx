@@ -7,7 +7,7 @@ import { IRootState } from "../../store";
 import { authActions } from "../../store/auth-slice";
 
 const NavigationPanel: React.FC = () => {
-  const userId = useSelector((state: IRootState) => state.auth.userName);
+  const userId = useSelector((state: IRootState) => state.auth.userId);
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();

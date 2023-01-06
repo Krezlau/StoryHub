@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IStory {
-  id: number;
+  id: string;
   title: string;
   author: string;
   userId: string;
@@ -15,10 +15,15 @@ interface IStoriesState {
 const initialState: IStoriesState = {
   stories: [
     {
-      id: 0,
+      id: "0",
       title: "My Story",
       author: "Krezlau",
       text:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
@@ -27,7 +32,7 @@ const initialState: IStoriesState = {
       userId: "jsakflja",
     },
     {
-      id: 1,
+      id: "1",
       title: "My Story vol 2",
       author: "Krezlau",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
@@ -48,11 +53,17 @@ const storiesSlice = createSlice({
     },
     removeStory: (
       state: IStoriesState,
-      action: PayloadAction<{ id: number }>
+      action: PayloadAction<{ id: string }>
     ) => {
       state.stories = state.stories.filter(
         (story) => story.id !== action.payload.id
       );
+    },
+    replaceStories: (
+      state: IStoriesState,
+      action: PayloadAction<{ stories: IStory[] }>
+    ) => {
+      state.stories = action.payload.stories;
     },
   },
 });

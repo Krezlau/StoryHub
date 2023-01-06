@@ -8,13 +8,13 @@ import {IRootState} from "../store";
 const StoryPage: React.FC = () => {
   const { storyId } = useParams<{storyId?: string}>();
 
-  let storyIdNum: number;
+  let storyIdParam: string;
 
   if (!!storyId) {
-    storyIdNum = +storyId;
+    storyIdParam = storyId;
   }
 
-  const story = useSelector((state: IRootState) => state.stories.stories.find(s => s.id === storyIdNum));
+  const story = useSelector((state: IRootState) => state.stories.stories.find(s => s.id === storyIdParam));
 
 
 

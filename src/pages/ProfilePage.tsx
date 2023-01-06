@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
+import React, {Fragment, useCallback, useEffect, useState} from "react";
 import PageHeader from "../components/UI/PageHeader";
 import ProfileContent from "../components/user-profiles/ProfileContent";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { IRootState } from "../store";
+import {useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {IRootState} from "../store";
 
 export interface IUser {
   name: string;
@@ -12,34 +12,42 @@ export interface IUser {
 }
 
 const ProfilePage: React.FC = () => {
-  const { userId: username } = useParams<{ userId?: string }>();
+  const {userId: id} = useParams<{ userId?: string }>();
   const loggedUserData = useSelector((state: IRootState) => state.auth);
 
-  let showAllContent = false;
-  if (username === loggedUserData.userName) {
-    showAllContent = true;
-  }
+  const [user, setUser] = useState<IUser>({name: "", created: "", email: ""});
 
-  let user: IUser;
-  if (showAllContent) {
-    user = {
-      name: loggedUserData.userName,
-      email: loggedUserData.email,
-      created: loggedUserData.created,
-    };
-  } else {
-    // fetch
-    user = {
-      name: "temp",
-      email: "temp@temp.temp",
-      created: "tempdate",
-    };
+  let showAllContent = false;
+
+  const fetchUser = useCallback(async () => {
+    try{
+      const response = await fetch(`https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`)
+      if (!response.ok) {
+        // handle
+        return;
+      }
+      const data = await response.json();
+      const user: IUser = {name: data.name, email: data.email, created: data.created}
+
+      setUser(user);
+    } catch (e) {
+      //handle
+      console.log(e);
+    }
+  }, [id])
+
+  useEffect(() => {
+    fetchUser().then(r => {});
+  }, [fetchUser])
+
+  if (id === loggedUserData.userId){
+    showAllContent = true;
   }
 
   return (
     <Fragment>
-      <PageHeader title={showAllContent ? "My Profile" : "User Profile"} />
-      <ProfileContent user={user} showAllContent={showAllContent} />
+      <PageHeader title={showAllContent ? "My Profile" : "User Profile"}/>
+      <ProfileContent user={user} showAllContent={showAllContent}/>
     </Fragment>
   );
 };

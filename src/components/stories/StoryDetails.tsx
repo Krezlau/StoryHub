@@ -23,9 +23,9 @@ const StoryDetails: React.FC<{ story?: IStory }> = (props) => {
       </div>
       <div className={classes.footer}>
         <div className={classes.info}>
-          <text>2137 views</text>
-          <text>11 likes</text>
-          <text>2 comments</text>
+          <p>2137 views</p>
+          <p>11 likes</p>
+          <p>2 comments</p>
         </div>
         <div className={classes.actions}>
           <button>Like</button>
