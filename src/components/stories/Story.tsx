@@ -13,7 +13,7 @@ const Story: React.FC<{ title: string; author: string, id: string }> = (props) =
           </div>
         </div>
         <div className={classes['story-actions']}>
-          <Link to={`${props.id}`}>Read...</Link>
+          <Link to={`/stories/${props.id}`}>Read...</Link>
         </div>
       </div>
     </li>

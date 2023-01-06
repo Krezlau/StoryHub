@@ -59,6 +59,12 @@ const storiesSlice = createSlice({
         (story) => story.id !== action.payload.id
       );
     },
+    replaceStories: (
+      state: IStoriesState,
+      action: PayloadAction<{ stories: IStory[] }>
+    ) => {
+      state.stories = action.payload.stories;
+    },
   },
 });
 

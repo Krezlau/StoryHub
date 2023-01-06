@@ -4,6 +4,14 @@ import classes from "./StoryList.module.css";
 import { IStory } from "../../store/stories-slice";
 
 const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
+  if (props.stories.length === 0) {
+    return (
+      <div>
+        <h3>No stories found.</h3>
+      </div>
+    );
+  }
+
   return (
     <div className={classes.list}>
       <ul>
