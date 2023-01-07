@@ -6,7 +6,7 @@
 
 ### task02:
 - [x] displaying, storing and adding tags to story
-- [ ] migrate fetch to axios
+- [x] migrate fetch to axios
 - [ ] handle api response and loading state
 - [ ] loading spinner
 

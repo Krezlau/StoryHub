@@ -4,7 +4,7 @@ import Button from "../UI/Button";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IRootState } from "../../store";
-import { singUpUser, useAuthDispatch } from "../../store/auth-actions";
+import { signUpUser, useAuthDispatch } from "../../store/auth-actions";
 
 const SignUpForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
@@ -24,7 +24,7 @@ const SignUpForm: React.FC = () => {
     // validate
 
     dispatch(
-      singUpUser(
+      signUpUser(
         username,
         email,
         password,

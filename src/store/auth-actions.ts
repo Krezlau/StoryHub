@@ -1,24 +1,22 @@
-import { AnyAction, Dispatch } from "@reduxjs/toolkit";
-import { authActions } from "./auth-slice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "./index";
-import { IUser } from "../pages/ProfilePage";
+import {AnyAction, Dispatch} from "@reduxjs/toolkit";
+import {authActions} from "./auth-slice";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "./index";
+import {IUser} from "../pages/ProfilePage";
 import axios from "axios";
 
 export const loginUser = (
   email: string,
   password: string,
   setIsLoading: (newState: boolean) => void,
-  setNotificationMessage: (newState: string) => void
+  setError: (newState: string) => void
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
-    setIsLoading(true);
-
     const loginUser = async () => {
       let response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        { email, password, returnSecureToken: true },
-        { headers: { "Content-Type": "application/json" } }
+        {email, password, returnSecureToken: true},
+        {headers: {"Content-Type": "application/json"}}
       );
       if (!response || !response.data.idToken || response.status > 299) {
         throw new Error("Response incorrect.");
@@ -29,8 +27,8 @@ export const loginUser = (
     const fetchUserData = async (idToken: string) => {
       const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        { idToken: idToken },
-        { headers: { "Content-Type": "application/json" } }
+        {idToken: idToken},
+        {headers: {"Content-Type": "application/json"}}
       );
 
       if (!response || !response.data.users[0].localId) {
@@ -42,8 +40,8 @@ export const loginUser = (
     const fetchCreatedAt = async (userId: string) => {
       const response = await axios.get(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
-          userId +
-          ".json"
+        userId +
+        ".json"
       );
 
       if (!response || !response.data.created) {
@@ -66,31 +64,33 @@ export const loginUser = (
           created: createdAt,
         })
       );
+      setError("");
       setIsLoading(false);
-      setNotificationMessage("Success.");
     } catch (e) {
+      setError("Could not login.");
       console.log(e);
       setIsLoading(false);
-      setNotificationMessage("Could not login.");
       return;
     }
   };
 };
 
-export const singUpUser = (
+export const signUpUser = (
   username: string,
   email: string,
   password: string,
   setIsLoading: (newState: boolean) => void,
-  setNotificationMessage: (newState: string) => void
+  setError: (newState: string) => void
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     setIsLoading(true);
+    setError("");
+
     const signUp = async () => {
       const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        { email, password, returnSecureToken: true },
-        { headers: { "Content-Type": "application/json" } }
+        {email, password, returnSecureToken: true},
+        {headers: {"Content-Type": "application/json"}}
       );
 
       if (!response.data.idToken) {
@@ -109,7 +109,7 @@ export const singUpUser = (
           photoUrl: "",
           returnSecureToken: false,
         },
-        { headers: { "Content-Type": "application/json" } }
+        {headers: {"Content-Type": "application/json"}}
       );
 
       if (!response.data.localId) {
@@ -129,7 +129,7 @@ export const singUpUser = (
       const response = await axios.put(
         `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`,
         user,
-        { headers: { "Content-Type": "application/json" } }
+        {headers: {"Content-Type": "application/json"}}
       );
 
       if (response.status > 299) {
@@ -150,12 +150,11 @@ export const singUpUser = (
           userId: localId,
         })
       );
-      setNotificationMessage("Success.");
       setIsLoading(false);
     } catch (e) {
       console.log(e);
       setIsLoading(false);
-      setNotificationMessage("Could not sign up.");
+      setError("Could not sign up.");
     }
   };
 };
