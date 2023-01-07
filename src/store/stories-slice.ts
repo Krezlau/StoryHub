@@ -6,6 +6,7 @@ export interface IStory {
   author: string;
   userId: string;
   text: string;
+  tags: string[];
 }
 
 interface IStoriesState {
@@ -13,32 +14,7 @@ interface IStoriesState {
 }
 
 const initialState: IStoriesState = {
-  stories: [
-    {
-      id: "0",
-      title: "My Story",
-      author: "Krezlau",
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      userId: "jsakflja",
-    },
-    {
-      id: "1",
-      title: "My Story vol 2",
-      author: "Krezlau",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      userId: "jsakflja",
-    },
-  ],
+  stories: []
 };
 
 const storiesSlice = createSlice({

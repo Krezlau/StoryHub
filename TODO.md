@@ -5,7 +5,7 @@
 - [x] storing users public info in db
 
 ### task02:
-- [ ] displaying, storing and adding tags to story
+- [x] displaying, storing and adding tags to story
 - [ ] migrate fetch to axios
 - [ ] custom hook to deal with auth api response and loading state
 - [ ] loading spinner

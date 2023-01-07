@@ -28,3 +28,18 @@
     margin-top: 1rem;
     text-align: center;
 }
+
+.tags {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.content select {
+    padding: .5rem;
+    border-style: none;
+    border-radius: 14px;
+}
+

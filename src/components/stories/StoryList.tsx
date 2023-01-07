@@ -22,6 +22,7 @@ const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
             userId={story.userId}
             id={story.id}
             key={story.id}
+            tags={story.tags}
           />
         ))}
       </ul>

@@ -28,6 +28,7 @@ export const fetchAllStories = () => {
           author: storiesData[key].author,
           text: storiesData[key].text,
           title: storiesData[key].title,
+          tags: storiesData[key].tags,
         });
       }
 
