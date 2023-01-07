@@ -69,7 +69,17 @@ const NewStoryForm: React.FC = () => {
       id: "",
       tags: selectedTags,
     };
-    dispatch(addStory(story));
+    dispatch(
+      addStory(
+        story,
+        (newState) => {
+          console.log(newState);
+        },
+        (newState) => {
+          console.log(newState);
+        }
+      )
+    );
     navigate("/stories");
   };
 
@@ -100,7 +110,11 @@ const NewStoryForm: React.FC = () => {
         <label htmlFor="content">Text</label>
         <textarea ref={textRef} />
         <label>Choose tags:</label>
-        <select defaultValue={"Choose a tag"} onChange={selectHandler} value={selectedValue}>
+        <select
+          defaultValue={"Choose a tag"}
+          onChange={selectHandler}
+          value={selectedValue}
+        >
           {tagOptions.map((tag) => (
             <option value={tag}>{tag}</option>
           ))}

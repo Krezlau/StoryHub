@@ -21,7 +21,18 @@ const LoginForm: React.FC = () => {
     const email = emailRef.current!.value;
     const password = passwordRef.current!.value;
 
-    dispatch(loginUser(email, password));
+    dispatch(
+      loginUser(
+        email,
+        password,
+        (newState) => {
+          console.log(newState);
+        },
+        (newState) => {
+          console.log(newState);
+        }
+      )
+    );
 
     if (goBack) {
       navigate(-1);

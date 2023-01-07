@@ -15,7 +15,16 @@ const ProfileContent: React.FC<{
   const dispatch = useStoriesDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllStories());
+    dispatch(
+      fetchAllStories(
+        (newState) => {
+          console.log(newState);
+        },
+        (newState) => {
+          console.log(newState);
+        }
+      )
+    );
   }, [dispatch])
 
   const userStories = useSelector((state: IRootState) =>

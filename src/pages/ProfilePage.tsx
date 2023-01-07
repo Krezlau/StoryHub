@@ -4,6 +4,7 @@ import ProfileContent from "../components/user-profiles/ProfileContent";
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {IRootState} from "../store";
+import axios from "axios";
 
 export interface IUser {
   name: string;
@@ -21,12 +22,12 @@ const ProfilePage: React.FC = () => {
 
   const fetchUser = useCallback(async () => {
     try{
-      const response = await fetch(`https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`)
-      if (!response.ok) {
+      const response = await axios.get(`https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`)
+      if (response.status > 299) {
         // handle
         return;
       }
-      const data = await response.json();
+      const data = response.data;
       const user: IUser = {name: data.name, email: data.email, created: data.created}
 
       setUser(user);

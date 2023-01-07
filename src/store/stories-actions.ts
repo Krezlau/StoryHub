@@ -2,25 +2,30 @@ import { AppDispatch } from "./index";
 import { useDispatch } from "react-redux";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import { IStory, storiesActions } from "./stories-slice";
+import axios from "axios";
 
-export const fetchAllStories = () => {
+export const fetchAllStories = (
+  setIsLoading: (newState: boolean) => void,
+  setError: (newState: string) => void
+) => {
   return async (dispatch: Dispatch<AnyAction>) => {
+    setIsLoading(true);
     const fetchStoriesFromDB = async () => {
-      const response = await fetch(
+      const response = await axios.get(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories.json"
       );
 
-      if (!response.ok) {
+      if (response.status > 299) {
         throw new Error("Could not fetch.");
       }
 
-      return await response.json();
+      return response.data;
     };
 
     try {
-      const storiesData: IStory[] = await fetchStoriesFromDB();
-
+      const storiesData = await fetchStoriesFromDB();
       const stories: IStory[] = [];
+
       for (const key in storiesData) {
         stories.push({
           id: key,
@@ -33,39 +38,45 @@ export const fetchAllStories = () => {
       }
 
       dispatch(storiesActions.replaceStories({ stories }));
+      setIsLoading(false);
     } catch (e) {
-      // handle
       console.log(e);
+      setError("Could not fetch stories.");
+      setIsLoading(false);
     }
   };
 };
 
-export const addStory = (story: IStory) => {
+export const addStory = (
+  story: IStory,
+  setIsLoading: (newState: boolean) => void,
+  setNotificationMessage: (newState: string) => void
+) => {
   return async (dispatch: Dispatch<AnyAction>) => {
+    setIsLoading(true);
     const sendStoryToDB = async () => {
-      const response = await fetch(
+      const response = await axios.post(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories.json",
-        {
-          method: "POST",
-          body: JSON.stringify(story),
-          headers: { "Content-Type": "application/json" },
-        }
+        story,
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
+      if (response.status > 299) {
+        throw new Error("Could not send data.");
       }
 
-      return await response.json();
+      return response.data.name;
     };
 
     try {
-      const postData = await sendStoryToDB();
-      story.id = postData.name;
+      story.id = await sendStoryToDB();
       dispatch(storiesActions.addNewStory({ story }));
+      setIsLoading(false);
+      setNotificationMessage("Data sent successfully.")
     } catch (e) {
-      // handle
       console.log(e);
+      setNotificationMessage("Could not send data.")
+      setIsLoading(false);
     }
   };
 };

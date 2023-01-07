@@ -23,7 +23,19 @@ const SignUpForm: React.FC = () => {
 
     // validate
 
-    dispatch(singUpUser(username, email, password));
+    dispatch(
+      singUpUser(
+        username,
+        email,
+        password,
+        (newState) => {
+          console.log(newState);
+        },
+        (newState) => {
+          console.log(newState);
+        }
+      )
+    );
 
     if (goBack) {
       navigate(-1);
