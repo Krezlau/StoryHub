@@ -1,12 +1,13 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
 import { useSelector } from "react-redux";
 import { IStory } from "../../store/stories-slice";
 import { IRootState } from "../../store";
 import { useNavigate } from "react-router-dom";
-import { addStory, useStoriesDispatch } from "../../store/stories-actions";
 import StoryTag from "../stories/StoryTag";
+import useHttp from "../../hooks/useHttp";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const TAGS = [
   "choose a tag",
@@ -43,15 +44,25 @@ const TAGS = [
   "romance",
 ];
 
+let isInitial = true;
+
 const NewStoryForm: React.FC = () => {
   const userData = useSelector((state: IRootState) => state.auth);
-  const dispatch = useStoriesDispatch();
   const navigate = useNavigate();
   const titleRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagOptions, setTagOptions] = useState<string[]>(TAGS);
   const [selectedValue, setSelectedValue] = useState<string>("choose a tag");
+  const { isLoading, error, addNewStory } = useHttp();
+
+  useEffect(() => {
+    if (!isInitial && error === "" && !isLoading) {
+      navigate("/stories");
+      isInitial = true;
+    }
+    console.log(isInitial)
+  }, [navigate, error, isLoading])
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -69,18 +80,9 @@ const NewStoryForm: React.FC = () => {
       id: "",
       tags: selectedTags,
     };
-    dispatch(
-      addStory(
-        story,
-        (newState) => {
-          console.log(newState);
-        },
-        (newState) => {
-          console.log(newState);
-        }
-      )
-    );
-    navigate("/stories");
+    isInitial = false;
+
+    addNewStory(story);
   };
 
   const selectHandler = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -110,22 +112,21 @@ const NewStoryForm: React.FC = () => {
         <label htmlFor="content">Text</label>
         <textarea ref={textRef} />
         <label>Choose tags:</label>
-        <select
-          defaultValue={"Choose a tag"}
-          onChange={selectHandler}
-          value={selectedValue}
-        >
+        <select onChange={selectHandler} value={selectedValue}>
           {tagOptions.map((tag) => (
-            <option value={tag}>{tag}</option>
+            <option key={tag} value={tag}>
+              {tag}
+            </option>
           ))}
         </select>
         <div className={classes.tags}>
           {selectedTags.map((t) => (
-            <StoryTag tag={t} onDelete={tagDeleteHandler} />
+            <StoryTag key={t} tag={t} onDelete={tagDeleteHandler} />
           ))}
         </div>
         <div className={classes.actions}>
-          <Button type={"submit"}>Add</Button>
+          {!isLoading && <Button type={"submit"}>Add</Button>}
+          {isLoading && <LoadingSpinner />}
         </div>
       </form>
     </div>

@@ -10,6 +10,8 @@ export const fetchAllStories = (
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     setIsLoading(true);
+    setError("");
+
     const fetchStoriesFromDB = async () => {
       const response = await axios.get(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories.json"
@@ -39,6 +41,7 @@ export const fetchAllStories = (
 
       dispatch(storiesActions.replaceStories({ stories }));
       setIsLoading(false);
+      setError("");
     } catch (e) {
       console.log(e);
       setError("Could not fetch stories.");
@@ -50,10 +53,12 @@ export const fetchAllStories = (
 export const addStory = (
   story: IStory,
   setIsLoading: (newState: boolean) => void,
-  setNotificationMessage: (newState: string) => void
+  setError: (newState: string) => void
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     setIsLoading(true);
+    setError("");
+
     const sendStoryToDB = async () => {
       const response = await axios.post(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories.json",
@@ -72,10 +77,9 @@ export const addStory = (
       story.id = await sendStoryToDB();
       dispatch(storiesActions.addNewStory({ story }));
       setIsLoading(false);
-      setNotificationMessage("Data sent successfully.")
     } catch (e) {
       console.log(e);
-      setNotificationMessage("Could not send data.")
+      setError("Could not send data.")
       setIsLoading(false);
     }
   };

@@ -1,8 +1,8 @@
-import {AnyAction, Dispatch} from "@reduxjs/toolkit";
-import {authActions} from "./auth-slice";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "./index";
-import {IUser} from "../pages/ProfilePage";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import { authActions } from "./auth-slice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "./index";
+import { IUser } from "../pages/ProfilePage";
 import axios from "axios";
 
 export const loginUser = (
@@ -12,11 +12,14 @@ export const loginUser = (
   setError: (newState: string) => void
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
+    setIsLoading(true);
+    setError("");
+
     const loginUser = async () => {
       let response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {email, password, returnSecureToken: true},
-        {headers: {"Content-Type": "application/json"}}
+        { email, password, returnSecureToken: true },
+        { headers: { "Content-Type": "application/json" } }
       );
       if (!response || !response.data.idToken || response.status > 299) {
         throw new Error("Response incorrect.");
@@ -27,8 +30,8 @@ export const loginUser = (
     const fetchUserData = async (idToken: string) => {
       const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {idToken: idToken},
-        {headers: {"Content-Type": "application/json"}}
+        { idToken: idToken },
+        { headers: { "Content-Type": "application/json" } }
       );
 
       if (!response || !response.data.users[0].localId) {
@@ -40,8 +43,8 @@ export const loginUser = (
     const fetchCreatedAt = async (userId: string) => {
       const response = await axios.get(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
-        userId +
-        ".json"
+          userId +
+          ".json"
       );
 
       if (!response || !response.data.created) {
@@ -89,8 +92,8 @@ export const signUpUser = (
     const signUp = async () => {
       const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {email, password, returnSecureToken: true},
-        {headers: {"Content-Type": "application/json"}}
+        { email, password, returnSecureToken: true },
+        { headers: { "Content-Type": "application/json" } }
       );
 
       if (!response.data.idToken) {
@@ -109,7 +112,7 @@ export const signUpUser = (
           photoUrl: "",
           returnSecureToken: false,
         },
-        {headers: {"Content-Type": "application/json"}}
+        { headers: { "Content-Type": "application/json" } }
       );
 
       if (!response.data.localId) {
@@ -129,7 +132,7 @@ export const signUpUser = (
       const response = await axios.put(
         `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`,
         user,
-        {headers: {"Content-Type": "application/json"}}
+        { headers: { "Content-Type": "application/json" } }
       );
 
       if (response.status > 299) {
@@ -151,6 +154,7 @@ export const signUpUser = (
         })
       );
       setIsLoading(false);
+      setError("");
     } catch (e) {
       console.log(e);
       setIsLoading(false);

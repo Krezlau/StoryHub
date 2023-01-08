@@ -5,27 +5,18 @@ import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
-import {fetchAllStories, useStoriesDispatch} from "../../store/stories-actions";
+import useHttp from "../../hooks/useHttp";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
-  // maybe make hook out of this?
-  const dispatch = useStoriesDispatch();
+  const {isLoading, error, fetchStories} = useHttp();
 
   useEffect(() => {
-    dispatch(
-      fetchAllStories(
-        (newState) => {
-          console.log(newState);
-        },
-        (newState) => {
-          console.log(newState);
-        }
-      )
-    );
-  }, [dispatch])
+    fetchStories();
+  }, [fetchStories])
 
   const userStories = useSelector((state: IRootState) =>
     state.stories.stories.filter((story) => story.author === props.user.name)
@@ -54,7 +45,8 @@ const ProfileContent: React.FC<{
       </div>
       <div>
         <h1>User Stories</h1>
-        <StoryList stories={userStories} />
+        {!isLoading && <StoryList stories={userStories} />}
+        {isLoading && <LoadingSpinner />}
       </div>
     </Fragment>
   );

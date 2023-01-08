@@ -1,18 +1,36 @@
-import React, { FormEvent, useRef } from "react";
+import React, {FormEvent, useEffect, useRef} from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { IRootState } from "../../store";
-import { signUpUser, useAuthDispatch } from "../../store/auth-actions";
+import useHttp from "../../hooks/useHttp";
+import LoadingSpinner from "../UI/LoadingSpinner";
 
 const SignUpForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
   const navigate = useNavigate();
-  const dispatch = useAuthDispatch();
+  const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
+  const {isLoading, error, signUp} = useHttp();
   const usernameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  // make a hook out of it?
+  // its duplicated
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (goBack) {
+        navigate(-1);
+        return;
+      }
+      navigate("/home");
+    }
+    if (!isLoading && error !== "") {
+      console.log(error);
+      return;
+    }
+  }, [error, goBack, isLoading, isLoggedIn, navigate]);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -23,25 +41,7 @@ const SignUpForm: React.FC = () => {
 
     // validate
 
-    dispatch(
-      signUpUser(
-        username,
-        email,
-        password,
-        (newState) => {
-          console.log(newState);
-        },
-        (newState) => {
-          console.log(newState);
-        }
-      )
-    );
-
-    if (goBack) {
-      navigate(-1);
-      return;
-    }
-    navigate("/home");
+    signUp(username, email, password);
   };
 
   return (
@@ -54,7 +54,8 @@ const SignUpForm: React.FC = () => {
         <label htmlFor="password">Password</label>
         <input type="password" id="password" ref={passwordRef} />
         <div className={classes.actions}>
-          <Button type="submit">Sign Up</Button>
+          {!isLoading && <Button type="submit">Sign Up</Button>}
+          {isLoading && <LoadingSpinner />}
         </div>
       </form>
     </div>

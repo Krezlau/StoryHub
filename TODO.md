@@ -7,11 +7,15 @@
 ### task02:
 - [x] displaying, storing and adding tags to story
 - [x] migrate fetch to axios
-- [ ] handle api response and loading state
-- [ ] loading spinner
+- [x] handle api response and loading state
+- [x] loading spinner
+
+### task03:
+- [ ] error modal / notification
+- [ ] displaying errors
+- [ ] forms validation
 
 ### Unallocated:
-* validation in all the forms
 * modify layout to make the site looking good on smartphones
 * liking stories
 * commenting stories and viewing comments

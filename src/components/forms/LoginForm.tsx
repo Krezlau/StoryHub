@@ -4,12 +4,12 @@ import Button from "../UI/Button";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {IRootState} from "../../store";
-import useHttpAuth from "../../hooks/useHttpAuth";
+import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
 
 const LoginForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
-  const {isLoading, error, login} = useHttpAuth();
+  const {isLoading, error, login} = useHttp();
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn)
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
