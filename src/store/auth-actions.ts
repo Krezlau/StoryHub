@@ -3,120 +3,123 @@ import { authActions } from "./auth-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "./index";
 import { IUser } from "../pages/ProfilePage";
+import axios from "axios";
 
-export const loginUser = (email: string, password: string) => {
+export const loginUser = (
+  email: string,
+  password: string,
+  setIsLoading: (newState: boolean) => void,
+  setError: (newState: string) => void
+) => {
   return async (dispatch: Dispatch<AnyAction>) => {
-    const login = async () => {
-      const response = await fetch(
+    setIsLoading(true);
+    setError("");
+
+    const loginUser = async () => {
+      let response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({ email, password, returnSecureToken: true }),
-          headers: { "Content-Type": "application/json" },
-        }
+        { email, password, returnSecureToken: true },
+        { headers: { "Content-Type": "application/json" } }
       );
-
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
+      if (!response || !response.data.idToken || response.status > 299) {
+        throw new Error("Response incorrect.");
       }
-
-      return await response.json();
+      return response.data.idToken;
     };
 
     const fetchUserData = async (idToken: string) => {
-      const response = await fetch(
+      const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({ idToken }),
-          headers: { "Content-Type": "application/json" },
-        }
+        { idToken: idToken },
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
+      if (!response || !response.data.users[0].localId) {
+        throw new Error("Response incorrect.");
       }
-
-      return await response.json();
+      return response.data.users[0];
     };
 
     const fetchCreatedAt = async (userId: string) => {
-      const response = await fetch(
+      const response = await axios.get(
         "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
           userId +
           ".json"
       );
 
-      if (!response.ok) {
-        throw new Error('Could not fetch.')
+      if (!response || !response.data.created) {
+        throw new Error("Response incorrect.");
       }
 
-      return await response.json();
+      return response.data.created;
     };
 
     try {
-      const loginData = await login();
-      const userData = await fetchUserData(loginData.idToken);
-      const joinedAtData = await fetchCreatedAt(userData.users[0].localId);
+      const idToken = await loginUser();
+      const userData = await fetchUserData(idToken);
+      const createdAt = await fetchCreatedAt(userData.localId);
       dispatch(
         authActions.login({
-          email: userData.users[0].email,
-          userToken: loginData.idToken,
-          username: userData.users[0].displayName,
-          created: joinedAtData.created,
-          userId: userData.users[0].localId,
+          userId: userData.localId,
+          userToken: idToken,
+          username: userData.displayName,
+          email: email,
+          created: createdAt,
         })
       );
+      setError("");
+      setIsLoading(false);
     } catch (e) {
-      // handle
+      setError("Could not login.");
       console.log(e);
+      setIsLoading(false);
+      return;
     }
   };
 };
 
-export const singUpUser = (
+export const signUpUser = (
   username: string,
   email: string,
-  password: string
+  password: string,
+  setIsLoading: (newState: boolean) => void,
+  setError: (newState: string) => void
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
-    const siqnUp = async () => {
-      const response = await fetch(
+    setIsLoading(true);
+    setError("");
+
+    const signUp = async () => {
+      const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({ email, password, returnSecureToken: true }),
-          headers: { "Content-Type": "application/json" },
-        }
+        { email, password, returnSecureToken: true },
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
+      if (!response.data.idToken) {
+        throw new Error("Response incorrect.");
       }
 
-      return await response.json();
+      return response.data.idToken;
     };
 
     const postUserData = async (idToken: string) => {
-      const response = await fetch(
+      const response = await axios.post(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
         {
-          method: "POST",
-          body: JSON.stringify({
-            idToken,
-            displayName: username,
-            photoUrl: "",
-            returnSecureToken: false,
-          }),
-          headers: { "Content-Type": "application/json" },
-        }
+          idToken,
+          displayName: username,
+          photoUrl: "",
+          returnSecureToken: false,
+        },
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      if (!response.ok) {
+      if (!response.data.localId) {
         throw new Error("Could not fetch.");
       }
 
-      return await response.json();
+      return response.data.localId;
     };
 
     const storeUserData = async (userId: string) => {
@@ -126,40 +129,36 @@ export const singUpUser = (
         created: new Date().toDateString(),
       };
 
-      const response = await fetch(
-        "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
-          userId +
-          ".json",
-        {
-          method: "PUT",
-          body: JSON.stringify(user),
-          headers: { "Content-Type": "application/json" },
-        }
+      const response = await axios.put(
+        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`,
+        user,
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      if (!response.ok) {
+      if (response.status > 299) {
         throw new Error("Could not fetch.");
       }
-
-      return response.json();
     };
 
     try {
-      const signUpData = await siqnUp();
-      const postData = await postUserData(signUpData.idToken);
-      await storeUserData(postData.localId);
+      const idToken = await signUp();
+      const localId = await postUserData(idToken);
+      await storeUserData(localId);
       dispatch(
         authActions.register({
-          idToken: signUpData.idToken,
+          idToken: idToken,
           username: username,
           email: email,
           created: new Date().toDateString(),
-          userId: postData.localId,
+          userId: localId,
         })
       );
+      setIsLoading(false);
+      setError("");
     } catch (e) {
-      // handle
       console.log(e);
+      setIsLoading(false);
+      setError("Could not sign up.");
     }
   };
 };

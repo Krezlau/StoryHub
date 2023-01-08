@@ -1,23 +1,25 @@
-import React, {Fragment, useEffect} from "react";
+import React, { Fragment, useEffect } from "react";
 import StoryList from "../components/stories/StoryList";
 import PageHeader from "../components/UI/PageHeader";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
-import {fetchAllStories, useStoriesDispatch} from "../store/stories-actions";
+import useHttp from "../hooks/useHttp";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const AllStoriesPage: React.FC = () => {
-  const dispatch = useStoriesDispatch();
+  const {isLoading, error, fetchStories} = useHttp();
 
   useEffect(() => {
-    dispatch(fetchAllStories());
-  }, [dispatch])
+    fetchStories();
+  }, [fetchStories]);
 
   const stories = useSelector((state: IRootState) => state.stories.stories);
 
   return (
     <Fragment>
       <PageHeader title={"All stories"} />
-      <StoryList stories={stories} />
+      {!isLoading && <StoryList stories={stories} />}
+      {isLoading && <LoadingSpinner />}
     </Fragment>
   );
 };
