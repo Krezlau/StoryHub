@@ -1,0 +1,56 @@
+.content {
+    position: fixed;
+    top: 90%;
+    left: 30%;
+    width: 40%;
+    background: #51f1f1;
+    color: black;
+    border-radius: 14px;
+    padding: 0;
+    animation: content-appear 1s ease-in-out forwards;
+    text-align: center;
+}
+
+/*TODO this needs to be changed*/
+.disabled {
+    text-align: center;
+    position: fixed;
+    top: 90%;
+    left: 30%;
+    width: 40%;
+    background: #51f1f1;
+    color: black;
+    border-radius: 14px;
+    padding: 0;
+    opacity: 0;
+    animation: fade-out 1s ease-out backwards;
+}
+
+@keyframes fade-out {
+    from {opacity: 1}
+    to {opacity: 0}
+}
+
+@keyframes content-appear {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.title {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    margin: 0;
+}
+
+.title h2 {
+    margin: .5rem;
+}
+
+.message {
+    padding: 0.5rem;
+}
