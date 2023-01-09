@@ -27,13 +27,17 @@
 }
 
 @keyframes fade-out {
-    from {opacity: 1}
-    to {opacity: 0}
+    from {
+        opacity: 1
+    }
+    to {
+        opacity: 0
+    }
 }
 
 @keyframes content-appear {
     from {
-        transform: translateY(100%);
+        transform: translateY(130%);
     }
 
     to {

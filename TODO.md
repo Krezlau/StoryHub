@@ -11,8 +11,8 @@
 - [x] loading spinner
 
 ### task03:
-- [ ] error modal / notification
-- [ ] displaying errors
+- [x] error modal / notification
+- [x] displaying errors
 - [ ] forms validation
 
 ### Unallocated:

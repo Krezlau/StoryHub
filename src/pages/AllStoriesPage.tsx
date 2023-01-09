@@ -5,13 +5,16 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import useHttp from "../hooks/useHttp";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
+import useNotification from "../hooks/useNotification";
 
 const AllStoriesPage: React.FC = () => {
-  const {isLoading, error, fetchStories} = useHttp();
+  const { isLoading, error, fetchStories } = useHttp();
 
   useEffect(() => {
     fetchStories();
   }, [fetchStories]);
+
+  useNotification(error);
 
   const stories = useSelector((state: IRootState) => state.stories.stories);
 

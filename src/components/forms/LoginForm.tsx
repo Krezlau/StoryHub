@@ -1,16 +1,17 @@
-import React, {FormEvent, useEffect, useRef} from "react";
+import React, { FormEvent, Fragment, useEffect, useRef } from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
-import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {IRootState} from "../../store";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import useNotification from "../../hooks/useNotification";
 
 const LoginForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
-  const {isLoading, error, login} = useHttp();
-  const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn)
+  const { isLoading, error, login } = useHttp();
+  const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -29,6 +30,8 @@ const LoginForm: React.FC = () => {
     }
   }, [error, goBack, isLoading, isLoggedIn, navigate]);
 
+  useNotification(error);
+
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
@@ -38,22 +41,23 @@ const LoginForm: React.FC = () => {
     const password = passwordRef.current!.value;
 
     login(email, password);
-
   };
 
   return (
-    <div className={classes.content}>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" ref={emailRef}/>
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" ref={passwordRef}/>
-        <div className={classes.actions}>
-          {!isLoading && <Button type="submit">Login</Button>}
-          {isLoading && <LoadingSpinner/>}
-        </div>
-      </form>
-    </div>
+    <Fragment>
+      <div className={classes.content}>
+        <form onSubmit={submitHandler}>
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" ref={emailRef} />
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" ref={passwordRef} />
+          <div className={classes.actions}>
+            {!isLoading && <Button type="submit">Login</Button>}
+            {isLoading && <LoadingSpinner />}
+          </div>
+        </form>
+      </div>
+    </Fragment>
   );
 };
 

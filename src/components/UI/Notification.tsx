@@ -1,30 +1,41 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import classes from "./Notification.module.css";
 import ReactDOM from "react-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { IRootState } from "../../store";
+import { errorActions } from "../../store/error-slice";
 
-const NotificationComponent: React.FC<{title: string, message: string}> = (props) => {
-  const [isShown, toggleIsShown] = useState<boolean>(true);
+let isInitial = true;
+
+const NotificationComponent: React.FC = () => {
+  const data = useSelector((state: IRootState) => state.error);
+  const dispatch = useDispatch();
+
+  if (isInitial) {
+    isInitial = false;
+    return <div></div>;
+  }
 
   return (
     <div
-      className={isShown ? classes.content : classes.disabled}
-      onClick={() => toggleIsShown(false)}
+      className={data.isShown ? classes.content : classes.disabled}
+      onClick={() => dispatch(errorActions.hide())}
     >
       <div className={classes.title}>
-        <h2>{props.title}</h2>
+        <h2>{data.title}</h2>
       </div>
       <div className={classes.message}>
-        <p>{props.message}</p>
+        <p>{data.message}</p>
       </div>
     </div>
   );
 };
 
-const Notification: React.FC<{title: string, message: string}> = (props) => {
+const Notification: React.FC = () => {
   return (
     <Fragment>
       {ReactDOM.createPortal(
-        <NotificationComponent title={props.title} message={props.message}/>,
+        <NotificationComponent />,
         document.getElementById("notification")!
       )}
     </Fragment>

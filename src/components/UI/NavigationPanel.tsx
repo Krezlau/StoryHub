@@ -5,6 +5,7 @@ import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { authActions } from "../../store/auth-slice";
+import { redirectActions } from "../../store/redirect-slice";
 
 const NavigationPanel: React.FC = () => {
   const userId = useSelector((state: IRootState) => state.auth.userId);
@@ -14,7 +15,7 @@ const NavigationPanel: React.FC = () => {
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
-
+    dispatch(redirectActions.disable());
     navigate("/login");
   };
 
