@@ -7,19 +7,16 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
-import useNotification from "../../hooks/useNotification";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
-  const {isLoading, error, fetchStories} = useHttp();
+  const {isLoading, fetchStories} = useHttp();
 
   useEffect(() => {
     fetchStories();
   }, [fetchStories])
-
-  useNotification(error);
 
   const userStories = useSelector((state: IRootState) =>
     state.stories.stories.filter((story) => story.author === props.user.name)

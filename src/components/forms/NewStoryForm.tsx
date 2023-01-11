@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import StoryTag from "../stories/StoryTag";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
-import useNotification from "../../hooks/useNotification";
 
 const TAGS = [
   "choose a tag",
@@ -70,8 +69,6 @@ const NewStoryForm: React.FC = () => {
       isInitial = true;
     }
   }, [navigate, error, isLoading]);
-
-  useNotification(error);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();

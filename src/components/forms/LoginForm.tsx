@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
-import useNotification from "../../hooks/useNotification";
 
 const LoginForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
@@ -30,7 +29,6 @@ const LoginForm: React.FC = () => {
     }
   }, [error, goBack, isLoading, isLoggedIn, navigate]);
 
-  useNotification(error);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();

@@ -4,11 +4,14 @@ import {addStory, fetchAllStories} from "../store/stories-actions";
 import axios from "axios";
 import {IUser} from "../pages/ProfilePage";
 import {IStory} from "../store/stories-slice";
+import useNotification from "./useNotification";
 
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const dispatch = useAuthDispatch();
+
+  useNotification(error);
 
   const login = (email: string, password: string) => {
     dispatch(loginUser(email, password, setIsLoading, setError));
@@ -46,7 +49,7 @@ const useHttp = () => {
     dispatch(addStory(story, setIsLoading, setError))
   }
 
-  return { isLoading, error, login, signUp, fetchStories, fetchUser, addNewStory };
+  return { isLoading, error, setError, login, signUp, fetchStories, fetchUser, addNewStory };
 };
 
 export default useHttp;

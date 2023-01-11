@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import useHttp from "../hooks/useHttp";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
-import useNotification from "../hooks/useNotification";
 
 export interface IUser {
   name: string;
@@ -17,7 +16,7 @@ export interface IUser {
 const ProfilePage: React.FC = () => {
   const { userId: id } = useParams<{ userId?: string }>();
   const loggedUserData = useSelector((state: IRootState) => state.auth);
-  const { isLoading, error, fetchUser } = useHttp();
+  const { isLoading, fetchUser } = useHttp();
   const [user, setUser] = useState<IUser>({ name: "", created: "", email: "" });
 
   let showAllContent = false;
@@ -35,7 +34,6 @@ const ProfilePage: React.FC = () => {
     fetch();
   }, [fetchUser, id]);
 
-  useNotification(error);
 
   if (id === loggedUserData.userId) {
     showAllContent = true;
