@@ -11,7 +11,7 @@ const useHttp = () => {
   const [error, setError] = useState<string>("");
   const dispatch = useAuthDispatch();
 
-  useNotification(error);
+  useNotification(error, setError);
 
   const login = (email: string, password: string) => {
     dispatch(loginUser(email, password, setIsLoading, setError));
