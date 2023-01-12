@@ -1,18 +1,13 @@
-import React, { FormEvent, Fragment, useEffect } from "react";
+import React, { FormEvent, Fragment } from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import useValidation from "../../hooks/useValidation";
+import useLoginRedirect from "../../hooks/useLoginRedirect";
 
 const LoginForm: React.FC = () => {
-  const goBack = useSelector((state: IRootState) => state.redirect.goBack);
   const { isLoading, error, setError, login } = useHttp();
-  const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
-  const navigate = useNavigate();
 
   const {
     value: email,
@@ -31,19 +26,7 @@ const LoginForm: React.FC = () => {
     reset: passwordReset,
   } = useValidation((value) => value.trim().length >= 8);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      if (goBack) {
-        navigate(-1);
-        return;
-      }
-      navigate("/home");
-    }
-    if (!isLoading && error !== "") {
-      console.log(error);
-      return;
-    }
-  }, [error, goBack, isLoading, isLoggedIn, navigate]);
+  useLoginRedirect(error, isLoading);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
