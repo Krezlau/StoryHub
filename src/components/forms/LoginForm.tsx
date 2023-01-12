@@ -83,7 +83,7 @@ const LoginForm: React.FC = () => {
             onBlur={emailBlurHandler}
             onChange={emailChangeHandler}
           />
-          {emailHasError && <p className={classes.errorText}>Email invalid.</p>}
+          {emailHasError && <p className={classes["error-text"]}>Email invalid.</p>}
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -92,7 +92,7 @@ const LoginForm: React.FC = () => {
             onChange={passwordChangeHandler}
 
           />
-          {passwordHasError && <p className={classes.errorText}>Password too short.</p>}
+          {passwordHasError && <p className={classes["error-text"]}>Password too short.</p>}
           <div className={classes.actions}>
             {!isLoading && <Button type="submit">Login</Button>}
             {isLoading && <LoadingSpinner />}

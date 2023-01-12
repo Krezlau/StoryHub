@@ -1,4 +1,4 @@
-import React, { FormEvent, Fragment, useEffect, useRef } from "react";
+import React, { FormEvent, Fragment, useEffect } from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
 import { useSelector } from "react-redux";
@@ -12,7 +12,7 @@ const SignUpForm: React.FC = () => {
   const goBack = useSelector((state: IRootState) => state.redirect.goBack);
   const navigate = useNavigate();
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
-  const { isLoading, error, signUp } = useHttp();
+  const { isLoading, error, setError, signUp } = useHttp();
 
   const {
     value: email,
@@ -41,7 +41,6 @@ const SignUpForm: React.FC = () => {
     reset: usernameReset,
   } = useValidation((value) => value.trim().length >= 5);
 
-
   // make a hook out of it?
   // its duplicated
   useEffect(() => {
@@ -61,8 +60,36 @@ const SignUpForm: React.FC = () => {
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
+    if (!emailIsValid && !passwordIsValid && !usernameIsValid) {
+      setError("Email invalid, password too short, username too short.")
+      usernameReset();
+      emailReset();
+      passwordReset();
+      return;
+    }
 
-    // validate
+    if (!emailIsValid) {
+      setError("Email invalid.")
+      usernameReset();
+      emailReset();
+      passwordReset();
+      return;
+    }
+
+    if (!passwordIsValid) {
+      setError("Password too short.")
+      usernameReset();
+      emailReset();
+      passwordReset();
+      return;
+    }
+
+    if (!usernameIsValid) {
+      setError("Username too short.")
+      usernameReset();
+      emailReset();
+      passwordReset();
+    }
 
     signUp(username, email, password);
   };
@@ -71,12 +98,33 @@ const SignUpForm: React.FC = () => {
     <Fragment>
       <div className={classes.content}>
         <form onSubmit={submitHandler}>
-          <label htmlFor="nickname">Username</label>
-          <input type="text" id="username" />
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onBlur={usernameBlurHandler}
+            onChange={usernameChangeHandler}
+          />
+          {usernameHasError && <p className={classes["error-text"]}>Username too short.</p>}
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" />
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onBlur={emailBlurHandler}
+            onChange={emailChangeHandler}
+          />
+          {emailHasError && <p className={classes["error-text"]}>Email invalid.</p>}
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" />
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onBlur={passwordBlurHandler}
+            onChange={passwordChangeHandler}
+          />
+          {passwordHasError && <p className={classes["error-text"]}>Password too short.</p>}
           <div className={classes.actions}>
             {!isLoading && <Button type="submit">Sign Up</Button>}
             {isLoading && <LoadingSpinner />}

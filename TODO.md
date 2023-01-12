@@ -15,8 +15,11 @@
 - [x] displaying errors
 - [ ] forms validation
 
+### task04:
+- [ ] responsive layout
+- [ ] migrate styling to styled components 
+
 ### Unallocated:
-* modify layout to make the site looking good on smartphones
 * liking stories
 * commenting stories and viewing comments
 * adding stories to favorites
@@ -25,6 +28,5 @@
 * delete my own story from profile page or story details
 * filtering stories by title and tags
 * changing user password
-* migrate styling to styled components
 * button to change theme to light/dark
 * story text as markdown??
