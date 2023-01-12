@@ -3,7 +3,6 @@ import React, {
   FormEvent,
   Fragment,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import classes from "./Form.module.css";
@@ -15,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import StoryTag from "../stories/StoryTag";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import useValidation from "../../hooks/useValidation";
 
 const TAGS = [
   "choose a tag",
@@ -56,12 +56,22 @@ let isInitial = true;
 const NewStoryForm: React.FC = () => {
   const userData = useSelector((state: IRootState) => state.auth);
   const navigate = useNavigate();
-  const titleRef = useRef<HTMLInputElement>(null);
-  const textRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagOptions, setTagOptions] = useState<string[]>(TAGS);
   const [selectedValue, setSelectedValue] = useState<string>("choose a tag");
-  const { isLoading, error, addNewStory } = useHttp();
+  const { isLoading, error, setError, addNewStory } = useHttp();
+
+  const {
+    value: title,
+    isValid: titleIsValid,
+    valueChangeHandler: titleChangeHandler,
+  } = useValidation((value) => value.trim().length > 3);
+
+  const {
+    value: text,
+    isValid: textIsValid,
+    valueChangeHandler: textChangeHandler,
+  } = useValidation((value) => value.trim().length > 10);
 
   useEffect(() => {
     if (!isInitial && error === "" && !isLoading) {
@@ -73,14 +83,22 @@ const NewStoryForm: React.FC = () => {
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const title = titleRef.current!.value;
-    const text = textRef.current!.value;
-
-    // validate
+    if (!titleIsValid){
+      setError("Title is too short.")
+      return;
+    }
+    if (!textIsValid) {
+      setError("Text is too short.")
+      return;
+    }
+    if (selectedTags.length === 0) {
+      setError("Please choose at least one tag.")
+      return;
+    }
 
     const story: IStory = {
-      title: title,
-      text: text,
+      title: title.trim(),
+      text: text.trim(),
       author: userData.userName,
       userId: userData.userId,
       id: "",
@@ -115,9 +133,9 @@ const NewStoryForm: React.FC = () => {
       <div className={classes.content}>
         <form onSubmit={submitHandler}>
           <label htmlFor="title">Title</label>
-          <input type="text" ref={titleRef} />
+          <input type="text" onChange={titleChangeHandler} value={title} />
           <label htmlFor="content">Text</label>
-          <textarea ref={textRef} />
+          <textarea onChange={textChangeHandler} value={text}/>
           <label>Choose tags:</label>
           <select onChange={selectHandler} value={selectedValue}>
             {tagOptions.map((tag) => (

@@ -13,7 +13,7 @@
 ### task03:
 - [x] error modal / notification
 - [x] displaying errors
-- [ ] forms validation
+- [x] forms validation
 
 ### task04:
 - [ ] responsive layout

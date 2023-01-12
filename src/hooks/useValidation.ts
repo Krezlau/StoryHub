@@ -7,7 +7,7 @@ const useValidation = (validateFunc: (value: string) => boolean) => {
   const valueIsValid = validateFunc(enteredValue);
   const hasError = !valueIsValid && isTouched;
 
-  const valueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const valueChangeHandler = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     setEnteredValue(event.target.value);
   };
 
