@@ -1,12 +1,17 @@
 import React, {Fragment, useEffect} from "react";
 import { IUser } from "../../pages/ProfilePage";
-import classes from "./ProfileContent.module.css";
 import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import {
+  UserContent,
+  UserInfo,
+  UserInfoLabels,
+  UserProfileActions
+} from "../../styled/components/user-profiles/ProfileContent";
 
 const ProfileContent: React.FC<{
   user: IUser;
@@ -24,25 +29,25 @@ const ProfileContent: React.FC<{
 
   return (
     <Fragment>
-      <div className={classes.content}>
-        <div className={classes.info}>
-          <div className={classes["info-labels"]}>
+      <UserContent>
+        <UserInfo>
+          <UserInfoLabels>
             <p>Username:</p>
             <p>Email:</p>
             <p>Joined:</p>
-          </div>
+          </UserInfoLabels>
           <div>
             <p>{props.user.name}</p>
             <p>{props.user.email}</p>
             <p>{props.user.created}</p>
           </div>
-        </div>
+        </UserInfo>
         {props.showAllContent && (
-          <div className={classes.actions}>
+          <UserProfileActions>
             <Button>Change Password</Button>
-          </div>
+          </UserProfileActions>
         )}
-      </div>
+      </UserContent>
       <div>
         <h1>User Stories</h1>
         {!isLoading && <StoryList stories={userStories} />}

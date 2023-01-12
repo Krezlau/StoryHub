@@ -1,10 +1,14 @@
 import React, { FormEvent, Fragment } from "react";
-import classes from "./Form.module.css";
 import Button from "../UI/Button";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import useValidation from "../../hooks/useValidation";
 import useLoginRedirect from "../../hooks/useLoginRedirect";
+import {
+  FormActions,
+  FormContent,
+  FormErrorText,
+} from "../../styled/components/forms/Form";
 
 const LoginForm: React.FC = () => {
   const { isLoading, error, setError, login } = useHttp();
@@ -33,21 +37,21 @@ const LoginForm: React.FC = () => {
     setError("");
 
     if (!emailIsValid && !passwordIsValid) {
-      setError("Email invalid, password too short.")
+      setError("Email invalid, password too short.");
       emailReset();
       passwordReset();
       return;
     }
 
     if (!emailIsValid) {
-      setError("Email invalid.")
+      setError("Email invalid.");
       emailReset();
       passwordReset();
       return;
     }
 
     if (!passwordIsValid) {
-      setError("Password too short.")
+      setError("Password too short.");
       passwordReset();
       return;
     }
@@ -57,7 +61,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <Fragment>
-      <div className={classes.content}>
+      <FormContent>
         <form onSubmit={submitHandler}>
           <label htmlFor="email">Email</label>
           <input
@@ -66,22 +70,23 @@ const LoginForm: React.FC = () => {
             onBlur={emailBlurHandler}
             onChange={emailChangeHandler}
           />
-          {emailHasError && <p className={classes["error-text"]}>Email invalid.</p>}
+          {emailHasError && <FormErrorText>Email invalid.</FormErrorText>}
           <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
             onBlur={passwordBlurHandler}
             onChange={passwordChangeHandler}
-
           />
-          {passwordHasError && <p className={classes["error-text"]}>Password too short.</p>}
-          <div className={classes.actions}>
+          {passwordHasError && (
+            <FormErrorText>Password too short.</FormErrorText>
+          )}
+          <FormActions>
             {!isLoading && <Button type="submit">Login</Button>}
             {isLoading && <LoadingSpinner />}
-          </div>
+          </FormActions>
         </form>
-      </div>
+      </FormContent>
     </Fragment>
   );
 };

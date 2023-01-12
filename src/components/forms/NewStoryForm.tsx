@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import classes from "./Form.module.css";
 import Button from "../UI/Button";
 import { useSelector } from "react-redux";
 import { IStory } from "../../store/stories-slice";
@@ -15,6 +14,11 @@ import StoryTag from "../stories/StoryTag";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import useValidation from "../../hooks/useValidation";
+import {
+  FormActions,
+  FormContent,
+  FormTags,
+} from "../../styled/components/forms/Form";
 
 const TAGS = [
   "choose a tag",
@@ -83,16 +87,16 @@ const NewStoryForm: React.FC = () => {
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!titleIsValid){
-      setError("Title is too short.")
+    if (!titleIsValid) {
+      setError("Title is too short.");
       return;
     }
     if (!textIsValid) {
-      setError("Text is too short.")
+      setError("Text is too short.");
       return;
     }
     if (selectedTags.length === 0) {
-      setError("Please choose at least one tag.")
+      setError("Please choose at least one tag.");
       return;
     }
 
@@ -130,12 +134,12 @@ const NewStoryForm: React.FC = () => {
 
   return (
     <Fragment>
-      <div className={classes.content}>
+      <FormContent>
         <form onSubmit={submitHandler}>
           <label htmlFor="title">Title</label>
           <input type="text" onChange={titleChangeHandler} value={title} />
           <label htmlFor="content">Text</label>
-          <textarea onChange={textChangeHandler} value={text}/>
+          <textarea onChange={textChangeHandler} value={text} />
           <label>Choose tags:</label>
           <select onChange={selectHandler} value={selectedValue}>
             {tagOptions.map((tag) => (
@@ -144,17 +148,17 @@ const NewStoryForm: React.FC = () => {
               </option>
             ))}
           </select>
-          <div className={classes.tags}>
+          <FormTags>
             {selectedTags.map((t) => (
               <StoryTag key={t} tag={t} onDelete={tagDeleteHandler} />
             ))}
-          </div>
-          <div className={classes.actions}>
+          </FormTags>
+          <FormActions>
             {!isLoading && <Button type={"submit"}>Add</Button>}
             {isLoading && <LoadingSpinner />}
-          </div>
+          </FormActions>
         </form>
-      </div>
+      </FormContent>
     </Fragment>
   );
 };
