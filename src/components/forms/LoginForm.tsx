@@ -1,59 +1,88 @@
-import React, {FormEvent, useEffect, useRef} from "react";
+import React, { FormEvent, Fragment } from "react";
 import classes from "./Form.module.css";
 import Button from "../UI/Button";
-import {useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {IRootState} from "../../store";
 import useHttp from "../../hooks/useHttp";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import useValidation from "../../hooks/useValidation";
+import useLoginRedirect from "../../hooks/useLoginRedirect";
 
 const LoginForm: React.FC = () => {
-  const goBack = useSelector((state: IRootState) => state.redirect.goBack);
-  const {isLoading, error, login} = useHttp();
-  const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn)
-  const navigate = useNavigate();
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const { isLoading, error, setError, login } = useHttp();
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      if (goBack) {
-        navigate(-1);
-        return;
-      }
-      navigate("/home");
-    }
-    if (!isLoading && error !== "") {
-      console.log(error);
-      return;
-    }
-  }, [error, goBack, isLoading, isLoggedIn, navigate]);
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: emailReset,
+  } = useValidation((value) => value.trim().length > 3 && value.includes("@"));
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    reset: passwordReset,
+  } = useValidation((value) => value.trim().length >= 8);
+
+  useLoginRedirect(error, isLoading);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
+    setError("");
 
-    // validation TODO
+    if (!emailIsValid && !passwordIsValid) {
+      setError("Email invalid, password too short.")
+      emailReset();
+      passwordReset();
+      return;
+    }
 
-    const email = emailRef.current!.value;
-    const password = passwordRef.current!.value;
+    if (!emailIsValid) {
+      setError("Email invalid.")
+      emailReset();
+      passwordReset();
+      return;
+    }
 
-    login(email, password);
+    if (!passwordIsValid) {
+      setError("Password too short.")
+      passwordReset();
+      return;
+    }
 
+    login(email.trim(), password.trim());
   };
 
   return (
-    <div className={classes.content}>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" ref={emailRef}/>
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" ref={passwordRef}/>
-        <div className={classes.actions}>
-          {!isLoading && <Button type="submit">Login</Button>}
-          {isLoading && <LoadingSpinner/>}
-        </div>
-      </form>
-    </div>
+    <Fragment>
+      <div className={classes.content}>
+        <form onSubmit={submitHandler}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            onBlur={emailBlurHandler}
+            onChange={emailChangeHandler}
+          />
+          {emailHasError && <p className={classes["error-text"]}>Email invalid.</p>}
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            onBlur={passwordBlurHandler}
+            onChange={passwordChangeHandler}
+
+          />
+          {passwordHasError && <p className={classes["error-text"]}>Password too short.</p>}
+          <div className={classes.actions}>
+            {!isLoading && <Button type="submit">Login</Button>}
+            {isLoading && <LoadingSpinner />}
+          </div>
+        </form>
+      </div>
+    </Fragment>
   );
 };
 

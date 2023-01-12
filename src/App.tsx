@@ -14,6 +14,7 @@ import AboutPage from "./pages/AboutPage";
 import SignUpPage from "./pages/SignUpPage";
 import NewStoryPage from "./pages/NewStoryPage";
 import ProfilePage from "./pages/ProfilePage";
+import Notification from "./components/UI/Notification";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -37,6 +38,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
+      <Notification />
     </Fragment>
   );
 }

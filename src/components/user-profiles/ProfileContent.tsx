@@ -12,7 +12,7 @@ const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
-  const {isLoading, error, fetchStories} = useHttp();
+  const {isLoading, fetchStories} = useHttp();
 
   useEffect(() => {
     fetchStories();

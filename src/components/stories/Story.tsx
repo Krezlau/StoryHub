@@ -22,7 +22,12 @@ const Story: React.FC<{
             <p>Tags:</p>
             <ul>
               {props.tags.map((t) => (
-                <StoryTag displayOnly={true} tag={t} onDelete={() => {}} />
+                <StoryTag
+                  key={t}
+                  displayOnly={true}
+                  tag={t}
+                  onDelete={() => {}}
+                />
               ))}
             </ul>
           </div>

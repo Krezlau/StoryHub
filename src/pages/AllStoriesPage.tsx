@@ -7,11 +7,12 @@ import useHttp from "../hooks/useHttp";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 const AllStoriesPage: React.FC = () => {
-  const {isLoading, error, fetchStories} = useHttp();
+  const { isLoading, fetchStories } = useHttp();
 
   useEffect(() => {
     fetchStories();
   }, [fetchStories]);
+
 
   const stories = useSelector((state: IRootState) => state.stories.stories);
 
