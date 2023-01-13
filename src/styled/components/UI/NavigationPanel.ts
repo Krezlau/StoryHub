@@ -7,6 +7,8 @@ export const Header = styled.header`
   position: fixed;
   top: 0;
   left: 0;
+  padding: 0;
+  margin: 0;
   width: 100%;
   background: aqua;
   z-index: 999;

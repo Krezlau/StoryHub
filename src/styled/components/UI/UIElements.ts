@@ -2,8 +2,9 @@ import styled from "styled-components";
 
 export const Button = styled.button`
   font-size: 1.1rem;
-  margin: 1rem;
-  min-width: 10rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 15rem;
   padding: 0 1.5rem;
   height: 3rem;
   border-radius: 20px;

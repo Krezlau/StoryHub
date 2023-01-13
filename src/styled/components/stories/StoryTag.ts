@@ -7,6 +7,7 @@ export const Tag = styled.li`
   background: #0dc2c2;
   width: auto;
   margin-right: 1rem;
+  margin-bottom: 1rem;
   height: 1.6rem;
   align-self: center;
 
