@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const FormContent = styled.div`
-  margin: 1rem auto;
+  margin: auto;
   width: 100%;
   text-align: center;
 
   label {
     font-weight: bold;
     margin-bottom: .5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: block;
   }
 

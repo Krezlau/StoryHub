@@ -11,6 +11,7 @@ const GlobalStyles = createGlobalStyle`
 
   * {
     font-family: Futura, sans-serif;
+    box-sizing: border-box;
   }
 
   body {
@@ -19,7 +20,6 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
   }
 
   a {

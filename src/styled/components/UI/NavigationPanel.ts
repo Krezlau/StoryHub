@@ -10,6 +10,7 @@ export const Header = styled.header`
   padding: 0;
   margin: 0;
   width: 100%;
+  height: 84px;
   background: aqua;
   z-index: 999;
   
@@ -30,7 +31,7 @@ export const Title = styled(Link)`
 `;
 
 export const NavigationContainer = styled.nav<{isOpen: boolean}>`
-  ${(props) => !props.isOpen ? 'display: none' : 'display: block'}; 
+  ${(props) => !props.isOpen ? 'display: none' : 'display: block'};
   
   @media screen and (min-width: ${mediaQuery}) {
     display: block;
@@ -95,7 +96,7 @@ export const NavToggle = styled.button`
   top: 0;
   left: 0;
   margin-left: 1em;
-  height: 82px;
+  height: 81.8px;
   display: flex;
   align-items: center;
   

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const PageHeaderContainer = styled.div`
-  height: 3.5rem;
   border-bottom-style: solid;
-  margin-bottom: 2rem;
-
+  margin-bottom: 1rem;
+  padding-bottom: 1em;
+  
   h1 {
     margin-bottom: 0;
   }
