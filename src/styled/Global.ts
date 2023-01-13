@@ -1,6 +1,8 @@
 import {createGlobalStyle} from "styled-components";
 import Futura from '../futura.ttf'
 
+export const mediaQuery = '900px';
+
 const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: Futura;

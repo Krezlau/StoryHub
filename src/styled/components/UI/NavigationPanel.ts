@@ -1,70 +1,131 @@
 import styled from "styled-components";
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
+import {mediaQuery} from "../../Global";
 
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
+
+export const Header = styled.header`
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
-  z-index: 10;
   background: aqua;
-  padding: 1rem;
-  margin: 0;
-  height: 3rem;
-
+  z-index: 999;
+  
   a {
-    color: #0b4545;
+    color: black;
   }
-
-  a:hover {
-    color: #0dc2c2;
-  }
-
-  a:active,
-  a.active {
-    color: #0dc2c2;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
-  }
-
-  button {
-    margin: 0 2rem 0 0;
+  
+  @media screen and (min-width: ${mediaQuery}){
+    display: grid;
+    grid-template-columns: 1fr minmax(600px, 4fr) 1fr;
   }
 `;
 
-export const Title = styled.div`
-  padding: 0;
-  margin: 0;
-
-  h1 {
-    margin-right: 1rem;
-    margin-top: 0.25rem;
-    margin-bottom: 0.5rem;
-  }
-`;
-
-export const NavigationContainer = styled.ul`
-  width: 100%;
-  max-width: 70rem;
+export const Title = styled(Link)`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const NavigationContainer = styled.nav<{isOpen: boolean}>`
+  ${(props) => !props.isOpen ? 'display: none' : 'display: block'}; 
+  
+  @media screen and (min-width: ${mediaQuery}) {
+    display: block;
+  }
+`
+
+export const NavigationList = styled.ul`
   list-style: none;
+  font-size: 1.25rem;
   margin: 0;
   padding: 0;
   
   li {
-    margin-top: 0.75rem;
-    margin-bottom: auto;
-    font-size: 1.25rem;
+    margin-left: 1em;
+    margin-bottom: 1em;
+    text-transform: uppercase;
   }
+  
+  a, 
+  button {
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    font-size: 1em;
+    padding: 0;
+  }
+
+  @media screen and (min-width: ${mediaQuery}) {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    li {
+      margin: 30px 0;
+    }
+
+    button,
+    a {
+      color: black;
+      cursor: pointer;
+    }
+    button:hover,
+    a:hover {
+      color: #0dc2c2;
+    }
+    a:active,
+    a.active {
+      color: #0dc2c2;
+      border-bottom-style: solid;
+      border-bottom-width: 2px;
+    }
+    
+  }
+  
 `;
 
 export const NavigationLink = styled(NavLink)`
-  &.active {
-    color: #0dc2c2;
-    border-bottom-style: solid;
-    border-bottom-width: 2px;
+`;
+
+export const NavToggle = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 1em;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  
+  border: none;
+  background: none;
+  
+  span,
+  span::before,
+  span::after {
+    display: block;
+    background: white;
+    height: 2px;
+    width: 2em;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  span::before,
+  span::after {
+    content: '';
+    position: absolute;
+  }
+
+  span::before {
+    bottom: 7px;
+  }
+
+  span::after {
+    top: 7px;
+  }
+
+  @media screen and (min-width: ${mediaQuery}) {
+    display: none;
   }
 `;
