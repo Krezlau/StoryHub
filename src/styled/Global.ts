@@ -1,9 +1,10 @@
 import {createGlobalStyle} from "styled-components";
+import Futura from '../futura.ttf'
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: Futura;
-    src: local(futura), url(../futura.ttf) format(truetype);
+    src: local(futura), url(${Futura}) format(truetype);
   }
 
   * {

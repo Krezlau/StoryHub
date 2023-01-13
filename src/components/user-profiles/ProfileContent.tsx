@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from "react";
+import React, { Fragment, useEffect } from "react";
 import { IUser } from "../../pages/ProfilePage";
 import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
@@ -10,18 +10,18 @@ import {
   UserContent,
   UserInfo,
   UserInfoLabels,
-  UserProfileActions
+  UserProfileActions,
 } from "../../styled/components/user-profiles/ProfileContent";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
-  const {isLoading, fetchStories} = useHttp();
+  const { isLoading, fetchStories } = useHttp();
 
   useEffect(() => {
     fetchStories();
-  }, [fetchStories])
+  }, [fetchStories]);
 
   const userStories = useSelector((state: IRootState) =>
     state.stories.stories.filter((story) => story.author === props.user.name)
