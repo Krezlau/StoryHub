@@ -1,17 +1,16 @@
 import React, { Fragment, useEffect } from "react";
 import { IUser } from "../../pages/ProfilePage";
-import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
-import LoadingSpinner from "../UI/LoadingSpinner";
 import {
   UserContent,
   UserInfo,
   UserInfoLabels,
   UserProfileActions,
 } from "../../styled/components/user-profiles/ProfileContent";
+import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 
 const ProfileContent: React.FC<{
   user: IUser;

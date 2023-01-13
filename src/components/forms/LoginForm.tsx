@@ -1,7 +1,5 @@
 import React, { FormEvent, Fragment } from "react";
-import Button from "../UI/Button";
 import useHttp from "../../hooks/useHttp";
-import LoadingSpinner from "../UI/LoadingSpinner";
 import useValidation from "../../hooks/useValidation";
 import useLoginRedirect from "../../hooks/useLoginRedirect";
 import {
@@ -9,6 +7,7 @@ import {
   FormContent,
   FormErrorText,
 } from "../../styled/components/forms/Form";
+import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 
 const LoginForm: React.FC = () => {
   const { isLoading, error, setError, login } = useHttp();

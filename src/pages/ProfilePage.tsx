@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import useHttp from "../hooks/useHttp";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import {LoadingSpinner} from "../styled/components/UI/UIElements";
 
 export interface IUser {
   name: string;

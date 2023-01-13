@@ -1,11 +1,16 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
-import classes from "./NavigationPanel.module.css";
-import Button from "./Button";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { authActions } from "../../store/auth-slice";
 import { redirectActions } from "../../store/redirect-slice";
+import { Button } from "../../styled/components/UI/UIElements";
+import {
+  Header,
+  NavigationContainer,
+  NavigationLink,
+  Title,
+} from "../../styled/components/UI/NavigationPanel";
 
 const NavigationPanel: React.FC = () => {
   const userId = useSelector((state: IRootState) => state.auth.userId);
@@ -24,53 +29,29 @@ const NavigationPanel: React.FC = () => {
   };
 
   return (
-    <div className={classes.nav}>
-      <div className={classes.header}>
+    <Header>
+      <Title>
         <Link to="/home">
           <h1>StoryHub</h1>
         </Link>
-      </div>
-      <div className={classes.content}>
-        <ul>
-          <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={"stories"}
-            >
-              Stories
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={"new-story"}
-            >
-              Add new story
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={`profile/${userId}`}
-            >
-              Profile
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={"about"}
-            >
-              About
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-      <div className={classes.bottom}>
-        {!isLoggedIn && <Button onClick={loginHandler}>Login</Button>}
-        {isLoggedIn && <Button onClick={logoutHandler}>Logout</Button>}
-      </div>
-    </div>
+      </Title>
+      <NavigationContainer>
+        <li>
+          <NavigationLink to={"stories"}>Stories</NavigationLink>
+        </li>
+        <li>
+          <NavigationLink to={"new-story"}>Add new story</NavigationLink>
+        </li>
+        <li>
+          <NavigationLink to={`profile/${userId}`}>Profile</NavigationLink>
+        </li>
+        <li>
+          <NavigationLink to={"about"}>About</NavigationLink>
+        </li>
+      </NavigationContainer>
+      {!isLoggedIn && <Button onClick={loginHandler}>Login</Button>}
+      {isLoggedIn && <Button onClick={logoutHandler}>Logout</Button>}
+    </Header>
   );
 };
 

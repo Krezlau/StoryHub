@@ -1,7 +1,7 @@
 import React from "react";
 import Story from "./Story";
-import classes from "./StoryList.module.css";
 import { IStory } from "../../store/stories-slice";
+import {Stories} from "../../styled/components/stories/StoryList";
 
 const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
   if (props.stories.length === 0) {
@@ -13,8 +13,7 @@ const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
   }
 
   return (
-    <div className={classes.list}>
-      <ul>
+      <Stories>
         {props.stories.map((story) => (
           <Story
             title={story.title}
@@ -25,8 +24,7 @@ const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
             tags={story.tags}
           />
         ))}
-      </ul>
-    </div>
+      </Stories>
   );
 };
 

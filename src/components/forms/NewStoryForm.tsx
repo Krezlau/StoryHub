@@ -5,20 +5,19 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import Button from "../UI/Button";
 import { useSelector } from "react-redux";
 import { IStory } from "../../store/stories-slice";
 import { IRootState } from "../../store";
 import { useNavigate } from "react-router-dom";
 import StoryTag from "../stories/StoryTag";
 import useHttp from "../../hooks/useHttp";
-import LoadingSpinner from "../UI/LoadingSpinner";
 import useValidation from "../../hooks/useValidation";
 import {
   FormActions,
   FormContent,
   FormTags,
 } from "../../styled/components/forms/Form";
+import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 
 const TAGS = [
   "choose a tag",

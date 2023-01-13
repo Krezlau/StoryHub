@@ -4,7 +4,7 @@ import PageHeader from "../components/UI/PageHeader";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import useHttp from "../hooks/useHttp";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import {LoadingSpinner} from "../styled/components/UI/UIElements";
 
 const AllStoriesPage: React.FC = () => {
   const { isLoading, fetchStories } = useHttp();

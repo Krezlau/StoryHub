@@ -1,5 +1,5 @@
-import classes from './StoryTag.module.css'
 import React from "react";
+import {Tag} from "../../styled/components/stories/StoryTag";
 
 const StoryTag: React.FC<{ displayOnly?: boolean, tag: string, onDelete: (tag: string) => void }> = (props) => {
 
@@ -7,10 +7,10 @@ const StoryTag: React.FC<{ displayOnly?: boolean, tag: string, onDelete: (tag: s
     props.onDelete(props.tag);
   }
 
-  return <li className={classes.tag}>
+  return <Tag>
     <p>{props.tag}</p>
     {!props.displayOnly && <button type={"button"} onClick={buttonClickHandler}>x</button>}
-  </li>
+  </Tag>
 }
 
 export default StoryTag;
