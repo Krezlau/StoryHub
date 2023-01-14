@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const NotificationContainer = styled.div<{isEnabled: boolean}>`
   position: fixed;
-  top: 90%;
-  left: 30%;
-  width: 40%;
+  bottom: 1rem;
+  width: 70%;
+  left: 50%;
+  margin-left: -35%;
   background: #51f1f1;
   color: black;
   border-radius: 14px;
