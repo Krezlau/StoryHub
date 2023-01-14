@@ -40,7 +40,7 @@ export const StoryInfo = styled.div`
 `
 
 export const StoryActions = styled.div`
-  border-top: 1px solid black;
+  border-top: 1px solid ${props => props.theme.storyCardTextColor};
   text-align: right;  
   padding: 1rem 1rem 0;
   margin: 0;

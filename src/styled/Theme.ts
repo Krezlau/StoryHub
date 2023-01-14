@@ -51,7 +51,7 @@ export const LightMode: DefaultTheme = {
   mainContentFontSize: '1.15rem',
   headerFontSize: '1.25rem',
   storyCardBgColor: '#6989ff',
-  storyCardTextColor: 'black',
+  storyCardTextColor: 'white',
   storyCardLinkColor: '#51f1f1',
   storyCardLinkHoverColor: '#0dc2c2',
 }
