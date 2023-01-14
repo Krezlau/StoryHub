@@ -48,7 +48,7 @@ export const LightMode: DefaultTheme = {
   linkColor: '#0a8d8d',
   navLinkActiveColor: '#0dc2c2',
   standardBorderRadius: '20px',
-  mainContentFontSize: '1.25rem',
+  mainContentFontSize: '1.15rem',
   headerFontSize: '1.25rem',
   storyCardBgColor: '#6989ff',
   storyCardTextColor: 'black',

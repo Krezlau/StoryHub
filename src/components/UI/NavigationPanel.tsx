@@ -10,8 +10,9 @@ import {
   NavigationLink,
   NavToggle,
   Title,
-  NavigationContainer,
+  NavigationContainer, ThemeSwitcher,
 } from "../../styled/components/UI/NavigationPanel";
+import {themeActions} from "../../store/theme-slice";
 
 const NavigationPanel: React.FC = () => {
   const userId = useSelector((state: IRootState) => state.auth.userId);
@@ -20,6 +21,7 @@ const NavigationPanel: React.FC = () => {
   const [isOpen, toggleIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isDark = useSelector((state: IRootState) => state.theme.isDark);
 
   useEffect(() => {
     toggleIsOpen(false);
@@ -38,6 +40,10 @@ const NavigationPanel: React.FC = () => {
   const toggleHandler = () => {
     toggleIsOpen((state) => !state);
   };
+
+  const toggleTheme = () => {
+    dispatch(themeActions.toggle());
+  }
 
   return (
     <Header>
@@ -67,6 +73,7 @@ const NavigationPanel: React.FC = () => {
           </li>
         </NavigationList>
       </NavigationContainer>
+      <ThemeSwitcher isDark={isDark} onClick={toggleTheme}/>
     </Header>
   );
 };

@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import {Link, NavLink} from "react-router-dom";
-import {mediaQuery} from "../../Global";
-
+import { Link, NavLink } from "react-router-dom";
+import { mediaQuery } from "../../Global";
 
 export const Header = styled.header`
   position: fixed;
@@ -11,14 +10,14 @@ export const Header = styled.header`
   margin: 0;
   width: 100%;
   height: 84px;
-  background: ${props => props.theme.headerColor};
+  background: ${(props) => props.theme.headerColor};
   z-index: 999;
-  
+
   a {
-    color: ${props => props.theme.titleColor};
+    color: ${(props) => props.theme.titleColor};
   }
-  
-  @media screen and (min-width: ${mediaQuery}){
+
+  @media screen and (min-width: ${mediaQuery}) {
     display: grid;
     grid-template-columns: 1fr minmax(600px, 4fr) 1fr;
   }
@@ -30,33 +29,34 @@ export const Title = styled(Link)`
   align-items: center;
 `;
 
-export const NavigationContainer = styled.nav<{isOpen: boolean}>`
-  ${(props) => !props.isOpen ? 'display: none' : 'display: block'};
-  background: ${props => props.theme.headerColor};
-  
+export const NavigationContainer = styled.nav<{ isOpen: boolean }>`
+  ${(props) => (!props.isOpen ? "display: none" : "display: block")};
+  background: ${(props) => props.theme.headerColor};
+  padding-bottom: 1px;
+
   @media screen and (min-width: ${mediaQuery}) {
     display: block;
   }
-`
+`;
 
 export const NavigationList = styled.ul`
   list-style: none;
-  font-size: ${props => props.theme.headerFontSize};
+  font-size: ${(props) => props.theme.headerFontSize};
   margin: 0;
   padding: 0;
-  
+
   li {
     margin-left: 1em;
     margin-bottom: 1em;
     text-transform: uppercase;
   }
-  
-  a, 
+
+  a,
   button {
     text-transform: uppercase;
     background: none;
     border: none;
-    font-size: ${props => props.theme.headerFontSize};
+    font-size: ${(props) => props.theme.headerFontSize};
     padding: 0;
   }
 
@@ -64,33 +64,32 @@ export const NavigationList = styled.ul`
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    
+
     li {
       margin: 30px 0;
     }
 
     button,
     a {
-      color: ${props => props.theme.titleColor};
+      color: ${(props) => props.theme.titleColor};
       cursor: pointer;
     }
+
     button:hover,
     a:hover {
-      color: ${props => props.theme.navLinkActiveColor};
+      color: ${(props) => props.theme.navLinkActiveColor};
     }
+
     a:active,
     a.active {
-      color: ${props => props.theme.navLinkActiveColor};
+      color: ${(props) => props.theme.navLinkActiveColor};
       border-bottom-style: solid;
       border-bottom-width: 2px;
     }
-    
   }
-  
 `;
 
-export const NavigationLink = styled(NavLink)`
-`;
+export const NavigationLink = styled(NavLink)``;
 
 export const NavToggle = styled.button`
   position: absolute;
@@ -100,10 +99,10 @@ export const NavToggle = styled.button`
   height: 81.8px;
   display: flex;
   align-items: center;
-  
+
   border: none;
   background: none;
-  
+
   span,
   span::before,
   span::after {
@@ -117,7 +116,7 @@ export const NavToggle = styled.button`
 
   span::before,
   span::after {
-    content: '';
+    content: "";
     position: absolute;
   }
 
@@ -131,5 +130,26 @@ export const NavToggle = styled.button`
 
   @media screen and (min-width: ${mediaQuery}) {
     display: none;
+  }
+`;
+
+export const ThemeSwitcher = styled.button<{ isDark: boolean }>`
+  position: fixed;
+  right: 1rem;
+  top: 21px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background: white url("https://i.ibb.co/FxzBYR9/night.png") no-repeat center;
+  ${(props) =>
+    props.isDark
+      ? "background: white url(\'https://i.ibb.co/7JfqXxB/sunny.png\') no-repeat center;"
+      : "background: white url(\"https://i.ibb.co/FxzBYR9/night.png\") no-repeat center;"};
+
+  @media screen and (min-width: ${mediaQuery}) {
+    grid-column: 3;
+    position: relative;
+    margin: 0 auto;
   }
 `;

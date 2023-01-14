@@ -21,9 +21,10 @@ import {DarkMode, LightMode} from "./styled/Theme";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
+  const isDark = useSelector((state: IRootState) => state.theme.isDark);
 
   return (
-    <ThemeProvider theme={LightMode}>
+    <ThemeProvider theme={isDark ? DarkMode : LightMode}>
       <GlobalStyles />
       <NavigationPanel />
       <Page >

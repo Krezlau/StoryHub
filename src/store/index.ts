@@ -3,6 +3,7 @@ import AuthSlice from "./auth-slice";
 import storiesSlice from "./stories-slice";
 import redirectSlice from "./redirect-slice";
 import errorSlice from "./error-slice";
+import themeSlice from "./theme-slice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     stories: storiesSlice.reducer,
     redirect: redirectSlice.reducer,
     error: errorSlice.reducer,
+    theme: themeSlice.reducer,
   },
 });
 
