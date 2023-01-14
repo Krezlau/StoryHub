@@ -16,8 +16,10 @@
 - [x] forms validation
 
 ### task04:
-- [ ] responsive layout
-- [ ] migrate styling to styled components 
+- [x] responsive layout
+- [x] migrate styling to styled components 
+- [x] theme
+- [x] theme switcher
 
 ### Unallocated:
 * liking stories
@@ -28,5 +30,4 @@
 * delete my own story from profile page or story details
 * filtering stories by title and tags
 * changing user password
-* button to change theme to light/dark
 * story text as markdown??

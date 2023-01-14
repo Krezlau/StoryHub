@@ -1,8 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NavigationPanel from "./components/UI/NavigationPanel";
-import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AllStoriesPage from "./pages/AllStoriesPage";
@@ -15,14 +14,20 @@ import SignUpPage from "./pages/SignUpPage";
 import NewStoryPage from "./pages/NewStoryPage";
 import ProfilePage from "./pages/ProfilePage";
 import Notification from "./components/UI/Notification";
+import {Page} from "./styled/pages/Page";
+import GlobalStyles from "./styled/Global";
+import {ThemeProvider} from "styled-components";
+import {DarkMode, LightMode} from "./styled/Theme";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
+  const isDark = useSelector((state: IRootState) => state.theme.isDark);
 
   return (
-    <Fragment>
+    <ThemeProvider theme={isDark ? DarkMode : LightMode}>
+      <GlobalStyles />
       <NavigationPanel />
-      <main className="main">
+      <Page >
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<HomePage />} />
@@ -37,9 +42,9 @@ function App() {
           <Route path='/about' element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </main>
+      </Page>
       <Notification />
-    </Fragment>
+    </ThemeProvider>
   );
 }
 

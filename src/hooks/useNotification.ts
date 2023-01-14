@@ -21,7 +21,7 @@ const useNotification = (
     return () => {
       clearTimeout(timeout);
     };
-  }, [error]);
+  }, [error, dispatch, setError]);
 };
 
 export default useNotification;

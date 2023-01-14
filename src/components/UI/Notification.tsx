@@ -1,9 +1,13 @@
 import React, { Fragment } from "react";
-import classes from "./Notification.module.css";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { errorActions } from "../../store/error-slice";
+import {
+  NotificationContainer,
+  NotificationMessage,
+  NotificationTitle,
+} from "../../styled/components/UI/Notification";
 
 let isInitial = true;
 
@@ -17,17 +21,17 @@ const NotificationComponent: React.FC = () => {
   }
 
   return (
-    <div
-      className={data.isShown ? classes.content : classes.disabled}
+    <NotificationContainer
+      isEnabled={data.isShown}
       onClick={() => dispatch(errorActions.hide())}
     >
-      <div className={classes.title}>
+      <NotificationTitle>
         <h2>{data.title}</h2>
-      </div>
-      <div className={classes.message}>
+      </NotificationTitle>
+      <NotificationMessage>
         <p>{data.message}</p>
-      </div>
-    </div>
+      </NotificationMessage>
+    </NotificationContainer>
   );
 };
 

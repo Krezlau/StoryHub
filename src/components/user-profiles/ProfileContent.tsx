@@ -1,22 +1,25 @@
-import React, {Fragment, useEffect} from "react";
+import React, { Fragment, useEffect } from "react";
 import { IUser } from "../../pages/ProfilePage";
-import classes from "./ProfileContent.module.css";
-import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
-import LoadingSpinner from "../UI/LoadingSpinner";
+import {
+  UserContent,
+  UserInfo,
+  UserProfileActions,
+} from "../../styled/components/user-profiles/ProfileContent";
+import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
-  const {isLoading, fetchStories} = useHttp();
+  const { isLoading, fetchStories } = useHttp();
 
   useEffect(() => {
     fetchStories();
-  }, [fetchStories])
+  }, [fetchStories]);
 
   const userStories = useSelector((state: IRootState) =>
     state.stories.stories.filter((story) => story.author === props.user.name)
@@ -24,25 +27,23 @@ const ProfileContent: React.FC<{
 
   return (
     <Fragment>
-      <div className={classes.content}>
-        <div className={classes.info}>
-          <div className={classes["info-labels"]}>
-            <p>Username:</p>
-            <p>Email:</p>
-            <p>Joined:</p>
-          </div>
+      <UserContent>
+        <UserInfo>
           <div>
-            <p>{props.user.name}</p>
-            <p>{props.user.email}</p>
-            <p>{props.user.created}</p>
+            <p>Username:</p>
+            <h3>{props.user.name}</h3>
+            <p>Email:</p>
+            <h3>{props.user.email}</h3>
+            <p>Joined:</p>
+            <h3>{props.user.created}</h3>
           </div>
-        </div>
+        </UserInfo>
         {props.showAllContent && (
-          <div className={classes.actions}>
+          <UserProfileActions>
             <Button>Change Password</Button>
-          </div>
+          </UserProfileActions>
         )}
-      </div>
+      </UserContent>
       <div>
         <h1>User Stories</h1>
         {!isLoading && <StoryList stories={userStories} />}

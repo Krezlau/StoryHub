@@ -1,17 +1,31 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import React from "react";
-import classes from "./NavigationPanel.module.css";
-import Button from "./Button";
+import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../../store";
 import { authActions } from "../../store/auth-slice";
 import { redirectActions } from "../../store/redirect-slice";
+import {
+  Header,
+  NavigationList,
+  NavigationLink,
+  NavToggle,
+  Title,
+  NavigationContainer, ThemeSwitcher,
+} from "../../styled/components/UI/NavigationPanel";
+import {themeActions} from "../../store/theme-slice";
 
 const NavigationPanel: React.FC = () => {
   const userId = useSelector((state: IRootState) => state.auth.userId);
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
+  const location = useLocation();
+  const [isOpen, toggleIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isDark = useSelector((state: IRootState) => state.theme.isDark);
+
+  useEffect(() => {
+    toggleIsOpen(false);
+  }, [location]);
 
   const logoutHandler = () => {
     dispatch(authActions.logout());
@@ -23,54 +37,44 @@ const NavigationPanel: React.FC = () => {
     navigate("/login");
   };
 
+  const toggleHandler = () => {
+    toggleIsOpen((state) => !state);
+  };
+
+  const toggleTheme = () => {
+    dispatch(themeActions.toggle());
+  }
+
   return (
-    <div className={classes.nav}>
-      <div className={classes.header}>
-        <Link to="/home">
-          <h1>StoryHub</h1>
-        </Link>
-      </div>
-      <div className={classes.content}>
-        <ul>
+    <Header>
+      <Title to="/home">
+        <h1>StoryHub</h1>
+      </Title>
+      <NavToggle onClick={toggleHandler}>
+        <span></span>
+      </NavToggle>
+      <NavigationContainer isOpen={isOpen}>
+        <NavigationList>
           <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={"stories"}
-            >
-              Stories
-            </NavLink>
+            <NavigationLink to={"stories"}>Stories</NavigationLink>
           </li>
           <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={"new-story"}
-            >
-              Add new story
-            </NavLink>
+            <NavigationLink to={"new-story"}>Add new story</NavigationLink>
           </li>
           <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={`profile/${userId}`}
-            >
-              Profile
-            </NavLink>
+            <NavigationLink to={`profile/${userId}`}>Profile</NavigationLink>
           </li>
           <li>
-            <NavLink
-              className={(navData) => (navData.isActive ? classes.active : "")}
-              to={"about"}
-            >
-              About
-            </NavLink>
+            <NavigationLink to={"about"}>About</NavigationLink>
           </li>
-        </ul>
-      </div>
-      <div className={classes.bottom}>
-        {!isLoggedIn && <Button onClick={loginHandler}>Login</Button>}
-        {isLoggedIn && <Button onClick={logoutHandler}>Logout</Button>}
-      </div>
-    </div>
+          <li>
+            {!isLoggedIn && <button onClick={loginHandler}>Login</button>}
+            {isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
+          </li>
+        </NavigationList>
+      </NavigationContainer>
+      <ThemeSwitcher isDark={isDark} onClick={toggleTheme}/>
+    </Header>
   );
 };
 
