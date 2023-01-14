@@ -8,7 +8,6 @@ export const Tag = styled.li`
   width: auto;
   margin-right: 1rem;
   margin-bottom: 1rem;
-  height: 1.6rem;
   align-self: center;
 
   p {

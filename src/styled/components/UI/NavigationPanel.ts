@@ -32,6 +32,7 @@ export const Title = styled(Link)`
 
 export const NavigationContainer = styled.nav<{isOpen: boolean}>`
   ${(props) => !props.isOpen ? 'display: none' : 'display: block'};
+  background: aqua;
   
   @media screen and (min-width: ${mediaQuery}) {
     display: block;

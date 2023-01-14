@@ -5,11 +5,12 @@ export const StoryContainer = styled.li`
   border-style: none;
   background: whitesmoke;
   color: black;
-  padding: 2rem 2rem 1rem;
+  padding: 1rem;
   margin: 1rem;
   text-align: left;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
 
   a {
     text-decoration: none;
@@ -21,7 +22,6 @@ export const StoryContainer = styled.li`
 `
 
 export const StoryInfo = styled.div`
-  padding-right: 1rem;
   width: 100%;
 
   h2 {
@@ -36,11 +36,10 @@ export const StoryInfo = styled.div`
 `
 
 export const StoryActions = styled.div`
-  border-left-style: solid;
-  border-left-width: 1px;
+  border-top: 1px solid black;
+  text-align: right;  
   padding: 1rem 1rem 0;
-  margin: 0 0 1rem;
-  display: flex;
+  margin: 0;
 `
 
 export const StoryAuthor = styled.div`
@@ -54,16 +53,13 @@ export const StoryAuthor = styled.div`
   }
 `
 
-export const StoryTags = styled.div`
+export const StoryTags = styled.ul`
   display: flex;
   justify-content: left;
+  padding: 0;
+  flex-wrap: wrap;
 
   p {
     margin-right: .5rem;
-  }
-
-  ul {
-    display: flex;
-    justify-content: left;
   }
 `
