@@ -11,11 +11,11 @@ export const Header = styled.header`
   margin: 0;
   width: 100%;
   height: 84px;
-  background: aqua;
+  background: ${props => props.theme.headerColor};
   z-index: 999;
   
   a {
-    color: black;
+    color: ${props => props.theme.titleColor};
   }
   
   @media screen and (min-width: ${mediaQuery}){
@@ -32,7 +32,7 @@ export const Title = styled(Link)`
 
 export const NavigationContainer = styled.nav<{isOpen: boolean}>`
   ${(props) => !props.isOpen ? 'display: none' : 'display: block'};
-  background: aqua;
+  background: ${props => props.theme.headerColor};
   
   @media screen and (min-width: ${mediaQuery}) {
     display: block;
@@ -41,7 +41,7 @@ export const NavigationContainer = styled.nav<{isOpen: boolean}>`
 
 export const NavigationList = styled.ul`
   list-style: none;
-  font-size: 1.25rem;
+  font-size: ${props => props.theme.headerFontSize};
   margin: 0;
   padding: 0;
   
@@ -56,7 +56,7 @@ export const NavigationList = styled.ul`
     text-transform: uppercase;
     background: none;
     border: none;
-    font-size: 1em;
+    font-size: ${props => props.theme.headerFontSize};
     padding: 0;
   }
 
@@ -71,16 +71,16 @@ export const NavigationList = styled.ul`
 
     button,
     a {
-      color: black;
+      color: ${props => props.theme.titleColor};
       cursor: pointer;
     }
     button:hover,
     a:hover {
-      color: #0dc2c2;
+      color: ${props => props.theme.navLinkActiveColor};
     }
     a:active,
     a.active {
-      color: #0dc2c2;
+      color: ${props => props.theme.navLinkActiveColor};
       border-bottom-style: solid;
       border-bottom-width: 2px;
     }

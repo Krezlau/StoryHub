@@ -15,8 +15,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: #3f3f3f;
-    color: #e6fcfc;
+    background-color: ${props => props.theme.bgColor};
+    color: ${props => props.theme.textColor};
     margin: 0;
     padding: 0;
     width: 100%;
@@ -24,13 +24,13 @@ const GlobalStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
-    color: #51f1f1;
+    color: ${props => props.theme.linkColor};
   }
 
   a:hover,
   a:active,
   a.active {
-    color: #51f1f1;
+    color: ${props => props.theme.linkColor};
   }
 `;
 

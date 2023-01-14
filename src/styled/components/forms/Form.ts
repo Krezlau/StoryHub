@@ -16,23 +16,27 @@ export const FormContent = styled.div`
     font: inherit;
     padding: 0.5rem;
     margin: 0;
-    border-radius: 6px;
+    border-radius: ${props => props.theme.standardBorderRadius};
     border: 1px solid #ccc;
     width: calc(100% - 1rem - 2px);
     max-width: 25rem;
   }
 
   textarea {
+    font: inherit;
     resize: none;
+    padding: 0.5rem;
+    margin: 0;
     width: calc(100% - 6px);
     max-width: 25rem;
     height: 20rem;
+    border-radius: ${props => props.theme.standardBorderRadius};
   }
 
   select {
     padding: .5rem;
     border-style: none;
-    border-radius: 14px;
+    border-radius: ${props => props.theme.standardBorderRadius};
     width: calc(100% - 1rem - 2px);
     max-width: 25rem;
   }

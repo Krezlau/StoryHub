@@ -12,7 +12,6 @@ export const UserContent = styled.div`
 `
 
 export const UserInfo = styled.div`
-  font-size: 1.2rem;
   word-wrap: break-word;
 `
 

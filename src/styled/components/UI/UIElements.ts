@@ -1,20 +1,20 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
-  font-size: 1.1rem;
+  font-size: ${props => props.theme.mainContentFontSize};
   margin: 1rem auto;
   width: 100%;
   max-width: 15rem;
   padding: 0 1.5rem;
   height: 3rem;
-  border-radius: 20px;
+  border-radius: ${props => props.theme.standardBorderRadius};
   border-style: none;
-  background: #0b4545;
-  color: #e6fcfc;
+  background: ${props => props.theme.buttonColor};
+  color: ${props => props.theme.textColor};
 
   &:active,
   &:hover {
-    background: #126e6e;
+    background: ${props => props.theme.buttonHoverColor};
   }
 `
 
@@ -31,7 +31,7 @@ export const LoadingSpinner = styled.div`
     margin: 8px;
     border-radius: 50%;
     border: 6px solid;
-    border-color: teal transparent teal transparent;
+    border-color: ${props => props.theme.buttonColor} transparent ${props => props.theme.buttonColor} transparent;
     animation: spinner 1.2s linear infinite;
   }
 

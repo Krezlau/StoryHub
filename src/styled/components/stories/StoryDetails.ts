@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StoryDetailsContent = styled.div`
-  font-size: 1.3rem;
+  font-size: ${props => props.theme.headerFontSize};
   text-align: justify;
 `
 
@@ -19,7 +19,7 @@ export const StoryDetailsFooter = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  font-size: 1.1rem;
+  font-size: ${props => props.theme.mainContentFontSize};
 `
 
 export const StoryDetailsActivityInfo = styled.div`
@@ -43,12 +43,12 @@ export const StoryDetailsActions = styled.div`
     border-style: none;
     border-radius: 10px;
     padding: .5rem 1rem;
-    background: #0b4545;
-    color: #e6fcfc;
+    background: ${props => props.theme.buttonColor};
+    color: ${props => props.theme.textColor};
   }
 
   button:active,
   button:hover{
-    background: #126e6e;
+    background: ${props => props.theme.buttonHoverColor};
   }
 `

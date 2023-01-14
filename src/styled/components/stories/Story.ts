@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const StoryContainer = styled.li`
   border-radius: 10px;
   border-style: none;
-  background: whitesmoke;
-  color: black;
+  background: ${props => props.theme.storyCardBgColor};
+  color: ${props => props.theme.storyCardTextColor};
   padding: 1rem;
   margin: 1rem;
   text-align: left;
@@ -16,8 +16,12 @@ export const StoryContainer = styled.li`
     text-decoration: none;
     text-align: right;
     align-self: flex-end;
-    color: #0f5b5b;
-    font-size: 1.25rem;
+    color: ${props => props.theme.storyCardLinkColor};
+    font-size: ${props => props.theme.headerFontSize};
+  }
+  
+  a:hover {
+    color: ${props => props.theme.storyCardLinkHoverColor};
   }
 `
 

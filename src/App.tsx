@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NavigationPanel from "./components/UI/NavigationPanel";
@@ -16,12 +16,14 @@ import ProfilePage from "./pages/ProfilePage";
 import Notification from "./components/UI/Notification";
 import {Page} from "./styled/pages/Page";
 import GlobalStyles from "./styled/Global";
+import {ThemeProvider} from "styled-components";
+import {DarkMode, LightMode} from "./styled/Theme";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
 
   return (
-    <Fragment>
+    <ThemeProvider theme={LightMode}>
       <GlobalStyles />
       <NavigationPanel />
       <Page >
@@ -41,7 +43,7 @@ function App() {
         </Routes>
       </Page>
       <Notification />
-    </Fragment>
+    </ThemeProvider>
   );
 }
 

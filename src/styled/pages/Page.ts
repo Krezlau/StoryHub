@@ -8,4 +8,5 @@ export const Page = styled.div`
   margin: 84px auto;
   max-width: 70rem;
   text-align: center;
+  font-size: ${props => props.theme.mainContentFontSize};
 `;

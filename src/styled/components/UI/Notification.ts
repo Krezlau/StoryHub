@@ -6,9 +6,9 @@ export const NotificationContainer = styled.div<{isEnabled: boolean}>`
   width: 70%;
   left: 50%;
   margin-left: -35%;
-  background: #51f1f1;
-  color: black;
-  border-radius: 14px;
+  background: ${props => props.theme.headerColor};
+  color: ${props => props.theme.titleColor};
+  border-radius: ${props => props.theme.standardBorderRadius};
   padding: 0;
   animation: ${(props) => props.isEnabled ? 'content-appear 1s ease-in-out forwards' : 'fade-out 1s ease-out backwards'};
   opacity: ${(props) => props.isEnabled ? '1' : '0' };
