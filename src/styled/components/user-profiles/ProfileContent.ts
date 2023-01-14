@@ -1,20 +1,19 @@
 import styled from "styled-components";
+import {mediaQuery} from "../../Global";
 
 export const UserContent = styled.div`
-  display: flex;
-  justify-content: space-evenly;
   border-bottom-style: solid;
   padding-bottom: 2rem;
+  
+  @media screen and (min-width: ${mediaQuery}) {
+    display: flex;
+    justify-content: space-evenly;
+  }
 `
 
 export const UserInfo = styled.div`
-  text-align: left;
-     display: flex;
-     font-size: 1.2rem;
-`
-
-export const UserInfoLabels = styled.div`
-     margin-right: 1rem;
+  font-size: 1.2rem;
+  word-wrap: break-word;
 `
 
 export const UserProfileActions = styled.div`

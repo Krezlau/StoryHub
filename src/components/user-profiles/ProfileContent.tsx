@@ -7,7 +7,6 @@ import useHttp from "../../hooks/useHttp";
 import {
   UserContent,
   UserInfo,
-  UserInfoLabels,
   UserProfileActions,
 } from "../../styled/components/user-profiles/ProfileContent";
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
@@ -30,15 +29,13 @@ const ProfileContent: React.FC<{
     <Fragment>
       <UserContent>
         <UserInfo>
-          <UserInfoLabels>
-            <p>Username:</p>
-            <p>Email:</p>
-            <p>Joined:</p>
-          </UserInfoLabels>
           <div>
-            <p>{props.user.name}</p>
-            <p>{props.user.email}</p>
-            <p>{props.user.created}</p>
+            <p>Username:</p>
+            <h3>{props.user.name}</h3>
+            <p>Email:</p>
+            <h3>{props.user.email}</h3>
+            <p>Joined:</p>
+            <h3>{props.user.created}</h3>
           </div>
         </UserInfo>
         {props.showAllContent && (
