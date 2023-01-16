@@ -10,12 +10,14 @@ import {
   UserProfileActions,
 } from "../../styled/components/user-profiles/ProfileContent";
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
+import {useNavigate} from "react-router-dom";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
 }> = (props) => {
   const { isLoading, fetchStories } = useHttp();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStories();
@@ -24,6 +26,10 @@ const ProfileContent: React.FC<{
   const userStories = useSelector((state: IRootState) =>
     state.stories.stories.filter((story) => story.author === props.user.name)
   );
+
+  const changePasswordHandler = () => {
+    navigate('/change-password');
+  }
 
   return (
     <Fragment>
@@ -40,7 +46,7 @@ const ProfileContent: React.FC<{
         </UserInfo>
         {props.showAllContent && (
           <UserProfileActions>
-            <Button>Change Password</Button>
+            <Button onClick={changePasswordHandler}>Change Password</Button>
           </UserProfileActions>
         )}
       </UserContent>

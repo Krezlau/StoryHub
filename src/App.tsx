@@ -20,6 +20,7 @@ import {ThemeProvider} from "styled-components";
 import {DarkMode, LightMode} from "./styled/Theme";
 import {clearAuthStorage, retrieveStoredToken} from "./store/auth-actions";
 import {authActions} from "./store/auth-slice";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
@@ -27,7 +28,6 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("loging")
     const tokenData = retrieveStoredToken();
 
     if (!tokenData) {
@@ -60,7 +60,7 @@ function App() {
           <Route path="/stories" element={isLoggedIn ? <AllStoriesPage /> : <NotLoggedInPage />} />
           <Route path='/profile/:userId' element={isLoggedIn ? <ProfilePage /> : <NotLoggedInPage />} />
           <Route path='/profile' element={isLoggedIn ? <NotFoundPage /> : <NotLoggedInPage doNotGoBack={true} /> }/>
-          {/*<Route path='/change-password' element={<ChangePasswordPage />} />*/}
+          <Route path='/change-password' element={isLoggedIn ? <ChangePasswordPage /> : <NotLoggedInPage />} />
           <Route path='/new-story' element={isLoggedIn ? <NewStoryPage /> : <NotLoggedInPage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />

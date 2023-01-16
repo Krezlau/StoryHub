@@ -49,7 +49,11 @@ const useHttp = () => {
     dispatch(addStory(story, setIsLoading, setError))
   }
 
-  return { isLoading, error, setError, login, signUp, fetchStories, fetchUser, addNewStory };
+  const changePassword = (userToken: string, currentPassword: string, newPassword: string) => {
+
+  }
+
+  return { isLoading, error, setError, login, signUp, fetchStories, fetchUser, addNewStory, changePassword };
 };
 
 export default useHttp;
