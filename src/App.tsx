@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NavigationPanel from "./components/UI/NavigationPanel";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AllStoriesPage from "./pages/AllStoriesPage";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "./store";
 import NotLoggedInPage from "./pages/NotLoggedInPage";
 import StoryPage from "./pages/StoryPage";
@@ -18,10 +18,33 @@ import {Page} from "./styled/pages/Page";
 import GlobalStyles from "./styled/Global";
 import {ThemeProvider} from "styled-components";
 import {DarkMode, LightMode} from "./styled/Theme";
+import {clearAuthStorage, retrieveStoredToken} from "./store/auth-actions";
+import {authActions} from "./store/auth-slice";
 
 function App() {
   const isLoggedIn = useSelector((state: IRootState) => state.auth.isLoggedIn);
   const isDark = useSelector((state: IRootState) => state.theme.isDark);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("loging")
+    const tokenData = retrieveStoredToken();
+
+    if (!tokenData) {
+      clearAuthStorage();
+      return;
+    }
+
+    dispatch(
+      authActions.login({
+        email: tokenData.email,
+        username: tokenData.username,
+        userId: tokenData.userId,
+        created: tokenData.createdAt,
+        userToken: tokenData.token,
+      })
+    );
+  }, [dispatch])
 
   return (
     <ThemeProvider theme={isDark ? DarkMode : LightMode}>

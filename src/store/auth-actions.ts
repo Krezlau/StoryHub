@@ -5,6 +5,77 @@ import { AppDispatch } from "./index";
 import { IUser } from "../pages/ProfilePage";
 import axios from "axios";
 
+const calculateRemainingTime = (expirationTime: string | null) => {
+  if (expirationTime === null) {
+    return 0;
+  }
+  const currentTime = new Date().getTime();
+  const adjExpirationTime = new Date(expirationTime).getTime();
+
+  return adjExpirationTime - currentTime;
+};
+
+export const clearAuthStorage = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("expirationTime");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("username");
+  localStorage.removeItem("email");
+  localStorage.removeItem("createdAt");
+};
+
+const storeAuthData = (
+  token: string,
+  validFor: number,
+  userId: string,
+  username: string,
+  email: string,
+  createdAt: string
+) => {
+  const currentTime = new Date();
+  const expirationTime = new Date(
+    currentTime.getTime() + 60 * 60000
+  ).toISOString();
+
+  localStorage.setItem("token", token);
+  localStorage.setItem("expirationTime", expirationTime);
+  localStorage.setItem("userId", userId);
+  localStorage.setItem("username", username);
+  localStorage.setItem("email", email);
+  localStorage.setItem("createdAt", createdAt);
+};
+
+export const retrieveStoredToken = () => {
+  const storedToken = localStorage.getItem("token");
+  const storedExpirationDate = localStorage.getItem("expirationTime");
+  const storedUserId = localStorage.getItem("userId");
+  const storedUsername = localStorage.getItem("username");
+  const storedEmail = localStorage.getItem("email");
+  const storedCreatedAt = localStorage.getItem("createdAt");
+
+  const remainingTime = calculateRemainingTime(storedExpirationDate);
+
+  if (
+    remainingTime <= 60000 ||
+    !storedToken ||
+    !storedEmail ||
+    !storedUsername ||
+    !storedCreatedAt ||
+    !storedUserId
+  ) {
+    clearAuthStorage();
+    return null;
+  }
+  return {
+    token: storedToken,
+    duration: remainingTime,
+    userId: storedUserId,
+    username: storedUsername,
+    email: storedEmail,
+    createdAt: storedCreatedAt,
+  };
+};
+
 export const loginUser = (
   email: string,
   password: string,
@@ -66,6 +137,14 @@ export const loginUser = (
           email: email,
           created: createdAt,
         })
+      );
+      storeAuthData(
+        idToken,
+        60,
+        userData.localId,
+        userData.displayName,
+        email,
+        createdAt
       );
       setError("");
       setIsLoading(false);
@@ -152,6 +231,14 @@ export const signUpUser = (
           created: new Date().toDateString(),
           userId: localId,
         })
+      );
+      storeAuthData(
+        idToken,
+        60,
+        localId,
+        username,
+        email,
+        new Date().toDateString()
       );
       setIsLoading(false);
       setError("");

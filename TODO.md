@@ -22,7 +22,7 @@
 - [x] theme switcher
 
 ### task05:
-- [ ] storing user token i local storage
+- [x] storing user token in local storage
 - [ ] change user password
 - [ ] viewing story comments
 - [ ] adding new comments

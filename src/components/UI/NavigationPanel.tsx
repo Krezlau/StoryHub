@@ -10,9 +10,11 @@ import {
   NavigationLink,
   NavToggle,
   Title,
-  NavigationContainer, ThemeSwitcher,
+  NavigationContainer,
+  ThemeSwitcher,
 } from "../../styled/components/UI/NavigationPanel";
-import {themeActions} from "../../store/theme-slice";
+import { themeActions } from "../../store/theme-slice";
+import { clearAuthStorage } from "../../store/auth-actions";
 
 const NavigationPanel: React.FC = () => {
   const userId = useSelector((state: IRootState) => state.auth.userId);
@@ -28,6 +30,7 @@ const NavigationPanel: React.FC = () => {
   }, [location]);
 
   const logoutHandler = () => {
+    clearAuthStorage();
     dispatch(authActions.logout());
     dispatch(redirectActions.disable());
     navigate("/login");
@@ -43,7 +46,7 @@ const NavigationPanel: React.FC = () => {
 
   const toggleTheme = () => {
     dispatch(themeActions.toggle());
-  }
+  };
 
   return (
     <Header>
@@ -73,7 +76,7 @@ const NavigationPanel: React.FC = () => {
           </li>
         </NavigationList>
       </NavigationContainer>
-      <ThemeSwitcher isDark={isDark} onClick={toggleTheme}/>
+      <ThemeSwitcher isDark={isDark} onClick={toggleTheme} />
     </Header>
   );
 };
