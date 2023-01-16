@@ -21,13 +21,19 @@
 - [x] theme
 - [x] theme switcher
 
+### task05:
+- [ ] storing user token i local storage
+- [ ] change user password
+- [ ] viewing story comments
+- [ ] adding new comments
+
+### task06:
+- [ ] sorting stories
+- [ ] filtering stories by tag/title
+- [ ] delete my own story from profile page
+
 ### Unallocated:
 * liking stories
-* commenting stories and viewing comments
 * adding stories to favorites
 * liking comments
-* sorting stories
-* delete my own story from profile page or story details
-* filtering stories by title and tags
-* changing user password
 * story text as markdown??
