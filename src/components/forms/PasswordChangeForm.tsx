@@ -4,7 +4,7 @@ import {
   FormErrorText,
 } from "../../styled/components/forms/Form";
 import { Button, LoadingSpinner } from "../../styled/components/UI/UIElements";
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent } from "react";
 import useValidation from "../../hooks/useValidation";
 import useHttp from "../../hooks/useHttp";
 import { useSelector } from "react-redux";
@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 let isInitial = true;
 
 const PasswordChangeForm = () => {
-  const { isLoading, error, setError, changePassword } = useHttp();
+  const { isLoading, setError, changePassword } = useHttp();
   const userToken = useSelector((state: IRootState) => state.auth.userToken);
   const navigate = useNavigate();
 
@@ -36,17 +36,8 @@ const PasswordChangeForm = () => {
     reset: newPasswordReset,
   } = useValidation((value) => value.trim().length >= 8);
 
-  useEffect(() => {
-    if (!isInitial && error === "" && !isLoading) {
-      navigate(-1);
-      isInitial = true;
-    }
-  }, [navigate, error, isLoading]);
-
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
-
-    isInitial = false;
 
     if (!currentPasswordIsValid) {
       setError("Current password too short.");
@@ -61,8 +52,9 @@ const PasswordChangeForm = () => {
       setError("New password too short.");
       return;
     }
+    isInitial = false;
 
-    changePassword(userToken, currentPassword.trim(), newPassword.trim());
+    changePassword(userToken, newPassword.trim(), navigate);
   };
 
   return (

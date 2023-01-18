@@ -23,7 +23,7 @@
 
 ### task05:
 - [x] storing user token in local storage
-- [ ] change user password
+- [x] change user password
 - [ ] viewing story comments
 - [ ] adding new comments
 
