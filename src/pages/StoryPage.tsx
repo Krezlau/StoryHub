@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import CommentForm from "../components/forms/CommentForm";
 import StoryCommentsList from "../components/stories/StoryCommentsList";
+import StoryCommentsContent from "../components/stories/StoryCommentsContent";
 
 const StoryPage: React.FC = () => {
   const { storyId } = useParams<{ storyId?: string }>();
@@ -24,8 +25,7 @@ const StoryPage: React.FC = () => {
     <Fragment>
       <PageHeader title={story ? story.title : "404"} />
       <StoryDetails story={story} />
-      <CommentForm />
-      <StoryCommentsList storyId={storyId ? storyId : ""} />
+      <StoryCommentsContent storyId={storyId ? storyId : ""} count={2} />
     </Fragment>
   );
 };
