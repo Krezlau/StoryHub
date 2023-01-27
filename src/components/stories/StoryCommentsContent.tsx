@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import CommentForm from "../forms/CommentForm";
 import StoryCommentsList, { IComment } from "./StoryCommentsList";
 import { CommentsCountLabel } from "../../styled/components/stories/Comments";
+import useHttp from "../../hooks/useHttp";
+import {LoadingSpinner} from "../../styled/components/UI/UIElements";
 
 const DUMMYCOMMENTS: IComment[] = [
   {
@@ -27,10 +29,15 @@ const DUMMYCOMMENTS: IComment[] = [
   },
 ];
 
-const StoryCommentsContent: React.FC<{ count: number; storyId: string }> = (
+const StoryCommentsContent: React.FC<{ storyId: string }> = (
   props
 ) => {
   const [comments, setComments] = useState<IComment[]>(DUMMYCOMMENTS);
+  const {isLoading, fetchComments, addComment} = useHttp();
+
+  useEffect( () => {
+    fetchComments(props.storyId).then(res => setComments(res));
+  }, [fetchComments, props.storyId])
 
   const commentAddHandler = (comment: IComment) => {
     setComments((comments) => [comment, ...comments]);
@@ -38,9 +45,10 @@ const StoryCommentsContent: React.FC<{ count: number; storyId: string }> = (
 
   return (
     <>
-      <CommentsCountLabel>{props.count} Comments</CommentsCountLabel>
+      <CommentsCountLabel>{comments.length} Comments</CommentsCountLabel>
       <CommentForm addComment={commentAddHandler} />
-      <StoryCommentsList comments={comments} />
+      {!isLoading && <StoryCommentsList comments={comments} />}
+      {isLoading && <LoadingSpinner />}
     </>
   );
 };
