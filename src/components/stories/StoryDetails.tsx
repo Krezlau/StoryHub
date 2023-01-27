@@ -31,11 +31,9 @@ const StoryDetails: React.FC<{ story?: IStory }> = (props) => {
         <StoryDetailsActivityInfo>
           <p>2137 views</p>
           <p>11 likes</p>
-          <p>2 comments</p>
         </StoryDetailsActivityInfo>
         <StoryDetailsActions>
           <button>Like</button>
-          <button>Comment</button>
           <button>Add to favourites</button>
         </StoryDetailsActions>
       </StoryDetailsFooter>
