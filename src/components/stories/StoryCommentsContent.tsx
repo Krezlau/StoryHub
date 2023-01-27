@@ -41,6 +41,7 @@ const StoryCommentsContent: React.FC<{ storyId: string }> = (
 
   const commentAddHandler = (comment: IComment) => {
     setComments((comments) => [comment, ...comments]);
+    addComment(comment, props.storyId);
   };
 
   return (

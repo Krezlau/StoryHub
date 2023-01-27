@@ -1,28 +1,28 @@
-import React, { Fragment } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import PageHeader from "../components/UI/PageHeader";
 import StoryDetails from "../components/stories/StoryDetails";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { IRootState } from "../store";
 import StoryCommentsContent from "../components/stories/StoryCommentsContent";
+import useHttp from "../hooks/useHttp";
+import {IStory} from "../store/stories-slice";
+import {LoadingSpinner} from "../styled/components/UI/UIElements";
 
 const StoryPage: React.FC = () => {
-  const { storyId } = useParams<{ storyId?: string }>();
+  const { storyId } = useParams<{storyId?: string}>();
+  const {isLoading, fetchStory } = useHttp();
+  const [story, setStory] = useState<IStory>();
 
-  let storyIdParam: string;
-
-  if (!!storyId) {
-    storyIdParam = storyId;
-  }
-
-  const story = useSelector((state: IRootState) =>
-    state.stories.stories.find((s) => s.id === storyIdParam)
-  );
+  useEffect(() => {
+    if (storyId){
+      fetchStory(storyId).then(res => {setStory(res)});
+    }
+  }, [fetchStory, storyId])
 
   return (
     <Fragment>
       <PageHeader title={story ? story.title : "404"} />
-      <StoryDetails story={story} />
+      {!isLoading && <StoryDetails story={story} />}
+      {isLoading && <LoadingSpinner />}
       <StoryCommentsContent storyId={storyId ? storyId : ""} />
     </Fragment>
   );

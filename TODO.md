@@ -24,8 +24,8 @@
 ### task05:
 - [x] storing user token in local storage
 - [x] change user password
-- [ ] viewing story comments
-- [ ] adding new comments
+- [x] viewing story comments
+- [x] adding new comments
 
 ### task06:
 - [ ] sorting stories

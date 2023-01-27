@@ -101,10 +101,10 @@ const useHttp = () => {
       for (const key in data) {
         comments.push({
           id: key,
-          text: data[key].text,
-          createdAt: data[key].createdAt,
-          authorName: data[key].authorName,
-          authorId: data[key].authorId,
+          text: data[key].comment.text,
+          createdAt: data[key].comment.createdAt,
+          authorName: data[key].comment.authorName,
+          authorId: data[key].comment.authorId,
         });
       }
 
@@ -140,6 +140,39 @@ const useHttp = () => {
     }
   };
 
+  const fetchStory = useCallback(async (storyId: string) => {
+    setIsLoading(true);
+    setError("");
+    let story: IStory;
+
+    try {
+      const response = await axios.get(
+        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories/${storyId}.json`
+      );
+      if (response.status > 299) {
+        throw new Error();
+      }
+      const data = response.data;
+
+      console.log(data);
+      story = {
+        id: storyId,
+        text: data.text,
+        tags: data.tags,
+        userId: data.userId,
+        title: data.title,
+        author: data.author,
+      }
+
+      setIsLoading(false);
+      return story;
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+      setError("Could not fetch user data.");
+    }
+  }, []);
+
   return {
     isLoading,
     error,
@@ -152,6 +185,7 @@ const useHttp = () => {
     changePassword,
     fetchComments,
     addComment,
+    fetchStory,
   };
 };
 
