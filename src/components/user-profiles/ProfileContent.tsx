@@ -1,8 +1,6 @@
-import React, { Fragment, useEffect } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import { IUser } from "../../pages/ProfilePage";
 import StoryList from "../stories/StoryList";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
 import useHttp from "../../hooks/useHttp";
 import {
   UserContent,
@@ -11,21 +9,21 @@ import {
 } from "../../styled/components/user-profiles/ProfileContent";
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 import {useNavigate} from "react-router-dom";
+import {IStory} from "../../pages/AllStoriesPage";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
+  userId: string;
 }> = (props) => {
   const { isLoading, fetchStories } = useHttp();
   const navigate = useNavigate();
+  const [userStories, setUserStories] = useState<IStory[]>([]);
 
   useEffect(() => {
-    fetchStories();
-  }, [fetchStories]);
+    fetchStories(setUserStories, props.userId );
+  }, [fetchStories, props.userId]);
 
-  const userStories = useSelector((state: IRootState) =>
-    state.stories.stories.filter((story) => story.author === props.user.name)
-  );
 
   const changePasswordHandler = () => {
     navigate('/change-password');

@@ -43,7 +43,7 @@ const ProfilePage: React.FC = () => {
     <Fragment>
       <PageHeader title={showAllContent ? "My Profile" : "User Profile"} />
       {!isLoading && (
-        <ProfileContent user={user} showAllContent={showAllContent} />
+        <ProfileContent user={user} showAllContent={showAllContent} userId={id ? id : ""} />
       )}
       {isLoading && <LoadingSpinner />}
     </Fragment>

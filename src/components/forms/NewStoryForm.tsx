@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { useSelector } from "react-redux";
-import { IStory } from "../../store/stories-slice";
 import { IRootState } from "../../store";
 import { useNavigate } from "react-router-dom";
 import StoryTag from "../stories/StoryTag";
@@ -18,6 +17,7 @@ import {
   FormTags,
 } from "../../styled/components/forms/Form";
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
+import {IStory} from "../../pages/AllStoriesPage";
 
 const TAGS = [
   "choose a tag",
@@ -106,6 +106,7 @@ const NewStoryForm: React.FC = () => {
       userId: userData.userId,
       id: "",
       tags: selectedTags,
+      createdAt: new Date(),
     };
     isInitial = false;
 
