@@ -6,6 +6,7 @@ import {IStory} from "../../pages/AllStoriesPage";
 
 const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
   const [sortNewest, toggleSortNewest] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>("");
 
   if (props.stories.length === 0) {
     return (
@@ -19,11 +20,16 @@ const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
     toggleSortNewest((state) => !state);
   };
 
+  const filterValuesBy = (tag: string) => {
+    setFilter(tag);
+  }
+
   return (
     <>
-      <FilterSortStories sortByNewest={sortNewest} toggleSortBy={toggleSortBy}  />
+      <FilterSortStories sortByNewest={sortNewest} toggleSortBy={toggleSortBy} filterValuesBy={filterValuesBy} />
       <Stories>
         {props.stories
+          .filter(story => filter === "" ? true : story.tags.includes(filter))
           .sort((a, b) => {
             if (a.createdAt.getTime() > b.createdAt.getTime())
               return sortNewest ? 1 : -1;

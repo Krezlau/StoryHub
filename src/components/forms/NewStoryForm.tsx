@@ -19,7 +19,7 @@ import {
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 import {IStory} from "../../pages/AllStoriesPage";
 
-const TAGS = [
+export const TAGS = [
   "choose a tag",
   "erotic",
   "ghosts",
