@@ -10,16 +10,18 @@ export const NotificationContainer = styled.div<{isEnabled: boolean}>`
   color: ${props => props.theme.titleColor};
   border-radius: ${props => props.theme.standardBorderRadius};
   padding: 0;
-  animation: ${(props) => props.isEnabled ? 'content-appear 1s ease-in-out forwards' : 'fade-out 1s ease-out backwards'};
+  animation: ${(props) => props.isEnabled ? 'content-appear 1s ease-in-out forwards' : 'fade-out 1s ease-out forwards'};
   opacity: ${(props) => props.isEnabled ? '1' : '0' };
   text-align: center;
 
   @keyframes fade-out {
     from {
-      opacity: 1
+      opacity: 1;
+      transform: scale(100%);
     }
     to {
-      opacity: 0
+      opacity: 0;
+      transform: scale(0%);
     }
   }
 

@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { IStory } from "../../store/stories-slice";
 import { Link } from "react-router-dom";
 import {
   StoryDetailsActions,
@@ -8,6 +7,7 @@ import {
   StoryDetailsContent,
   StoryDetailsFooter
 } from "../../styled/components/stories/StoryDetails";
+import {IStory} from "../../pages/AllStoriesPage";
 
 const StoryDetails: React.FC<{ story?: IStory }> = (props) => {
   if (!props.story) {

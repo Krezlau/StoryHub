@@ -4,8 +4,8 @@ import StoryDetails from "../components/stories/StoryDetails";
 import { useParams } from "react-router-dom";
 import StoryCommentsContent from "../components/stories/StoryCommentsContent";
 import useHttp from "../hooks/useHttp";
-import {IStory} from "../store/stories-slice";
 import {LoadingSpinner} from "../styled/components/UI/UIElements";
+import {IStory} from "./AllStoriesPage";
 
 const StoryPage: React.FC = () => {
   const { storyId } = useParams<{storyId?: string}>();

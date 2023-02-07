@@ -39,11 +39,51 @@ export const StoryInfo = styled.div`
   }
 `
 
-export const StoryActions = styled.div`
+export const StoryActions = styled.div<{allowDeletion?: boolean}>`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   border-top: 1px solid ${props => props.theme.storyCardTextColor};
-  text-align: right;  
-  padding: 1rem 1rem 0;
+  padding: 1rem 0 0 0;
   margin: 0;
+  
+  a {
+    grid-column: 2;
+  }
+  
+  button {
+    grid-column: 1;
+    width: 7rem;
+    font-size: ${props => props.theme.mainContentFontSize};
+    max-width: 15rem;
+    padding: 0.25rem 1rem;
+    border-radius: ${props => props.theme.standardBorderRadius};
+    border-style: none;
+    background: ${props => props.theme.buttonColor};
+    color: ${props => props.theme.textColor};
+  }
+
+  button:active,
+  button:hover {
+    background: ${props => props.theme.buttonHoverColor};
+  }
+  
+  @media (max-width: 400px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr ${props => props.allowDeletion ? '1fr' : ''};
+    gap: 0.5rem;
+    
+    a {
+      grid-row: ${props => props.allowDeletion ? '2' : '1'};
+      grid-column: unset;
+      text-align: center;
+    }
+    
+    button {
+      grid-column: unset;
+      width: 100%;
+      grid-row: 1;
+    }
+  }
 `
 
 export const StoryAuthor = styled.div`

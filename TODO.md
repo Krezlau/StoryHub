@@ -28,9 +28,9 @@
 - [x] adding new comments
 
 ### task06:
-- [ ] sorting stories
-- [ ] filtering stories by tag/title
-- [ ] delete my own story from profile page
+- [x] sorting stories
+- [x] filtering stories by tag/title
+- [x] delete my own story from profile page
 
 ### Unallocated:
 * liking stories

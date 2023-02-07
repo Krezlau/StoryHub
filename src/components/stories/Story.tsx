@@ -15,7 +15,13 @@ const Story: React.FC<{
   id: string;
   userId: string;
   tags: string[];
+  onDelete?: (storyId: string) => void;
 }> = (props) => {
+
+  const deleteHandler = () => {
+    if (!!props.onDelete) props.onDelete(props.id);
+  }
+
   return (
     <StoryContainer>
       <StoryInfo>
@@ -29,7 +35,8 @@ const Story: React.FC<{
           ))}
         </StoryTags>
       </StoryInfo>
-      <StoryActions>
+      <StoryActions allowDeletion={!!props.onDelete}>
+        {!!props.onDelete && <button onClick={deleteHandler}>Delete</button>}
         <Link to={`/stories/${props.id}`}>Read...</Link>
       </StoryActions>
     </StoryContainer>
