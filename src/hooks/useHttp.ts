@@ -241,6 +241,23 @@ const useHttp = () => {
       setError("Could not fetch user data.");
     }
   }, []);
+  
+  const deleteStory = useCallback( async (storyId: string) => {
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const response = await axios.delete(`https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories/${storyId}.json`);
+      if (response.status > 299) {
+        throw new Error();
+      }
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
+      setError("Could not fetch user data.");
+    }
+  }, [])
 
   return {
     isLoading,
@@ -255,6 +272,7 @@ const useHttp = () => {
     fetchComments,
     addComment,
     fetchStory,
+    deleteStory,
   };
 };
 

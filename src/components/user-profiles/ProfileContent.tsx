@@ -16,7 +16,7 @@ const ProfileContent: React.FC<{
   showAllContent: boolean;
   userId: string;
 }> = (props) => {
-  const { isLoading, fetchStories } = useHttp();
+  const { isLoading, fetchStories, deleteStory } = useHttp();
   const navigate = useNavigate();
   const [userStories, setUserStories] = useState<IStory[]>([]);
 
@@ -27,6 +27,11 @@ const ProfileContent: React.FC<{
 
   const changePasswordHandler = () => {
     navigate('/change-password');
+  }
+
+  const storyDeleteHandler = (storyId: string) => {
+    setUserStories((state) => state.filter(story => story.id !== storyId));
+    deleteStory(storyId);
   }
 
   return (
@@ -50,7 +55,7 @@ const ProfileContent: React.FC<{
       </UserContent>
       <div>
         <h1>User Stories</h1>
-        {!isLoading && <StoryList stories={userStories} allowDeletion={props.showAllContent}/>}
+        {!isLoading && <StoryList stories={userStories} onDelete={storyDeleteHandler}/>}
         {isLoading && <LoadingSpinner />}
       </div>
     </Fragment>

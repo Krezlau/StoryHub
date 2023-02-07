@@ -4,7 +4,7 @@ import {Stories} from "../../styled/components/stories/StoryList";
 import FilterSortStories from "./FilterSortStories";
 import {IStory} from "../../pages/AllStoriesPage";
 
-const StoryList: React.FC<{ stories: IStory[], allowDeletion?: boolean }> = (props) => {
+const StoryList: React.FC<{ stories: IStory[], onDelete?: (storyId: string) => void }> = (props) => {
   const [sortNewest, toggleSortNewest] = useState<boolean>(false);
   const [filter, setFilter] = useState<string>("");
 
@@ -44,7 +44,7 @@ const StoryList: React.FC<{ stories: IStory[], allowDeletion?: boolean }> = (pro
               id={story.id}
               key={story.id}
               tags={story.tags}
-              allowDeletion={!!props.allowDeletion}
+              onDelete={props.onDelete}
             />
           ))}
       </Stories>
