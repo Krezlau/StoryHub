@@ -50,7 +50,7 @@ const ProfileContent: React.FC<{
       </UserContent>
       <div>
         <h1>User Stories</h1>
-        {!isLoading && <StoryList stories={userStories} />}
+        {!isLoading && <StoryList stories={userStories} allowDeletion={props.showAllContent}/>}
         {isLoading && <LoadingSpinner />}
       </div>
     </Fragment>

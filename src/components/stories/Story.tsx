@@ -15,6 +15,7 @@ const Story: React.FC<{
   id: string;
   userId: string;
   tags: string[];
+  allowDeletion: boolean
 }> = (props) => {
   return (
     <StoryContainer>
@@ -29,7 +30,8 @@ const Story: React.FC<{
           ))}
         </StoryTags>
       </StoryInfo>
-      <StoryActions>
+      <StoryActions allowDeletion={props.allowDeletion}>
+        {props.allowDeletion && <button>Delete</button>}
         <Link to={`/stories/${props.id}`}>Read...</Link>
       </StoryActions>
     </StoryContainer>
