@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.js": "/storyHub/static/js/main.96592366.js",
-    "static/media/futura.ttf": "/storyHub/static/media/futura.ed19af444f0976dbaf41.ttf",
-    "index.html": "/storyHub/index.html",
-    "main.96592366.js.map": "/storyHub/static/js/main.96592366.js.map"
+    "main.js": "/StoryHub/static/js/main.ca32ad75.js",
+    "static/media/futura.ttf": "/StoryHub/static/media/futura.ed19af444f0976dbaf41.ttf",
+    "index.html": "/StoryHub/index.html",
+    "main.ca32ad75.js.map": "/StoryHub/static/js/main.ca32ad75.js.map"
   },
   "entrypoints": [
-    "static/js/main.96592366.js"
+    "static/js/main.ca32ad75.js"
   ]
 }
