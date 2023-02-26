@@ -29,8 +29,6 @@ const storeAuthData = (
   validFor: number,
   userId: string,
   username: string,
-  email: string,
-  createdAt: string
 ) => {
   const currentTime = new Date();
   const expirationTime = new Date(
@@ -41,8 +39,6 @@ const storeAuthData = (
   localStorage.setItem("expirationTime", expirationTime);
   localStorage.setItem("userId", userId);
   localStorage.setItem("username", username);
-  localStorage.setItem("email", email);
-  localStorage.setItem("createdAt", createdAt);
 };
 
 export const retrieveStoredToken = () => {
@@ -50,17 +46,13 @@ export const retrieveStoredToken = () => {
   const storedExpirationDate = localStorage.getItem("expirationTime");
   const storedUserId = localStorage.getItem("userId");
   const storedUsername = localStorage.getItem("username");
-  const storedEmail = localStorage.getItem("email");
-  const storedCreatedAt = localStorage.getItem("createdAt");
 
   const remainingTime = calculateRemainingTime(storedExpirationDate);
 
   if (
     remainingTime <= 60000 ||
     !storedToken ||
-    !storedEmail ||
     !storedUsername ||
-    !storedCreatedAt ||
     !storedUserId
   ) {
     clearAuthStorage();
@@ -71,13 +63,11 @@ export const retrieveStoredToken = () => {
     duration: remainingTime,
     userId: storedUserId,
     username: storedUsername,
-    email: storedEmail,
-    createdAt: storedCreatedAt,
   };
 };
 
 export const loginUser = (
-  email: string,
+  username: string,
   password: string,
   setIsLoading: (newState: boolean) => void,
   setError: (newState: string) => void
@@ -88,63 +78,30 @@ export const loginUser = (
 
     const loginUser = async () => {
       let response = await axios.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        { email, password, returnSecureToken: true },
+        "https://storyhubapi.azurewebsites.net/api/auth/login",
+        { username, password },
         { headers: { "Content-Type": "application/json" } }
       );
-      if (!response || !response.data.idToken || response.status > 299) {
+      if (response.status !== 200) {
         throw new Error("Response incorrect.");
       }
-      return response.data.idToken;
-    };
-
-    const fetchUserData = async (idToken: string) => {
-      const response = await axios.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        { idToken: idToken },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      if (!response || !response.data.users[0].localId) {
-        throw new Error("Response incorrect.");
-      }
-      return response.data.users[0];
-    };
-
-    const fetchCreatedAt = async (userId: string) => {
-      const response = await axios.get(
-        "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
-          userId +
-          ".json"
-      );
-
-      if (!response || !response.data.created) {
-        throw new Error("Response incorrect.");
-      }
-
-      return response.data.created;
+      return response.data;
     };
 
     try {
-      const idToken = await loginUser();
-      const userData = await fetchUserData(idToken);
-      const createdAt = await fetchCreatedAt(userData.localId);
+      const userData = await loginUser();
       dispatch(
         authActions.login({
-          userId: userData.localId,
-          userToken: idToken,
-          username: userData.displayName,
-          email: email,
-          created: createdAt,
+          userId: userData.result.user.id,
+          userToken: userData.result.accessToken,
+          username: userData.result.user.username,
         })
       );
       storeAuthData(
-        idToken,
+        userData.result.accessToken,
         60,
-        userData.localId,
-        userData.displayName,
-        email,
-        createdAt
+        userData.result.user.id,
+        userData.result.user.username,
       );
       setError("");
       setIsLoading(false);
@@ -227,8 +184,6 @@ export const signUpUser = (
         authActions.register({
           idToken: idToken,
           username: username,
-          email: email,
-          created: new Date().toDateString(),
           userId: localId,
         })
       );
@@ -237,8 +192,6 @@ export const signUpUser = (
         60,
         localId,
         username,
-        email,
-        new Date().toDateString()
       );
       setIsLoading(false);
       setError("");

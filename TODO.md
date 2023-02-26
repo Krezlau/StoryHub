@@ -32,6 +32,13 @@
 - [x] filtering stories by tag/title
 - [x] delete my own story from profile page
 
+### task07:
+- [ ] integration with new api
+
+### task08:
+- [ ] liking stories
+- [ ] fetching tags
+
 ### Unallocated:
 * liking stories
 * adding stories to favorites

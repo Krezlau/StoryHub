@@ -13,13 +13,13 @@ const LoginForm: React.FC = () => {
   const { isLoading, error, setError, login } = useHttp();
 
   const {
-    value: email,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    valueChangeHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler,
-    reset: emailReset,
-  } = useValidation((value) => value.trim().length > 3 && value.includes("@"));
+    value: username,
+    isValid: usernameIsValid,
+    hasError: usernameHasError,
+    valueChangeHandler: usernameChangeHandler,
+    inputBlurHandler: usernameBlurHandler,
+    reset: usernameReset,
+  } = useValidation((value) => value.trim().length > 5);
   const {
     value: password,
     isValid: passwordIsValid,
@@ -35,16 +35,16 @@ const LoginForm: React.FC = () => {
     event.preventDefault();
     setError("");
 
-    if (!emailIsValid && !passwordIsValid) {
+    if (!usernameIsValid && !passwordIsValid) {
       setError("Email invalid, password too short.");
-      emailReset();
+      usernameReset();
       passwordReset();
       return;
     }
 
-    if (!emailIsValid) {
+    if (!usernameIsValid) {
       setError("Email invalid.");
-      emailReset();
+      usernameReset();
       passwordReset();
       return;
     }
@@ -55,21 +55,21 @@ const LoginForm: React.FC = () => {
       return;
     }
 
-    login(email.trim(), password.trim());
+    login(username.trim(), password.trim());
   };
 
   return (
     <Fragment>
       <FormContent>
         <form onSubmit={submitHandler}>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
-            type="email"
-            id="email"
-            onBlur={emailBlurHandler}
-            onChange={emailChangeHandler}
+            type="username"
+            id="username"
+            onBlur={usernameBlurHandler}
+            onChange={usernameChangeHandler}
           />
-          {emailHasError && <FormErrorText>Email invalid.</FormErrorText>}
+          {usernameHasError && <FormErrorText>Email invalid.</FormErrorText>}
           <label htmlFor="password">Password</label>
           <input
             type="password"
