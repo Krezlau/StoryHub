@@ -1,12 +1,13 @@
 import React, { FormEvent, Fragment } from "react";
 import useHttp from "../../hooks/useHttp";
 import useValidation from "../../hooks/useValidation";
-import useLoginRedirect from "../../hooks/useLoginRedirect";
 import {FormActions, FormContent, FormErrorText} from "../../styled/components/forms/Form";
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
+import {useNavigate} from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
-  const { isLoading, error, setError, signUp } = useHttp();
+  const { isLoading, setError, signUp } = useHttp();
+  const navigate = useNavigate();
 
   const {
     value: email,
@@ -34,8 +35,6 @@ const SignUpForm: React.FC = () => {
     inputBlurHandler: usernameBlurHandler,
     reset: usernameReset,
   } = useValidation((value) => value.trim().length >= 5);
-
-  useLoginRedirect(error, isLoading);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -71,7 +70,7 @@ const SignUpForm: React.FC = () => {
       passwordReset();
     }
 
-    signUp(username, email, password);
+    signUp(username, email, password, navigate);
   };
 
   return (

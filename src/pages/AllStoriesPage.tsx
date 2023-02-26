@@ -25,7 +25,7 @@ const AllStoriesPage: React.FC = () => {
   return (
     <Fragment>
       <PageHeader title={"All stories"} />
-      {!isLoading && <StoryList stories={stories}/>}
+      {!isLoading && <StoryList stories={stories} />}
       {isLoading && <LoadingSpinner />}
     </Fragment>
   );
