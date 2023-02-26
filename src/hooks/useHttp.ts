@@ -83,7 +83,7 @@ const useHttp = () => {
 
         for (const key in storiesData) {
           stories.push({
-            id: key,
+            id: storiesData[key].id,
             userId: storiesData[key].userId,
             author: storiesData[key].author,
             text: storiesData[key].text,
@@ -166,7 +166,7 @@ const useHttp = () => {
   }, []);
 
   const changePassword = async (
-    userToken: string,
+    currentPassword: string,
     newPassword: string,
     navigate: NavigateFunction
   ) => {
@@ -175,11 +175,16 @@ const useHttp = () => {
 
     try {
       const response = await axios.post(
-        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        { idToken: userToken, password: newPassword, returnSecureToken: true },
-        { headers: { "Content-Type": "application/json" } }
+        "https://storyhubapi.azurewebsites.net/api/auth/change-password",
+        { newPassword: newPassword, currentPassword: currentPassword },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-      if (response.status !== 200) {
+      if (!response.data.isSuccess) {
         throw new Error("Status not ok.");
       }
 
@@ -199,20 +204,26 @@ const useHttp = () => {
 
     try {
       const response = await axios.get(
-        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories/${storyId}/comments.json`
+        `https://storyhubapi.azurewebsites.net/api/comments/story/${storyId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-      if (response.status > 299) {
+      if (!response.data.isSuccess) {
         throw new Error();
       }
-      const data = response.data;
+      const data = response.data.result;
 
       for (const key in data) {
         comments.push({
-          id: key,
-          text: data[key].comment.text,
-          createdAt: data[key].comment.createdAt,
-          authorName: data[key].comment.authorName,
-          authorId: data[key].comment.authorId,
+          id: data[key].id,
+          text: data[key].text,
+          createdAt: data[key].createdAt,
+          authorName: data[key].username,
+          authorId: data[key].userId,
         });
       }
 
@@ -231,12 +242,17 @@ const useHttp = () => {
 
     try {
       const response = await axios.post(
-        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories/${storyId}/comments.json`,
-        { comment },
-        { headers: { "Content-Type": "application/json" } }
+        `https://storyhubapi.azurewebsites.net/api/comments/story/${storyId}`,
+        { text: comment.text },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
-      if (response.status > 299) {
+      if (!response.data.isSuccess) {
         throw new Error();
       }
 
@@ -244,7 +260,7 @@ const useHttp = () => {
     } catch (e) {
       console.log(e);
       setIsLoading(false);
-      setError("Could not fetch comments. Try again.");
+      setError("Could not add comment. Try again.");
     }
   };
 
@@ -255,12 +271,18 @@ const useHttp = () => {
 
     try {
       const response = await axios.get(
-        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories/${storyId}.json`
+        `https://storyhubapi.azurewebsites.net/api/Stories/${storyId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-      if (response.status > 299) {
+      if (!response.data.isSuccess) {
         throw new Error();
       }
-      const data = response.data;
+      const data = response.data.result;
 
       console.log(data);
       story = {
