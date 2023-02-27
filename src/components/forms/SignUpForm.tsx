@@ -1,12 +1,16 @@
 import React, { FormEvent, Fragment } from "react";
 import useHttp from "../../hooks/useHttp";
 import useValidation from "../../hooks/useValidation";
-import {FormActions, FormContent, FormErrorText} from "../../styled/components/forms/Form";
-import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
-import {useNavigate} from "react-router-dom";
+import {
+  FormActions,
+  FormContent,
+  FormErrorText,
+} from "../../styled/components/forms/Form";
+import { Button, LoadingSpinner } from "../../styled/components/UI/UIElements";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
-  const { isLoading, setError, signUp } = useHttp();
+  const { isLoading, setError, signUp, setNotificationTitle } = useHttp();
   const navigate = useNavigate();
 
   const {
@@ -40,7 +44,8 @@ const SignUpForm: React.FC = () => {
     event.preventDefault();
 
     if (!emailIsValid && !passwordIsValid && !usernameIsValid) {
-      setError("Email invalid, password too short, username too short.")
+      setNotificationTitle("Could not register");
+      setError("Email invalid, password too short, username too short.");
       usernameReset();
       emailReset();
       passwordReset();
@@ -48,7 +53,8 @@ const SignUpForm: React.FC = () => {
     }
 
     if (!emailIsValid) {
-      setError("Email invalid.")
+      setNotificationTitle("Could not register");
+      setError("Email invalid.");
       usernameReset();
       emailReset();
       passwordReset();
@@ -56,7 +62,8 @@ const SignUpForm: React.FC = () => {
     }
 
     if (!passwordIsValid) {
-      setError("Password too short.")
+      setNotificationTitle("Could not register");
+      setError("Password too short.");
       usernameReset();
       emailReset();
       passwordReset();
@@ -64,7 +71,8 @@ const SignUpForm: React.FC = () => {
     }
 
     if (!usernameIsValid) {
-      setError("Username too short.")
+      setNotificationTitle("Could not register");
+      setError("Username too short.");
       usernameReset();
       emailReset();
       passwordReset();
@@ -85,7 +93,9 @@ const SignUpForm: React.FC = () => {
             onBlur={usernameBlurHandler}
             onChange={usernameChangeHandler}
           />
-          {usernameHasError && <FormErrorText>Username too short.</FormErrorText>}
+          {usernameHasError && (
+            <FormErrorText>Username too short.</FormErrorText>
+          )}
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -103,7 +113,9 @@ const SignUpForm: React.FC = () => {
             onBlur={passwordBlurHandler}
             onChange={passwordChangeHandler}
           />
-          {passwordHasError && <FormErrorText>Password too short.</FormErrorText>}
+          {passwordHasError && (
+            <FormErrorText>Password too short.</FormErrorText>
+          )}
           <FormActions>
             {!isLoading && <Button type="submit">Sign Up</Button>}
             {isLoading && <LoadingSpinner />}

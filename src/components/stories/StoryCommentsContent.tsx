@@ -33,7 +33,7 @@ const StoryCommentsContent: React.FC<{ storyId: string }> = (
   props
 ) => {
   const [comments, setComments] = useState<IComment[]>(DUMMYCOMMENTS);
-  const {isLoading, fetchComments, addComment} = useHttp();
+  const {isLoading, fetchComments, addComment, setError, setNotificationTitle} = useHttp();
 
   useEffect( () => {
     fetchComments(props.storyId).then(res => setComments(res));
@@ -47,7 +47,7 @@ const StoryCommentsContent: React.FC<{ storyId: string }> = (
   return (
     <>
       <CommentsCountLabel>{comments.length} Comments</CommentsCountLabel>
-      <CommentForm addComment={commentAddHandler} />
+      <CommentForm addComment={commentAddHandler} setError={setError} setNotificationTitle={setNotificationTitle} />
       {!isLoading && <StoryCommentsList comments={comments} />}
       {isLoading && <LoadingSpinner />}
     </>

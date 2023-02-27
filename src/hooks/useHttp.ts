@@ -9,6 +9,14 @@ import { IStory } from "../pages/AllStoriesPage";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 
+const joinStrings = (arr: string[]) => {
+  let result = "";
+  for (const str in arr){
+    result += str + " ";
+  }
+  return result;
+}
+
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -29,6 +37,7 @@ const useHttp = () => {
   ) => {
     setIsLoading(true);
     setError("");
+    setNotificationTitle("");
 
     const signUp = async () => {
       const response = await axios.post(
@@ -37,8 +46,17 @@ const useHttp = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      if (!response.data.isSuccess) {
-        throw new Error("Response incorrect.");
+      if (response.status !== 200) {
+        if (!response.data.errorMessages){
+          throw new Error();
+        }
+        setIsLoading(false);
+        setNotificationTitle("Could not register");
+        if (response.data.errorMessages.length == 1) {
+          setError(response.data.errorMessages[0]);
+        } else {
+          setError(joinStrings(response.data.errorMessages));
+        }
       }
     };
 
@@ -47,17 +65,20 @@ const useHttp = () => {
 
       setIsLoading(false);
       setError("");
+      setNotificationTitle("");
       navigate("/login");
     } catch (e) {
       console.log(e);
       setIsLoading(false);
-      setError("Could not sign up.");
+      setNotificationTitle("Something went wrong.");
+      setError("Something unexpected happened. Try again.");
     }
   };
 
   const fetchStories = useCallback(
     async (setStories: (newState: IStory[]) => void) => {
       setIsLoading(true);
+      setNotificationTitle("");
       setError("");
 
       const fetchStoriesFromDB = async () => {
@@ -96,9 +117,11 @@ const useHttp = () => {
         setStories(stories);
 
         setIsLoading(false);
+        setNotificationTitle("");
         setError("");
       } catch (e) {
         console.log(e);
+        setNotificationTitle("Something went wrong.");
         setError("Could not fetch stories.");
         setIsLoading(false);
       }
@@ -108,6 +131,7 @@ const useHttp = () => {
 
   const fetchUser = useCallback(async (id: string) => {
     setIsLoading(true);
+    setNotificationTitle("");
     setError("");
 
     try {
@@ -131,16 +155,20 @@ const useHttp = () => {
       };
 
       setIsLoading(false);
+      setNotificationTitle("");
+      setError("");
       return user;
     } catch (e) {
       console.log(e);
       setIsLoading(false);
+      setNotificationTitle("Something went wrong.");
       setError("Could not fetch user data.");
     }
   }, []);
 
   const addNewStory = useCallback(async (story: IStory) => {
     setIsLoading(true);
+    setNotificationTitle("");
     setError("");
 
     const sendStoryToDB = async () => {
@@ -164,9 +192,12 @@ const useHttp = () => {
 
     try {
       story.id = await sendStoryToDB();
+      setError("");
+      setNotificationTitle("");
       setIsLoading(false);
     } catch (e) {
       console.log(e);
+      setNotificationTitle("Something went wrong.");
       setError("Could not send data.");
       setIsLoading(false);
     }
@@ -178,6 +209,7 @@ const useHttp = () => {
     navigate: NavigateFunction
   ) => {
     setIsLoading(true);
+    setNotificationTitle("");
     setError("");
 
     try {
@@ -196,9 +228,12 @@ const useHttp = () => {
       }
 
       setIsLoading(false);
+      setError("");
+      setNotificationTitle("");
       navigate(-1);
     } catch (e) {
       console.log(e);
+      setNotificationTitle("Something went wrong.");
       setError("Could not change.");
       setIsLoading(false);
     }
@@ -206,6 +241,7 @@ const useHttp = () => {
 
   const fetchComments = useCallback(async (storyId: string) => {
     setIsLoading(true);
+    setNotificationTitle("");
     setError("");
     const comments: IComment[] = [];
 
@@ -234,10 +270,13 @@ const useHttp = () => {
         });
       }
 
+      setNotificationTitle("");
       setIsLoading(false);
+      setError("");
     } catch (e) {
       console.log(e);
       setIsLoading(false);
+      setNotificationTitle("Something went wrong.");
       setError("Could not fetch user data.");
     }
     return comments;
@@ -245,6 +284,7 @@ const useHttp = () => {
 
   const addComment = async (comment: IComment, storyId: string) => {
     setIsLoading(true);
+    setNotificationTitle("");
     setError("");
 
     try {
@@ -263,16 +303,20 @@ const useHttp = () => {
         throw new Error();
       }
 
+      setError("");
+      setNotificationTitle("");
       setIsLoading(false);
     } catch (e) {
       console.log(e);
       setIsLoading(false);
+      setNotificationTitle("Something went wrong.");
       setError("Could not add comment. Try again.");
     }
   };
 
   const fetchStory = useCallback(async (storyId: string) => {
     setIsLoading(true);
+    setNotificationTitle("");
     setError("");
     let story: IStory;
 
@@ -302,11 +346,14 @@ const useHttp = () => {
         createdAt: new Date(data.createdAt),
       };
 
+      setError("");
+      setNotificationTitle("");
       setIsLoading(false);
       return story;
     } catch (e) {
       console.log(e);
       setIsLoading(false);
+      setNotificationTitle("Something went wrong.");
       setError("Could not fetch user data.");
     }
   }, []);
@@ -332,12 +379,15 @@ const useHttp = () => {
     } catch (e) {
       console.log(e);
       setIsLoading(false);
+      setNotificationTitle("Something went wrong.");
       setError("Could not delete.");
     }
   }, []);
 
   return {
     isLoading,
+    notificationTitle,
+    setNotificationTitle,
     error,
     setError,
     login,

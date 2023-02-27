@@ -2,30 +2,33 @@ import {
   CommentFormActions,
   CommentFormContent,
 } from "../../styled/components/forms/CommentFormContent";
-import React, {ChangeEvent, FormEvent, useState} from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { IComment } from "../stories/StoryCommentsList";
 import { useSelector } from "react-redux";
 import { IRootState } from "../../store";
 
-const CommentForm: React.FC<{ addComment: (comment: IComment) => void }> = (
-  props
-) => {
+const CommentForm: React.FC<{
+  addComment: (comment: IComment) => void;
+  setError: (newState: string) => void;
+  setNotificationTitle: (newState: string) => void;
+}> = (props) => {
   const [text, setText] = useState<string>("");
   const auth = useSelector((state: IRootState) => state.auth);
 
   const textChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value);
-  }
+  };
 
   const cancelHandler = () => {
     setText("");
-  }
+  };
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
     if (text.trim().length === 0) {
-      // error message
+      props.setNotificationTitle("ERROR");
+      props.setError("Comment needs to be at least 1 character long.");
       return;
     }
 
@@ -44,9 +47,16 @@ const CommentForm: React.FC<{ addComment: (comment: IComment) => void }> = (
   return (
     <CommentFormContent>
       <form onSubmit={submitHandler}>
-        <textarea placeholder={"Add a comment..."} id="comment" value={text} onChange={textChangeHandler} />
+        <textarea
+          placeholder={"Add a comment..."}
+          id="comment"
+          value={text}
+          onChange={textChangeHandler}
+        />
         <CommentFormActions>
-          <button type={"button"} onClick={cancelHandler}>Cancel</button>
+          <button type={"button"} onClick={cancelHandler}>
+            Cancel
+          </button>
           <button type={"submit"}>Add</button>
         </CommentFormActions>
       </form>

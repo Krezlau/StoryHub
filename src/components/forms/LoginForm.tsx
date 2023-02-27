@@ -10,7 +10,7 @@ import {
 import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
 
 const LoginForm: React.FC = () => {
-  const { isLoading, error, setError, login } = useHttp();
+  const { isLoading, error, setError, login, setNotificationTitle } = useHttp();
 
   const {
     value: username,
@@ -36,6 +36,7 @@ const LoginForm: React.FC = () => {
     setError("");
 
     if (!usernameIsValid && !passwordIsValid) {
+      setNotificationTitle("Could not login")
       setError("Email invalid, password too short.");
       usernameReset();
       passwordReset();
@@ -43,6 +44,7 @@ const LoginForm: React.FC = () => {
     }
 
     if (!usernameIsValid) {
+      setNotificationTitle("Could not login")
       setError("Email invalid.");
       usernameReset();
       passwordReset();
@@ -50,6 +52,7 @@ const LoginForm: React.FC = () => {
     }
 
     if (!passwordIsValid) {
+      setNotificationTitle("Could not login")
       setError("Password too short.");
       passwordReset();
       return;

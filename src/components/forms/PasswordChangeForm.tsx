@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 let isInitial = true;
 
 const PasswordChangeForm = () => {
-  const { isLoading, setError, changePassword } = useHttp();
+  const { isLoading, setError, changePassword, setNotificationTitle } = useHttp();
   const navigate = useNavigate();
 
   const {
@@ -37,6 +37,7 @@ const PasswordChangeForm = () => {
     event.preventDefault();
 
     if (!currentPasswordIsValid) {
+      setNotificationTitle("Could not change");
       setError("Current password too short.");
       newPasswordReset();
       currentPasswordReset();
@@ -46,6 +47,7 @@ const PasswordChangeForm = () => {
     if (!newPasswordIsValid) {
       newPasswordReset();
       currentPasswordReset();
+      setNotificationTitle("Could not change");
       setError("New password too short.");
       return;
     }
