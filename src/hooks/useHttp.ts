@@ -12,10 +12,11 @@ import { IRootState } from "../store";
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [notificationTitle, setNotificationTitle] = useState<string>("");
   const dispatch = useAuthDispatch();
   const accessToken = useSelector((state: IRootState) => state.auth.userToken);
 
-  useNotification(error, setError);
+  useNotification(notificationTitle, setNotificationTitle, error, setError);
 
   const login = (email: string, password: string) => {
     dispatch(loginUser(email, password, setIsLoading, setError));
@@ -102,7 +103,7 @@ const useHttp = () => {
         setIsLoading(false);
       }
     },
-    []
+    [accessToken]
   );
 
   const fetchUser = useCallback(async (id: string) => {
@@ -111,16 +112,22 @@ const useHttp = () => {
 
     try {
       const response = await axios.get(
-        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`
+        `https://storyhubapi.azurewebsites.net/api/users/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-      if (response.status > 299) {
+      if (response.status !== 200) {
         throw new Error();
       }
-      const data = response.data;
+      const data = response.data.result;
       const user: IUser = {
-        name: data.name,
+        name: data.username,
         email: data.email,
-        created: data.created,
+        created: data.createdAt,
       };
 
       setIsLoading(false);
@@ -310,16 +317,22 @@ const useHttp = () => {
 
     try {
       const response = await axios.delete(
-        `https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/stories/${storyId}.json`
+        `https://storyhubapi.azurewebsites.net/api/Stories/${storyId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
-      if (response.status > 299) {
+      if (response.status !== 200) {
         throw new Error();
       }
       setIsLoading(false);
     } catch (e) {
       console.log(e);
       setIsLoading(false);
-      setError("Could not fetch user data.");
+      setError("Could not delete.");
     }
   }, []);
 
