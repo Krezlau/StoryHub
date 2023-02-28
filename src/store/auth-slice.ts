@@ -50,6 +50,9 @@ const authSlice = createSlice({
       state.userToken = action.payload.idToken;
       state.userId = action.payload.userId;
     },
+    refresh: (state, action: PayloadAction<{ token: string }>) => {
+      state.userToken = action.payload.token;
+    },
   },
 });
 

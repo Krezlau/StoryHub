@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { loginUser, useAuthDispatch } from "../store/auth-actions";
-import axios from "axios";
+import axios, {Axios, AxiosError} from "axios";
 import { IUser } from "../pages/ProfilePage";
 import useNotification from "./useNotification";
 import { NavigateFunction } from "react-router-dom";
@@ -8,6 +8,7 @@ import { IComment } from "../components/stories/StoryCommentsList";
 import { IStory } from "../pages/AllStoriesPage";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
+import {authActions} from "../store/auth-slice";
 
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,6 +18,30 @@ const useHttp = () => {
   const accessToken = useSelector((state: IRootState) => state.auth.userToken);
 
   useNotification(notificationTitle, setNotificationTitle, error, setError);
+
+  const refreshToken = () =>
+  {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      return null;
+    }
+    try {
+      let token;
+      axios.post(
+        "https://storyhubapi.azurewebsites.net/api/auth/refresh",
+        { accessToken, refreshToken },
+        { headers: { "Content-Type": "application/json" } }
+      )
+        .then((r) => {
+          localStorage.setItem("token", r.data.result);
+          token = r.data.result;
+          dispatch(authActions.refresh(token))
+        });
+      return token;
+    } catch (e) {
+      return null;
+    }
+  }
 
   const login = (email: string, password: string) => {
     dispatch(loginUser(email, password, setIsLoading, setError));
@@ -103,6 +128,12 @@ const useHttp = () => {
         setNotificationTitle("");
         setError("");
       } catch (e) {
+        if (e instanceof AxiosError) {
+          const axios: AxiosError = e;
+          if (axios.response && axios.response.status === 401){
+            refreshToken();
+          }
+        }
         console.log(e);
         setNotificationTitle("Something went wrong.");
         setError("Could not fetch stories. Try again.");

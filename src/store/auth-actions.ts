@@ -15,6 +15,7 @@ const calculateRemainingTime = (expirationTime: string | null) => {
 };
 
 export const clearAuthStorage = () => {
+  localStorage.removeItem("refreshToken");
   localStorage.removeItem("token");
   localStorage.removeItem("expirationTime");
   localStorage.removeItem("userId");
@@ -25,6 +26,7 @@ export const clearAuthStorage = () => {
 
 const storeAuthData = (
   token: string,
+  refreshToken: string,
   validFor: number,
   userId: string,
   username: string
@@ -34,6 +36,7 @@ const storeAuthData = (
     currentTime.getTime() + 60 * 60000
   ).toISOString();
 
+  localStorage.setItem("refreshToken", token);
   localStorage.setItem("token", token);
   localStorage.setItem("expirationTime", expirationTime);
   localStorage.setItem("userId", userId);
@@ -45,6 +48,7 @@ export const retrieveStoredToken = () => {
   const storedExpirationDate = localStorage.getItem("expirationTime");
   const storedUserId = localStorage.getItem("userId");
   const storedUsername = localStorage.getItem("username");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   const remainingTime = calculateRemainingTime(storedExpirationDate);
 
@@ -54,8 +58,21 @@ export const retrieveStoredToken = () => {
     !storedUsername ||
     !storedUserId
   ) {
-    clearAuthStorage();
-    return null;
+    if (!refreshToken || !storedToken || !storedUsername || !storedUserId) {
+      clearAuthStorage();
+      return null;
+    }
+    try {
+      axios
+        .post(
+          "https://storyhubapi.azurewebsites.net/api/auth/refresh",
+          { storedToken, refreshToken },
+          { headers: { "Content-Type": "application/json" } }
+        )
+        .then((r) => localStorage.setItem("token", r.data.result));
+    } catch (e) {
+      return null;
+    }
   }
   return {
     token: storedToken,
@@ -98,6 +115,7 @@ export const loginUser = (
       );
       storeAuthData(
         userData.result.accessToken,
+        userData.result.refreshToken,
         60,
         userData.result.user.id,
         userData.result.user.username

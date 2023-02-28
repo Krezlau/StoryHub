@@ -34,6 +34,7 @@
 
 ### task07:
 - [ ] integration with new api
+- [ ] refresh tokens 
 
 ### task08:
 - [ ] liking stories
