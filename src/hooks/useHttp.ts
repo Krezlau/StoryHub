@@ -9,14 +9,6 @@ import { IStory } from "../pages/AllStoriesPage";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 
-const joinStrings = (arr: string[]) => {
-  let result = "";
-  for (const str in arr){
-    result += str + " ";
-  }
-  return result;
-}
-
 const useHttp = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -46,17 +38,8 @@ const useHttp = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      if (response.status !== 200) {
-        if (!response.data.errorMessages){
-          throw new Error();
-        }
-        setIsLoading(false);
-        setNotificationTitle("Could not register");
-        if (response.data.errorMessages.length == 1) {
-          setError(response.data.errorMessages[0]);
-        } else {
-          setError(joinStrings(response.data.errorMessages));
-        }
+      if (!response.data.isSuccess) {
+        throw new Error();
       }
     };
 
@@ -93,7 +76,7 @@ const useHttp = () => {
         );
 
         if (!response.data.isSuccess) {
-          throw new Error("Could not fetch.");
+          throw new Error();
         }
 
         return response.data.result;
@@ -122,7 +105,7 @@ const useHttp = () => {
       } catch (e) {
         console.log(e);
         setNotificationTitle("Something went wrong.");
-        setError("Could not fetch stories.");
+        setError("Could not fetch stories. Try again.");
         setIsLoading(false);
       }
     },
@@ -144,7 +127,7 @@ const useHttp = () => {
           },
         }
       );
-      if (response.status !== 200) {
+      if (!response.data.isSuccess) {
         throw new Error();
       }
       const data = response.data.result;
@@ -162,9 +145,9 @@ const useHttp = () => {
       console.log(e);
       setIsLoading(false);
       setNotificationTitle("Something went wrong.");
-      setError("Could not fetch user data.");
+      setError("Could not fetch user data. Try again.");
     }
-  }, []);
+  }, [accessToken]);
 
   const addNewStory = useCallback(async (story: IStory) => {
     setIsLoading(true);
@@ -184,7 +167,7 @@ const useHttp = () => {
       );
 
       if (!response.data.isSuccess) {
-        throw new Error("Could not send data.");
+        throw new Error();
       }
 
       return response.data.result;
@@ -198,10 +181,10 @@ const useHttp = () => {
     } catch (e) {
       console.log(e);
       setNotificationTitle("Something went wrong.");
-      setError("Could not send data.");
+      setError("Could not send data. Try again.");
       setIsLoading(false);
     }
-  }, []);
+  }, [accessToken]);
 
   const changePassword = async (
     currentPassword: string,
@@ -224,7 +207,7 @@ const useHttp = () => {
         }
       );
       if (!response.data.isSuccess) {
-        throw new Error("Status not ok.");
+        throw new Error();
       }
 
       setIsLoading(false);
@@ -234,7 +217,7 @@ const useHttp = () => {
     } catch (e) {
       console.log(e);
       setNotificationTitle("Something went wrong.");
-      setError("Could not change.");
+      setError("Could not change. Try again.");
       setIsLoading(false);
     }
   };
@@ -277,10 +260,10 @@ const useHttp = () => {
       console.log(e);
       setIsLoading(false);
       setNotificationTitle("Something went wrong.");
-      setError("Could not fetch user data.");
+      setError("Could not fetch comments data. Try again.");
     }
     return comments;
-  }, []);
+  }, [accessToken]);
 
   const addComment = async (comment: IComment, storyId: string) => {
     setIsLoading(true);
@@ -354,9 +337,9 @@ const useHttp = () => {
       console.log(e);
       setIsLoading(false);
       setNotificationTitle("Something went wrong.");
-      setError("Could not fetch user data.");
+      setError("Could not fetch story. Try again.");
     }
-  }, []);
+  }, [accessToken]);
 
   const deleteStory = useCallback(async (storyId: string) => {
     setIsLoading(true);
@@ -372,7 +355,7 @@ const useHttp = () => {
           },
         }
       );
-      if (response.status !== 200) {
+      if (!response.data.isSuccess) {
         throw new Error();
       }
       setIsLoading(false);
@@ -380,9 +363,9 @@ const useHttp = () => {
       console.log(e);
       setIsLoading(false);
       setNotificationTitle("Something went wrong.");
-      setError("Could not delete.");
+      setError("Could not delete. Try again.");
     }
-  }, []);
+  }, [accessToken]);
 
   return {
     isLoading,
