@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Futura;
+    src: local(Futura), url("futura.ttf") format("truetype");
+}
+
+* {
+    font-family: Futura, sans-serif;
+    box-sizing: border-box;
+}
