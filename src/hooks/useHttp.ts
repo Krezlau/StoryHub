@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { loginUser, useAuthDispatch } from "../store/auth-actions";
-import axios, {Axios, AxiosError} from "axios";
+import axios, {AxiosError} from "axios";
 import { IUser } from "../pages/ProfilePage";
 import useNotification from "./useNotification";
 import { NavigateFunction } from "react-router-dom";
@@ -36,11 +36,26 @@ const useHttp = () => {
           localStorage.setItem("token", r.data.result);
           token = r.data.result;
           dispatch(authActions.refresh(token))
-        });
+        })
       return token;
     } catch (e) {
       return null;
     }
+  }
+
+  const handleAxiosError = (e: unknown) => {
+    if (e instanceof AxiosError) {
+      const axios: AxiosError = e;
+      if (axios.response && axios.response.status === 401){
+        const token = refreshToken();
+        if (token) {
+          setNotificationTitle("Something went wrong.");
+          setError("Don't worry. Try again. It should work this time.");
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   const login = (email: string, password: string) => {
@@ -128,16 +143,12 @@ const useHttp = () => {
         setNotificationTitle("");
         setError("");
       } catch (e) {
-        if (e instanceof AxiosError) {
-          const axios: AxiosError = e;
-          if (axios.response && axios.response.status === 401){
-            refreshToken();
-          }
-        }
-        console.log(e);
-        setNotificationTitle("Something went wrong.");
-        setError("Could not fetch stories. Try again.");
         setIsLoading(false);
+        if (!handleAxiosError(e)){
+          console.log(e);
+          setNotificationTitle("Something went wrong.");
+          setError("Could not fetch stories. Try again.");
+        }
       }
     },
     [accessToken]
@@ -173,10 +184,12 @@ const useHttp = () => {
       setError("");
       return user;
     } catch (e) {
-      console.log(e);
       setIsLoading(false);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not fetch user data. Try again.");
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not fetch user data. Try again.");
+      }
     }
   }, [accessToken]);
 
@@ -210,10 +223,12 @@ const useHttp = () => {
       setNotificationTitle("");
       setIsLoading(false);
     } catch (e) {
-      console.log(e);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not send data. Try again.");
       setIsLoading(false);
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not send data. Try again.");
+      }
     }
   }, [accessToken]);
 
@@ -246,10 +261,12 @@ const useHttp = () => {
       setNotificationTitle("");
       navigate(-1);
     } catch (e) {
-      console.log(e);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not change. Try again.");
       setIsLoading(false);
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not change. Try again.");
+      }
     }
   };
 
@@ -288,10 +305,12 @@ const useHttp = () => {
       setIsLoading(false);
       setError("");
     } catch (e) {
-      console.log(e);
       setIsLoading(false);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not fetch comments data. Try again.");
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not fetch comments data. Try again.");
+      }
     }
     return comments;
   }, [accessToken]);
@@ -321,10 +340,12 @@ const useHttp = () => {
       setNotificationTitle("");
       setIsLoading(false);
     } catch (e) {
-      console.log(e);
       setIsLoading(false);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not add comment. Try again.");
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not add comment. Try again.");
+      }
     }
   };
 
@@ -365,10 +386,12 @@ const useHttp = () => {
       setIsLoading(false);
       return story;
     } catch (e) {
-      console.log(e);
       setIsLoading(false);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not fetch story. Try again.");
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not fetch story. Try again.");
+      }
     }
   }, [accessToken]);
 
@@ -391,10 +414,12 @@ const useHttp = () => {
       }
       setIsLoading(false);
     } catch (e) {
-      console.log(e);
       setIsLoading(false);
-      setNotificationTitle("Something went wrong.");
-      setError("Could not delete. Try again.");
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not delete. Try again.");
+      }
     }
   }, [accessToken]);
 

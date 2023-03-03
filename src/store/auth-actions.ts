@@ -36,7 +36,7 @@ const storeAuthData = (
     currentTime.getTime() + 60 * 60000
   ).toISOString();
 
-  localStorage.setItem("refreshToken", token);
+  localStorage.setItem("refreshToken", refreshToken);
   localStorage.setItem("token", token);
   localStorage.setItem("expirationTime", expirationTime);
   localStorage.setItem("userId", userId);
