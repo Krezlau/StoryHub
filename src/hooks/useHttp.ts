@@ -129,8 +129,8 @@ const useHttp = () => {
         for (const key in storiesData) {
           stories.push({
             id: storiesData[key].id,
-            userId: storiesData[key].userId,
-            author: storiesData[key].author,
+            userId: storiesData[key].authorId,
+            author: storiesData[key].authorName,
             text: storiesData[key].text,
             title: storiesData[key].title,
             tags: storiesData[key].tags,
@@ -375,9 +375,9 @@ const useHttp = () => {
         id: storyId,
         text: data.text,
         tags: data.tags,
-        userId: data.userId,
+        userId: data.authorId,
         title: data.title,
-        author: data.author,
+        author: data.authorName,
         createdAt: new Date(data.createdAt),
       };
 
