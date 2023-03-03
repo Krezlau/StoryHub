@@ -99,7 +99,7 @@ const useHttp = () => {
   };
 
   const fetchStories = useCallback(
-    async (setStories: (newState: IStory[]) => void) => {
+    async (setStories: (newState: IStory[]) => void, userId?: string) => {
       setIsLoading(true);
       setNotificationTitle("");
       setError("");
@@ -122,8 +122,31 @@ const useHttp = () => {
         return response.data.result;
       };
 
+      const fetchUserStoriesFromDB = async (userId: string) => {
+        const response = await axios.get(
+          `https://storyhubapi.azurewebsites.net/api/stories/byuserid/${userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+
+        if (!response.data.isSuccess) {
+          throw new Error();
+        }
+
+        return response.data.result;
+      };
+
       try {
-        const storiesData = await fetchStoriesFromDB();
+        let storiesData;
+        if (userId){
+          storiesData = await fetchUserStoriesFromDB(userId);
+        } else {
+          storiesData = await fetchStoriesFromDB();
+        }
         const stories: IStory[] = [];
 
         for (const key in storiesData) {
@@ -422,6 +445,8 @@ const useHttp = () => {
       }
     }
   }, [accessToken]);
+
+
 
   return {
     isLoading,
