@@ -1,7 +1,13 @@
 import React, { Fragment } from "react";
-import { IStory } from "../../store/stories-slice";
-import classes from "./StoryDetails.module.css";
 import { Link } from "react-router-dom";
+import {
+  StoryDetailsActions,
+  StoryDetailsActivityInfo,
+  StoryDetailsAuthor,
+  StoryDetailsContent,
+  StoryDetailsFooter
+} from "../../styled/components/stories/StoryDetails";
+import {IStory} from "../../pages/AllStoriesPage";
 
 const StoryDetails: React.FC<{ story?: IStory }> = (props) => {
   if (!props.story) {
@@ -10,29 +16,27 @@ const StoryDetails: React.FC<{ story?: IStory }> = (props) => {
 
   return (
     <Fragment>
-      <div className={classes.author}>
+      <StoryDetailsAuthor>
         <h5>
           by{" "}
           <Link to={`/profile/${props.story.userId}`}>
             {props.story.author}
           </Link>
         </h5>
-      </div>
-      <div className={classes.content}>
-        <p>{props.story.text}</p>
-      </div>
-      <div className={classes.footer}>
-        <div className={classes.info}>
+      </StoryDetailsAuthor>
+      <StoryDetailsContent>
+        {props.story.text.split("\n").map(t => <p>{t}</p>)}
+      </StoryDetailsContent>
+      <StoryDetailsFooter>
+        <StoryDetailsActivityInfo>
           <p>2137 views</p>
           <p>11 likes</p>
-          <p>2 comments</p>
-        </div>
-        <div className={classes.actions}>
+        </StoryDetailsActivityInfo>
+        <StoryDetailsActions>
           <button>Like</button>
-          <button>Comment</button>
           <button>Add to favourites</button>
-        </div>
-      </div>
+        </StoryDetailsActions>
+      </StoryDetailsFooter>
     </Fragment>
   );
 };

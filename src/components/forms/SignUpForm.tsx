@@ -1,51 +1,128 @@
-import React, { FormEvent, useRef } from "react";
-import classes from "./Form.module.css";
-import Button from "../UI/Button";
-import { useSelector } from "react-redux";
+import React, { FormEvent, Fragment } from "react";
+import useHttp from "../../hooks/useHttp";
+import useValidation from "../../hooks/useValidation";
+import {
+  FormActions,
+  FormContent,
+  FormErrorText,
+} from "../../styled/components/forms/Form";
+import { Button, LoadingSpinner } from "../../styled/components/UI/UIElements";
 import { useNavigate } from "react-router-dom";
-import { IRootState } from "../../store";
-import { singUpUser, useAuthDispatch } from "../../store/auth-actions";
 
 const SignUpForm: React.FC = () => {
-  const goBack = useSelector((state: IRootState) => state.redirect.goBack);
+  const { isLoading, setError, signUp, setNotificationTitle } = useHttp();
   const navigate = useNavigate();
-  const dispatch = useAuthDispatch();
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: emailReset,
+  } = useValidation((value) => value.trim().length > 3 && value.includes("@"));
+
+  const {
+    value: password,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+    reset: passwordReset,
+  } = useValidation((value) => value.trim().length >= 8);
+
+  const {
+    value: username,
+    isValid: usernameIsValid,
+    hasError: usernameHasError,
+    valueChangeHandler: usernameChangeHandler,
+    inputBlurHandler: usernameBlurHandler,
+    reset: usernameReset,
+  } = useValidation((value) => value.trim().length >= 5);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    const username = usernameRef.current!.value;
-    const email = emailRef.current!.value;
-    const password = passwordRef.current!.value;
-
-    // validate
-
-    dispatch(singUpUser(username, email, password));
-
-    if (goBack) {
-      navigate(-1);
+    if (!emailIsValid && !passwordIsValid && !usernameIsValid) {
+      setNotificationTitle("Could not register");
+      setError("Email invalid, password too short, username too short.");
+      usernameReset();
+      emailReset();
+      passwordReset();
       return;
     }
-    navigate("/home");
+
+    if (!emailIsValid) {
+      setNotificationTitle("Could not register");
+      setError("Email invalid.");
+      usernameReset();
+      emailReset();
+      passwordReset();
+      return;
+    }
+
+    if (!passwordIsValid) {
+      setNotificationTitle("Could not register");
+      setError("Password too short.");
+      usernameReset();
+      emailReset();
+      passwordReset();
+      return;
+    }
+
+    if (!usernameIsValid) {
+      setNotificationTitle("Could not register");
+      setError("Username too short.");
+      usernameReset();
+      emailReset();
+      passwordReset();
+    }
+
+    signUp(username, email, password, navigate);
   };
 
   return (
-    <div className={classes.content}>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="nickname">Username</label>
-        <input type="text" id="username" ref={usernameRef} />
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" ref={emailRef} />
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" ref={passwordRef} />
-        <div className={classes.actions}>
-          <Button type="submit">Sign Up</Button>
-        </div>
-      </form>
-    </div>
+    <Fragment>
+      <FormContent>
+        <form onSubmit={submitHandler}>
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onBlur={usernameBlurHandler}
+            onChange={usernameChangeHandler}
+          />
+          {usernameHasError && (
+            <FormErrorText>Username too short.</FormErrorText>
+          )}
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onBlur={emailBlurHandler}
+            onChange={emailChangeHandler}
+          />
+          {emailHasError && <FormErrorText>Email invalid.</FormErrorText>}
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onBlur={passwordBlurHandler}
+            onChange={passwordChangeHandler}
+          />
+          {passwordHasError && (
+            <FormErrorText>Password too short.</FormErrorText>
+          )}
+          <FormActions>
+            {!isLoading && <Button type="submit">Sign Up</Button>}
+            {isLoading && <LoadingSpinner />}
+          </FormActions>
+        </form>
+      </FormContent>
+    </Fragment>
   );
 };
 

@@ -1,9 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import Story from "./Story";
-import classes from "./StoryList.module.css";
-import { IStory } from "../../store/stories-slice";
+import {Stories} from "../../styled/components/stories/StoryList";
+import FilterSortStories from "./FilterSortStories";
+import {IStory} from "../../pages/AllStoriesPage";
 
-const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
+const StoryList: React.FC<{ stories: IStory[], onDelete?: (storyId: string) => void }> = (props) => {
+  const [sortNewest, toggleSortNewest] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>("");
+
   if (props.stories.length === 0) {
     return (
       <div>
@@ -12,20 +16,39 @@ const StoryList: React.FC<{ stories: IStory[] }> = (props) => {
     );
   }
 
+  const toggleSortBy = () => {
+    toggleSortNewest((state) => !state);
+  };
+
+  const filterValuesBy = (tag: string) => {
+    setFilter(tag);
+  }
+
   return (
-    <div className={classes.list}>
-      <ul>
-        {props.stories.map((story) => (
-          <Story
-            title={story.title}
-            author={story.author}
-            userId={story.userId}
-            id={story.id}
-            key={story.id}
-          />
-        ))}
-      </ul>
-    </div>
+    <>
+      <FilterSortStories sortByNewest={sortNewest} toggleSortBy={toggleSortBy} filterValuesBy={filterValuesBy}/>
+      <Stories>
+        {props.stories
+          .filter(story => filter === "" ? true : story.tags.includes(filter))
+          .sort((a, b) => {
+            if (a.createdAt.getTime() > b.createdAt.getTime())
+              return sortNewest ? 1 : -1;
+            if (a.createdAt.getTime() === b.createdAt.getTime()) return 0;
+            return sortNewest ? -1 : 1;
+          })
+          .map((story) => (
+            <Story
+              title={story.title}
+              author={story.author}
+              userId={story.userId}
+              id={story.id}
+              key={story.id}
+              tags={story.tags}
+              onDelete={props.onDelete}
+            />
+          ))}
+      </Stories>
+    </>
   );
 };
 

@@ -1,51 +1,62 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import { IUser } from "../../pages/ProfilePage";
-import classes from "./ProfileContent.module.css";
-import Button from "../UI/Button";
 import StoryList from "../stories/StoryList";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
-import {fetchAllStories, useStoriesDispatch} from "../../store/stories-actions";
+import useHttp from "../../hooks/useHttp";
+import {
+  UserContent,
+  UserInfo,
+  UserProfileActions,
+} from "../../styled/components/user-profiles/ProfileContent";
+import {Button, LoadingSpinner} from "../../styled/components/UI/UIElements";
+import {useNavigate} from "react-router-dom";
+import {IStory} from "../../pages/AllStoriesPage";
 
 const ProfileContent: React.FC<{
   user: IUser;
   showAllContent: boolean;
+  userId: string;
 }> = (props) => {
-  // maybe make hook out of this?
-  const dispatch = useStoriesDispatch();
+  const { isLoading, fetchStories, deleteStory } = useHttp();
+  const navigate = useNavigate();
+  const [userStories, setUserStories] = useState<IStory[]>([]);
 
   useEffect(() => {
-    dispatch(fetchAllStories());
-  }, [dispatch])
+    fetchStories(setUserStories, props.userId);
+  }, [fetchStories, props.userId]);
 
-  const userStories = useSelector((state: IRootState) =>
-    state.stories.stories.filter((story) => story.author === props.user.name)
-  );
+
+  const changePasswordHandler = () => {
+    navigate('/change-password');
+  }
+
+  const storyDeleteHandler = (storyId: string) => {
+    setUserStories((state) => state.filter(story => story.id !== storyId));
+    deleteStory(storyId);
+  }
 
   return (
     <Fragment>
-      <div className={classes.content}>
-        <div className={classes.info}>
-          <div className={classes["info-labels"]}>
-            <p>Username:</p>
-            <p>Email:</p>
-            <p>Joined:</p>
-          </div>
+      <UserContent>
+        <UserInfo>
           <div>
-            <p>{props.user.name}</p>
-            <p>{props.user.email}</p>
-            <p>{props.user.created}</p>
+            <p>Username:</p>
+            <h3>{props.user.name}</h3>
+            <p>Email:</p>
+            <h3>{props.user.email}</h3>
+            <p>Joined:</p>
+            <h3>{props.user.created}</h3>
           </div>
-        </div>
+        </UserInfo>
         {props.showAllContent && (
-          <div className={classes.actions}>
-            <Button>Change Password</Button>
-          </div>
+          <UserProfileActions>
+            <Button onClick={changePasswordHandler}>Change Password</Button>
+          </UserProfileActions>
         )}
-      </div>
+      </UserContent>
       <div>
         <h1>User Stories</h1>
-        <StoryList stories={userStories} />
+        {!isLoading && <StoryList stories={userStories} onDelete={storyDeleteHandler}/>}
+        {isLoading && <LoadingSpinner />}
       </div>
     </Fragment>
   );

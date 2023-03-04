@@ -14,6 +14,9 @@ const redirectSlice = createSlice({
     enable: (state: IRedirectState) => {
       state.goBack = true;
     },
+    disable: (state: IRedirectState) => {
+      state.goBack = false;
+    },
   },
 });
 

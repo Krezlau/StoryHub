@@ -2,164 +2,131 @@ import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import { authActions } from "./auth-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "./index";
-import { IUser } from "../pages/ProfilePage";
+import axios from "axios";
 
-export const loginUser = (email: string, password: string) => {
-  return async (dispatch: Dispatch<AnyAction>) => {
-    const login = async () => {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({ email, password, returnSecureToken: true }),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+const calculateRemainingTime = (expirationTime: string | null) => {
+  if (expirationTime === null) {
+    return 0;
+  }
+  const currentTime = new Date().getTime();
+  const adjExpirationTime = new Date(expirationTime).getTime();
 
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
-      }
+  return adjExpirationTime - currentTime;
+};
 
-      return await response.json();
-    };
+export const clearAuthStorage = () => {
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("token");
+  localStorage.removeItem("expirationTime");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("username");
+  localStorage.removeItem("email");
+  localStorage.removeItem("createdAt");
+};
 
-    const fetchUserData = async (idToken: string) => {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({ idToken }),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+const storeAuthData = (
+  token: string,
+  refreshToken: string,
+  validFor: number,
+  userId: string,
+  username: string
+) => {
+  const currentTime = new Date();
+  const expirationTime = new Date(
+    currentTime.getTime() + 60 * 60000
+  ).toISOString();
 
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
-      }
+  localStorage.setItem("refreshToken", refreshToken);
+  localStorage.setItem("token", token);
+  localStorage.setItem("expirationTime", expirationTime);
+  localStorage.setItem("userId", userId);
+  localStorage.setItem("username", username);
+};
 
-      return await response.json();
-    };
+export const retrieveStoredToken = () => {
+  const storedToken = localStorage.getItem("token");
+  const storedExpirationDate = localStorage.getItem("expirationTime");
+  const storedUserId = localStorage.getItem("userId");
+  const storedUsername = localStorage.getItem("username");
+  const refreshToken = localStorage.getItem("refreshToken");
 
-    const fetchCreatedAt = async (userId: string) => {
-      const response = await fetch(
-        "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
-          userId +
-          ".json"
-      );
+  const remainingTime = calculateRemainingTime(storedExpirationDate);
 
-      if (!response.ok) {
-        throw new Error('Could not fetch.')
-      }
-
-      return await response.json();
-    };
-
-    try {
-      const loginData = await login();
-      const userData = await fetchUserData(loginData.idToken);
-      const joinedAtData = await fetchCreatedAt(userData.users[0].localId);
-      dispatch(
-        authActions.login({
-          email: userData.users[0].email,
-          userToken: loginData.idToken,
-          username: userData.users[0].displayName,
-          created: joinedAtData.created,
-          userId: userData.users[0].localId,
-        })
-      );
-    } catch (e) {
-      // handle
-      console.log(e);
+  if (
+    remainingTime <= 60000 ||
+    !storedToken ||
+    !storedUsername ||
+    !storedUserId
+  ) {
+    if (!refreshToken || !storedToken || !storedUsername || !storedUserId) {
+      clearAuthStorage();
+      return null;
     }
+    try {
+      axios
+        .post(
+          "https://storyhubapi.azurewebsites.net/api/auth/refresh",
+          { storedToken, refreshToken },
+          { headers: { "Content-Type": "application/json" } }
+        )
+        .then((r) => localStorage.setItem("token", r.data.result));
+    } catch (e) {
+      return null;
+    }
+  }
+  return {
+    token: storedToken,
+    duration: remainingTime,
+    userId: storedUserId,
+    username: storedUsername,
   };
 };
 
-export const singUpUser = (
+export const loginUser = (
   username: string,
-  email: string,
-  password: string
+  password: string,
+  setIsLoading: (newState: boolean) => void,
+  setError: (newState: string) => void
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
-    const siqnUp = async () => {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({ email, password, returnSecureToken: true }),
-          headers: { "Content-Type": "application/json" },
-        }
+    setIsLoading(true);
+    setError("");
+
+    const loginUser = async () => {
+      let response = await axios.post(
+        "https://storyhubapi.azurewebsites.net/api/auth/login",
+        { username, password },
+        { headers: { "Content-Type": "application/json" } }
       );
-
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
+      if (response.status !== 200) {
+        throw new Error("Response incorrect.");
       }
-
-      return await response.json();
-    };
-
-    const postUserData = async (idToken: string) => {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBX14QGRIuDqIQ830ByACAAXgJBpdeYNYE",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            idToken,
-            displayName: username,
-            photoUrl: "",
-            returnSecureToken: false,
-          }),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
-      }
-
-      return await response.json();
-    };
-
-    const storeUserData = async (userId: string) => {
-      const user: IUser = {
-        name: username,
-        email,
-        created: new Date().toDateString(),
-      };
-
-      const response = await fetch(
-        "https://storyhub-aed69-default-rtdb.europe-west1.firebasedatabase.app/users/" +
-          userId +
-          ".json",
-        {
-          method: "PUT",
-          body: JSON.stringify(user),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Could not fetch.");
-      }
-
-      return response.json();
+      return response.data;
     };
 
     try {
-      const signUpData = await siqnUp();
-      const postData = await postUserData(signUpData.idToken);
-      await storeUserData(postData.localId);
+      const userData = await loginUser();
       dispatch(
-        authActions.register({
-          idToken: signUpData.idToken,
-          username: username,
-          email: email,
-          created: new Date().toDateString(),
-          userId: postData.localId,
+        authActions.login({
+          userId: userData.result.user.id,
+          userToken: userData.result.accessToken,
+          username: userData.result.user.username,
         })
       );
+      storeAuthData(
+        userData.result.accessToken,
+        userData.result.refreshToken,
+        60,
+        userData.result.user.id,
+        userData.result.user.username
+      );
+      setError("");
+      setIsLoading(false);
     } catch (e) {
-      // handle
+      setError("Could not login.");
       console.log(e);
+      setIsLoading(false);
+      return;
     }
   };
 };

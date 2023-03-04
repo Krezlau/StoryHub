@@ -1,11 +1,11 @@
 import React from "react";
-import classes from "./PageHeader.module.css";
+import PageHeaderContainer from "../../styled/components/UI/PageHeader";
 
 const PageHeader: React.FC<{ title: string }> = (props) => {
   return (
-    <div className={classes["page-header"]}>
+    <PageHeaderContainer>
       <h1>{props.title}</h1>
-    </div>
+    </PageHeaderContainer>
   );
 };
 
