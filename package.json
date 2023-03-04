@@ -1,8 +1,8 @@
 {
-  "name": "project2",
+  "name": "storyhub",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://Krezlau.github.io",
+  "private": false,
+  "homepage": "https://krezlau.github.io/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",

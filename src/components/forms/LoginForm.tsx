@@ -37,7 +37,7 @@ const LoginForm: React.FC = () => {
 
     if (!usernameIsValid && !passwordIsValid) {
       setNotificationTitle("Could not login")
-      setError("Email invalid, password too short.");
+      setError("Username invalid, password too short.");
       usernameReset();
       passwordReset();
       return;
@@ -45,7 +45,7 @@ const LoginForm: React.FC = () => {
 
     if (!usernameIsValid) {
       setNotificationTitle("Could not login")
-      setError("Email invalid.");
+      setError("Username invalid.");
       usernameReset();
       passwordReset();
       return;
@@ -72,7 +72,7 @@ const LoginForm: React.FC = () => {
             onBlur={usernameBlurHandler}
             onChange={usernameChangeHandler}
           />
-          {usernameHasError && <FormErrorText>Email invalid.</FormErrorText>}
+          {usernameHasError && <FormErrorText>Username invalid.</FormErrorText>}
           <label htmlFor="password">Password</label>
           <input
             type="password"
