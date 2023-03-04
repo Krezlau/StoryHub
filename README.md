@@ -11,12 +11,9 @@ StoryHub is a web app built with React, working together with the *StoryHubAPI*.
 
 It has been an amazing learning experience that has helped me develop my skills as a frontend developer.
 Through this project, I have gained proficiency in React, Typescript, Redux, React-Router, Axios, and Styled Components,
-which are all widely used technologies in the industry. The project has given me a solid foundation to build upon 
-and I am excited to continue learning and growing as a developer.
+which are all widely used technologies in the industry.
 
-## Features
-
-StoryHub comes with a range of features that make it stand out from other web apps:
+## Features:
 
 - User Authentication: Users can sign up, log in and change their password.
 - Story Feed: Users can browse stories from different categories, view details, and like or comment on stories.
@@ -43,5 +40,3 @@ StoryHub was built with the following technologies:
 - React-Router
 - Axios
 - Styled Components
-
-## Sample Screenshots
