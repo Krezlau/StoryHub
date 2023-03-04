@@ -21,7 +21,7 @@ const ProfileContent: React.FC<{
   const [userStories, setUserStories] = useState<IStory[]>([]);
 
   useEffect(() => {
-    fetchStories(setUserStories, props.userId );
+    fetchStories(setUserStories, props.userId);
   }, [fetchStories, props.userId]);
 
 

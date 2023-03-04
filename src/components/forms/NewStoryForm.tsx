@@ -62,7 +62,7 @@ const NewStoryForm: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagOptions, setTagOptions] = useState<string[]>(TAGS);
   const [selectedValue, setSelectedValue] = useState<string>("choose a tag");
-  const { isLoading, error, setError, addNewStory } = useHttp();
+  const { isLoading, error, setError, addNewStory, setNotificationTitle } = useHttp();
 
   const {
     value: title,
@@ -87,14 +87,17 @@ const NewStoryForm: React.FC = () => {
     event.preventDefault();
 
     if (!titleIsValid) {
+      setNotificationTitle("ERROR")
       setError("Title is too short.");
       return;
     }
     if (!textIsValid) {
+      setNotificationTitle("ERROR")
       setError("Text is too short.");
       return;
     }
     if (selectedTags.length === 0) {
+      setNotificationTitle("ERROR")
       setError("Please choose at least one tag.");
       return;
     }

@@ -7,15 +7,12 @@ import { Button, LoadingSpinner } from "../../styled/components/UI/UIElements";
 import React, { FormEvent } from "react";
 import useValidation from "../../hooks/useValidation";
 import useHttp from "../../hooks/useHttp";
-import { useSelector } from "react-redux";
-import { IRootState } from "../../store";
 import { useNavigate } from "react-router-dom";
 
 let isInitial = true;
 
 const PasswordChangeForm = () => {
-  const { isLoading, setError, changePassword } = useHttp();
-  const userToken = useSelector((state: IRootState) => state.auth.userToken);
+  const { isLoading, setError, changePassword, setNotificationTitle } = useHttp();
   const navigate = useNavigate();
 
   const {
@@ -40,6 +37,7 @@ const PasswordChangeForm = () => {
     event.preventDefault();
 
     if (!currentPasswordIsValid) {
+      setNotificationTitle("Could not change");
       setError("Current password too short.");
       newPasswordReset();
       currentPasswordReset();
@@ -49,12 +47,13 @@ const PasswordChangeForm = () => {
     if (!newPasswordIsValid) {
       newPasswordReset();
       currentPasswordReset();
+      setNotificationTitle("Could not change");
       setError("New password too short.");
       return;
     }
     isInitial = false;
 
-    changePassword(userToken, newPassword.trim(), navigate);
+    changePassword(currentPassword, newPassword.trim(), navigate);
   };
 
   return (

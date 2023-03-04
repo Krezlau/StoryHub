@@ -37,10 +37,8 @@ function App() {
 
     dispatch(
       authActions.login({
-        email: tokenData.email,
         username: tokenData.username,
         userId: tokenData.userId,
-        created: tokenData.createdAt,
         userToken: tokenData.token,
       })
     );

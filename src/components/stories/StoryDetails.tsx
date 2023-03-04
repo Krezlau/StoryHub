@@ -25,7 +25,7 @@ const StoryDetails: React.FC<{ story?: IStory }> = (props) => {
         </h5>
       </StoryDetailsAuthor>
       <StoryDetailsContent>
-        <p>{props.story.text}</p>
+        {props.story.text.split("\n").map(t => <p>{t}</p>)}
       </StoryDetailsContent>
       <StoryDetailsFooter>
         <StoryDetailsActivityInfo>

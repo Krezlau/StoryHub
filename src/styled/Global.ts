@@ -1,18 +1,9 @@
 import {createGlobalStyle} from "styled-components";
-import Futura from '../futura.ttf'
 
 export const mediaQuery = '900px';
 
 const GlobalStyles = createGlobalStyle`
-  @font-face {
-    font-family: Futura;
-    src: local(futura), url(${Futura}) format(truetype);
-  }
-
-  * {
-    font-family: Futura, sans-serif;
-    box-sizing: border-box;
-  }
+  
 
   body {
     background-color: ${props => props.theme.bgColor};
