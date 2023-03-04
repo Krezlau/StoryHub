@@ -19,7 +19,7 @@ const useHttp = () => {
 
   useNotification(notificationTitle, setNotificationTitle, error, setError);
 
-  const refreshToken = () =>
+  const refreshToken = useCallback(() =>
   {
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) {
@@ -41,9 +41,9 @@ const useHttp = () => {
     } catch (e) {
       return null;
     }
-  }
+  }, [accessToken, dispatch])
 
-  const handleAxiosError = (e: unknown) => {
+  const handleAxiosError = useCallback((e: unknown) => {
     if (e instanceof AxiosError) {
       const axios: AxiosError = e;
       if (axios.response && axios.response.status === 401){
@@ -56,7 +56,7 @@ const useHttp = () => {
       }
     }
     return false;
-  }
+  }, [refreshToken])
 
   const login = (email: string, password: string) => {
     dispatch(loginUser(email, password, setIsLoading, setError));
@@ -174,7 +174,7 @@ const useHttp = () => {
         }
       }
     },
-    [accessToken]
+    [accessToken, handleAxiosError]
   );
 
   const fetchUser = useCallback(async (id: string) => {
@@ -214,7 +214,7 @@ const useHttp = () => {
         setError("Could not fetch user data. Try again.");
       }
     }
-  }, [accessToken]);
+  }, [accessToken, handleAxiosError]);
 
   const addNewStory = useCallback(async (story: IStory) => {
     setIsLoading(true);
@@ -253,7 +253,7 @@ const useHttp = () => {
         setError("Could not send data. Try again.");
       }
     }
-  }, [accessToken]);
+  }, [accessToken, handleAxiosError]);
 
   const changePassword = async (
     currentPassword: string,
@@ -336,7 +336,7 @@ const useHttp = () => {
       }
     }
     return comments;
-  }, [accessToken]);
+  }, [accessToken, handleAxiosError]);
 
   const addComment = async (comment: IComment, storyId: string) => {
     setIsLoading(true);
@@ -416,7 +416,7 @@ const useHttp = () => {
         setError("Could not fetch story. Try again.");
       }
     }
-  }, [accessToken]);
+  }, [accessToken, handleAxiosError]);
 
   const deleteStory = useCallback(async (storyId: string) => {
     setIsLoading(true);
@@ -444,7 +444,7 @@ const useHttp = () => {
         setError("Could not delete. Try again.");
       }
     }
-  }, [accessToken]);
+  }, [accessToken, handleAxiosError]);
 
 
 

@@ -9,7 +9,6 @@ import useValidation from "../../hooks/useValidation";
 import useHttp from "../../hooks/useHttp";
 import { useNavigate } from "react-router-dom";
 
-let isInitial = true;
 
 const PasswordChangeForm = () => {
   const { isLoading, setError, changePassword, setNotificationTitle } = useHttp();
@@ -51,7 +50,6 @@ const PasswordChangeForm = () => {
       setError("New password too short.");
       return;
     }
-    isInitial = false;
 
     changePassword(currentPassword, newPassword.trim(), navigate);
   };
