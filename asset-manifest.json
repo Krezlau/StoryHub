@@ -1,11 +1,14 @@
 {
   "files": {
-    "main.js": "/StoryHub/static/js/main.ca32ad75.js",
+    "main.css": "/StoryHub/static/css/main.4d7ae00c.css",
+    "main.js": "/StoryHub/static/js/main.651a1ed5.js",
     "static/media/futura.ttf": "/StoryHub/static/media/futura.ed19af444f0976dbaf41.ttf",
     "index.html": "/StoryHub/index.html",
-    "main.ca32ad75.js.map": "/StoryHub/static/js/main.ca32ad75.js.map"
+    "main.4d7ae00c.css.map": "/StoryHub/static/css/main.4d7ae00c.css.map",
+    "main.651a1ed5.js.map": "/StoryHub/static/js/main.651a1ed5.js.map"
   },
   "entrypoints": [
-    "static/js/main.ca32ad75.js"
+    "static/css/main.4d7ae00c.css",
+    "static/js/main.651a1ed5.js"
   ]
 }
