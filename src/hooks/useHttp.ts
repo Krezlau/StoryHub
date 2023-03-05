@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { loginUser, useAuthDispatch } from "../store/auth-actions";
+import {loginUser, storeNewToken, useAuthDispatch} from "../store/auth-actions";
 import axios, {AxiosError} from "axios";
 import { IUser } from "../pages/ProfilePage";
 import useNotification from "./useNotification";
@@ -21,20 +21,22 @@ const useHttp = () => {
 
   const refreshToken = useCallback(() =>
   {
+    const tokenStorage = localStorage.getItem("token");
+    console.log(tokenStorage);
     const refreshToken = localStorage.getItem("refreshToken");
-    if (!refreshToken) {
+    if (!refreshToken || !tokenStorage) {
       return null;
     }
     try {
       let token;
       axios.post(
         "https://storyhubapi.azurewebsites.net/api/auth/refresh",
-        { accessToken, refreshToken },
+        { accessToken: tokenStorage, refreshToken: refreshToken },
         { headers: { "Content-Type": "application/json" } }
       )
         .then((r) => {
-          localStorage.setItem("token", r.data.result);
           token = r.data.result;
+          storeNewToken(token);
           dispatch(authActions.refresh(token))
         })
       return token;
@@ -158,6 +160,8 @@ const useHttp = () => {
             title: storiesData[key].title,
             tags: storiesData[key].tags,
             createdAt: new Date(storiesData[key].createdAt),
+            likesCount: storiesData[key].likesCount,
+            isLikedByUser: storiesData[key].ifLikedByCurrentUser,
           });
         }
         setStories(stories);
@@ -402,6 +406,8 @@ const useHttp = () => {
         title: data.title,
         author: data.authorName,
         createdAt: new Date(data.createdAt),
+        likesCount: data.likesCount,
+        isLikedByUser: data.ifLikedByCurrentUser,
       };
 
       setError("");
@@ -446,7 +452,62 @@ const useHttp = () => {
     }
   }, [accessToken, handleAxiosError]);
 
+  const likeStory = async (storyId: string) => {
+    setIsLoading(true);
+    setError("");
 
+    try {
+      const response = await axios.post(
+        `https://storyhubapi.azurewebsites.net/api/Likes/${storyId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!response.data.isSuccess) {
+        throw new Error();
+      }
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not delete. Try again.");
+      }
+    }
+  }
+
+  const unLikeStory = async (storyId: string) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.delete(
+        `https://storyhubapi.azurewebsites.net/api/Likes/${storyId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!response.data.isSuccess) {
+        throw new Error();
+      }
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not delete. Try again.");
+      }
+    }
+  }
 
   return {
     isLoading,
@@ -464,6 +525,8 @@ const useHttp = () => {
     addComment,
     fetchStory,
     deleteStory,
+    likeStory,
+    unLikeStory,
   };
 };
 

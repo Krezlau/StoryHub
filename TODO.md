@@ -33,15 +33,13 @@
 - [x] delete my own story from profile page
 
 ### task07:
-- [ ] integration with new api
-- [ ] refresh tokens 
+- [x] integration with new api
+- [x] refresh tokens 
 
 ### task08:
 - [ ] liking stories
 - [ ] fetching tags
 
 ### Unallocated:
-* liking stories
 * adding stories to favorites
 * liking comments
-* story text as markdown??

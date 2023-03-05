@@ -110,6 +110,8 @@ const NewStoryForm: React.FC = () => {
       id: "",
       tags: selectedTags,
       createdAt: new Date(),
+      likesCount: 0,
+      isLikedByUser: false,
     };
     isInitial = false;
 

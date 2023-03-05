@@ -32,16 +32,24 @@ const storeAuthData = (
   username: string
 ) => {
   const currentTime = new Date();
-  const expirationTime = new Date(
-    currentTime.getTime() + 60 * 60000
-  ).toISOString();
+  currentTime.setHours(currentTime.getHours() + 1);
+  console.log(currentTime)
 
   localStorage.setItem("refreshToken", refreshToken);
   localStorage.setItem("token", token);
-  localStorage.setItem("expirationTime", expirationTime);
+  localStorage.setItem("expirationTime", currentTime.toISOString());
   localStorage.setItem("userId", userId);
   localStorage.setItem("username", username);
 };
+
+export const storeNewToken = (token: string) => {
+  const currentTime = new Date();
+  const expirationTime = new Date(
+    currentTime.getTime() + (3600000)
+  ).toISOString();
+  localStorage.setItem("token", token);
+  localStorage.setItem("expirationTime", expirationTime);
+}
 
 export const retrieveStoredToken = () => {
   const storedToken = localStorage.getItem("token");
@@ -66,10 +74,10 @@ export const retrieveStoredToken = () => {
       axios
         .post(
           "https://storyhubapi.azurewebsites.net/api/auth/refresh",
-          { storedToken, refreshToken },
+          { accessToken: storedToken, refreshToken },
           { headers: { "Content-Type": "application/json" } }
         )
-        .then((r) => localStorage.setItem("token", r.data.result));
+        .then((r) => storeNewToken(r.data.result));
     } catch (e) {
       return null;
     }
