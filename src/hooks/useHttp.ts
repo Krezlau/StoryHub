@@ -158,6 +158,8 @@ const useHttp = () => {
             title: storiesData[key].title,
             tags: storiesData[key].tags,
             createdAt: new Date(storiesData[key].createdAt),
+            likesCount: storiesData[key].likesCount,
+            isLikedByUser: storiesData[key].ifLikedByCurrentUser,
           });
         }
         setStories(stories);
@@ -402,6 +404,8 @@ const useHttp = () => {
         title: data.title,
         author: data.authorName,
         createdAt: new Date(data.createdAt),
+        likesCount: data.likesCount,
+        isLikedByUser: data.ifLikedByCurrentUser,
       };
 
       setError("");
@@ -446,7 +450,62 @@ const useHttp = () => {
     }
   }, [accessToken, handleAxiosError]);
 
+  const likeStory = async (storyId: string) => {
+    setIsLoading(true);
+    setError("");
 
+    try {
+      const response = await axios.post(
+        `https://storyhubapi.azurewebsites.net/api/Likes/${storyId}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!response.data.isSuccess) {
+        throw new Error();
+      }
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not delete. Try again.");
+      }
+    }
+  }
+
+  const unLikeStory = async (storyId: string) => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.delete(
+        `https://storyhubapi.azurewebsites.net/api/Likes/${storyId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (!response.data.isSuccess) {
+        throw new Error();
+      }
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      if (!handleAxiosError(e)){
+        console.log(e);
+        setNotificationTitle("Something went wrong.");
+        setError("Could not delete. Try again.");
+      }
+    }
+  }
 
   return {
     isLoading,
@@ -464,6 +523,8 @@ const useHttp = () => {
     addComment,
     fetchStory,
     deleteStory,
+    likeStory,
+    unLikeStory,
   };
 };
 

@@ -17,26 +17,15 @@ export const StoryDetailsAuthor = styled.div`
 export const StoryDetailsFooter = styled.div`
   border-top-style: solid;
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   padding: 1rem;
   font-size: ${props => props.theme.mainContentFontSize};
-`
-
-export const StoryDetailsActivityInfo = styled.div`
-  padding: .5rem 0;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  
-  p {
-    margin: 0;
-  }
 `
 
 export const StoryDetailsActions = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   flex-wrap: wrap;
   
   button {

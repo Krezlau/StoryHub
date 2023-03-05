@@ -12,6 +12,8 @@ export interface IStory {
   text: string;
   tags: string[];
   createdAt: Date;
+  likesCount: number;
+  isLikedByUser: boolean;
 }
 
 const AllStoriesPage: React.FC = () => {
