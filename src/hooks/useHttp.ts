@@ -21,15 +21,17 @@ const useHttp = () => {
 
   const refreshToken = useCallback(() =>
   {
+    const tokenStorage = localStorage.getItem("token");
+    console.log(tokenStorage);
     const refreshToken = localStorage.getItem("refreshToken");
-    if (!refreshToken) {
+    if (!refreshToken || !tokenStorage) {
       return null;
     }
     try {
       let token;
       axios.post(
         "https://storyhubapi.azurewebsites.net/api/auth/refresh",
-        { accessToken, refreshToken },
+        { accessToken: tokenStorage, refreshToken: refreshToken },
         { headers: { "Content-Type": "application/json" } }
       )
         .then((r) => {
