@@ -43,6 +43,15 @@ const storeAuthData = (
   localStorage.setItem("username", username);
 };
 
+export const storeNewToken = (token: string) => {
+  const currentTime = new Date();
+  const expirationTime = new Date(
+    currentTime.getTime() + 55 * 60000
+  ).toISOString();
+  localStorage.setItem("token", token);
+  localStorage.setItem("expirationTime", expirationTime);
+}
+
 export const retrieveStoredToken = () => {
   const storedToken = localStorage.getItem("token");
   const storedExpirationDate = localStorage.getItem("expirationTime");
@@ -66,10 +75,10 @@ export const retrieveStoredToken = () => {
       axios
         .post(
           "https://storyhubapi.azurewebsites.net/api/auth/refresh",
-          { storedToken, refreshToken },
+          { accessToken: storedToken, refreshToken },
           { headers: { "Content-Type": "application/json" } }
         )
-        .then((r) => localStorage.setItem("token", r.data.result));
+        .then((r) => storeNewToken(r.data.result));
     } catch (e) {
       return null;
     }

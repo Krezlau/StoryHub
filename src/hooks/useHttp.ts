@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { loginUser, useAuthDispatch } from "../store/auth-actions";
+import {loginUser, storeNewToken, useAuthDispatch} from "../store/auth-actions";
 import axios, {AxiosError} from "axios";
 import { IUser } from "../pages/ProfilePage";
 import useNotification from "./useNotification";
@@ -33,8 +33,8 @@ const useHttp = () => {
         { headers: { "Content-Type": "application/json" } }
       )
         .then((r) => {
-          localStorage.setItem("token", r.data.result);
           token = r.data.result;
+          storeNewToken(token);
           dispatch(authActions.refresh(token))
         })
       return token;
