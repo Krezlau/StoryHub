@@ -1,6 +1,6 @@
 
 # StoryHub
-*https://krezlau.github.io/home*
+*https://krezlau.github.io/StoryHub*
 
 --- 
 ## This is the frontend project for the StoryHub - webapp where people can share, read and comment stories.
