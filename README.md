@@ -1,3 +1,7 @@
+# If you are here you should check out my latest project - <a href="https://github.com/Krezlau/Quizu-Frontend" >Quizu</a>!
+<br />
+<br />
+<br />
 
 # StoryHub
 *https://krezlau.github.io/StoryHub*
@@ -9,16 +13,11 @@
 ---
 StoryHub is a web app built with React, working together with the *StoryHubAPI*.
 
-It has been an amazing learning experience that has helped me develop my skills as a frontend developer.
-Through this project, I have gained proficiency in React, Typescript, Redux, React-Router, Axios, and Styled Components,
-which are all widely used technologies in the industry.
-
 ## Features:
 
 - User Authentication: Users can sign up, log in and change their password.
 - Story Feed: Users can browse stories from different categories, view details, and like or comment on stories.
 - Story Creation: Users can create their own stories and set categories.
-- Search: Users can search for stories by title.
 - Responsive Design: StoryHub is optimized for various screen sizes, making it accessible on desktop and mobile devices.
 - Dark Mode: Users can change motives between dark and light mode. 
 
